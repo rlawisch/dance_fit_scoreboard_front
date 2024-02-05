@@ -1,0 +1,69 @@
+import { useForm } from "react-hook-form";
+import Input from "../../components/Input";
+import { GlobalContainer } from "../../styles/global";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { AiOutlineUser } from "react-icons/ai";
+import { PiPassword } from "react-icons/pi";
+import Button from "../../components/Button";
+import { FormContainer } from "./login.style";
+import { Link } from "react-router-dom";
+
+interface loginCredentials {
+  username: string;
+  password: string;
+}
+
+const Login = () => {
+  const formSchema = yup.object<loginCredentials>().shape({
+    username: yup.string().required("Preencha este campo"),
+    password: yup.string().required("Preencha este campo"),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<loginCredentials>({
+    resolver: yupResolver(formSchema),
+  });
+
+  const onFormSubmit = ({ username, password }: loginCredentials) => {
+    console.log({ username, password });
+  };
+
+  return (
+    <GlobalContainer>
+      <FormContainer>
+        <h1>Login</h1>
+
+        <form id="login_form" onSubmit={handleSubmit(onFormSubmit)}>
+          <Input
+            icon={AiOutlineUser}
+            name="username"
+            register={register}
+            error={errors.username?.message}
+          />
+
+          <Input
+            icon={PiPassword}
+            name="password"
+            type="password"
+            register={register}
+            error={errors.password?.message}
+          />
+        </form>
+
+        <Button vanilla={true} type="submit" form="login_form">
+          Login
+        </Button>
+
+        <Link to="/signup">
+          <Button vanilla={false}>Cadastro</Button>
+        </Link>
+      </FormContainer>
+    </GlobalContainer>
+  );
+};
+
+export default Login;
