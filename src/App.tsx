@@ -1,10 +1,11 @@
+import { ToastContainer } from "react-toastify";
 import Routing from "./routes";
 
 function App() {
-
   return (
     <main>
-      <Routing/>
+      <ToastContainer />
+      <Routing />
     </main>
   );
 }

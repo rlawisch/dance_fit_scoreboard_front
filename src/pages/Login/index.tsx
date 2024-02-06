@@ -8,15 +8,16 @@ import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
 import { FormContainer } from "./login.style";
 import { Link } from "react-router-dom";
+import { usePlayer } from "../../providers/Players";
 
-interface loginCredentials {
-  username: string;
+export interface ILogin {
+  nickname: string;
   password: string;
 }
 
 const Login = () => {
-  const formSchema = yup.object<loginCredentials>().shape({
-    username: yup.string().required("Preencha este campo"),
+  const formSchema = yup.object<ILogin>().shape({
+    nickname: yup.string().required("Preencha este campo"),
     password: yup.string().required("Preencha este campo"),
   });
 
@@ -24,12 +25,15 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<loginCredentials>({
+  } = useForm<ILogin>({
     resolver: yupResolver(formSchema),
   });
 
-  const onFormSubmit = ({ username, password }: loginCredentials) => {
-    console.log({ username, password });
+  const { playerLogin } = usePlayer();
+
+  const onFormSubmit = (formData: ILogin) => {
+    playerLogin(formData);
+    console.log(process.env.API_PROD)
   };
 
   return (
@@ -40,9 +44,9 @@ const Login = () => {
         <form id="login_form" onSubmit={handleSubmit(onFormSubmit)}>
           <Input
             icon={AiOutlineUser}
-            name="username"
+            name="nickname"
             register={register}
-            error={errors.username?.message}
+            error={errors.nickname?.message}
           />
 
           <Input

@@ -5,7 +5,7 @@ import { ErrorMessage, StyledInput } from "./input.style";
 // tech debt typing register function:
 // import { UseFormRegister, FieldValues } from "react-hook-form";
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement>{
+interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon: IconType;
   register: any;
   name: string;
