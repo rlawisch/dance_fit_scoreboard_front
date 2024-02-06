@@ -37,8 +37,6 @@ const SignUp = () => {
   });
 
   const onFormSubmit = (formData: ISignup) => {
-    console.log(formData);
-
     playerSignup(formData);
   };
 

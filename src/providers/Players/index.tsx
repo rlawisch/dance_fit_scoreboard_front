@@ -31,10 +31,13 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         setAccToken(access_token);
 
         localStorage.setItem("@DFS/PlayerToken", JSON.stringify(access_token));
+        toast("Sentimos sua falta!")
         navigate("/dashboard");
       })
       .catch((err) => {
-        console.log(err);
+        if (!!err) {
+					toast.error("Usuário ou senha incorretos")
+				}
       });
   };
 

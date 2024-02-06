@@ -8,6 +8,7 @@ const StyledButton = styled.button<ButtonProps>`
   padding: 0.6rem 1rem;
   margin: 0.8rem;
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
+  min-width: 128px;
 
   border-radius: 0.3rem;
   border-width: 1px;

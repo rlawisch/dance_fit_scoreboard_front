@@ -33,7 +33,6 @@ const Login = () => {
 
   const onFormSubmit = (formData: ILogin) => {
     playerLogin(formData);
-    console.log(process.env.API_PROD)
   };
 
   return (
