@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
+import '@fontsource/roboto'
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -11,14 +12,14 @@ export const GlobalStyle = createGlobalStyle`
 
     body, input, button, select {
         background: ${props => props.theme.colors.background};
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: normal;
         font-size: 0.9rem;
         color: ${props => props.theme.colors.text}
     }
 
     h1,h2,h3,h4,h5,h6 {
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: bold;
     }
 
