@@ -13,7 +13,7 @@ const Header: FunctionComponent<HeaderProps> = ({ toggleTheme }) => {
 
   return (
     <Container>
-      <h1>Dance Fit Scoreboard</h1>
+      <h3>Dance Fit Scoreboard</h3>
       <Switch
         onChange={toggleTheme}
         checked={title == 'dark'}

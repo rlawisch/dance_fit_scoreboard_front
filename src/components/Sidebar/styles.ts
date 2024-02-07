@@ -17,9 +17,9 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
   position: absolute;
   left: 0;
   top: 60px;
-  width: ${(props) => (props.isopen ? `16rem` : `8rem`)};
+  width: ${(props) => (props.isopen ? `12rem` : `5rem`)};
   height: 100vh;
-  padding: ${(props) => (props.isopen ? `0.75rem` : `0.1rem`)};
+  padding: ${(props) => (props.isopen ? `0 0.4rem` : `0 0.2rem`)};
 
   background: ${(props) => props.theme.colors.secundary};
   color: ${(props) => props.theme.colors.primary};
@@ -29,12 +29,14 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
 
   display: flex;
   flex-direction: column;
+
+  box-shadow: 0.3rem 0 0.5rem rgba(0, 0, 0, 0.1);
 `;
 
 export const SidebarUl = styled.ul`
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  padding: 0.2rem;
   margin-top: 0.5rem;
   list-style: none;
   color: ${(props) => props.theme.colors.primary};
@@ -44,13 +46,14 @@ export const SidebarLi = styled.li<SidebarLiProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: ${(props) => (props.isopen ? "flex-start" : "center")};
 
   padding: 1rem;
   margin: 0.2rem 0;
+  border-radius: 0.2rem;
+
   color: ${(props) => props.theme.colors.primary};
-  font-size: 1.5rem;
-  border-radius: 0.4rem;
+  font-size: 1rem;
 
   &:hover {
     background: ${(props) => shade(0.2, props.theme.colors.secundary)};
@@ -70,8 +73,8 @@ export const SidebarLi = styled.li<SidebarLiProps>`
 
 export const SidebarToggleBtn = styled.button<SidebarToggleBtnProps>`
   border: none;
-  margin: 0;
-  padding: 0;
+  margin: 0rem;
+  padding: 0.5rem 0 0 0;
   width: auto;
   overflow: visible;
   background: transparent;

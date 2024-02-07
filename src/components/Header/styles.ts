@@ -8,4 +8,5 @@ export const Container = styled.header`
     align-items: center;
     justify-content: space-between;
     padding: 1rem;
+    box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.1);
 `

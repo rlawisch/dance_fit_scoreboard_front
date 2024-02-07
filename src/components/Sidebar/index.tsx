@@ -22,7 +22,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
   return (
     <SidebarContainer isopen={isOpen}>
       <SidebarToggleBtn isopen={isOpen} onClick={toggleSidebar}>
-        <RiExpandLeftLine size={32} />
+        <RiExpandLeftLine size={28} />
       </SidebarToggleBtn>
 
       <SidebarUl>
