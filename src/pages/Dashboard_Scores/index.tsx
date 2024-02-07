@@ -1,12 +1,12 @@
 import { FunctionComponent } from "react";
-import Sidebar from "../../components/Sidebar";
-import { DashboardContainer } from "../../styles/global";
-import { useDashboard } from "../../providers/Dashboard";
 import { GlobalContainer } from "../../styles/global";
+import Sidebar from "../../components/Sidebar";
+import { useDashboard } from "../../providers/Dashboard";
+import { DashboardContainer } from "../../styles/global";
 
-interface DashboardHomeProps {}
+interface DashboardScoresProps {}
 
-const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
+const DashboardScores: FunctionComponent<DashboardScoresProps> = () => {
   const { sideBarStatus } = useDashboard();
 
   return (
@@ -14,11 +14,11 @@ const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
       <Sidebar />
       <DashboardContainer isopen={sideBarStatus}>
         <GlobalContainer>
-          <p>HOME</p>
+          <p>PAGINA DE SCORES</p>
         </GlobalContainer>
       </DashboardContainer>
     </main>
   );
 };
 
-export default DashboardHome;
+export default DashboardScores;

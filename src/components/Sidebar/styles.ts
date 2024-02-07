@@ -14,9 +14,12 @@ interface SidebarLiProps {
 }
 
 export const SidebarContainer = styled.aside<SidebarContainerProps>`
+  z-index: 100;
   position: absolute;
-  left: 0;
   top: 60px;
+  left: 0;
+  overflow: hidden;
+
   width: ${(props) => (props.isopen ? `12rem` : `5rem`)};
   height: calc(100vh - 60px);
   padding: ${(props) => (props.isopen ? `0 0.4rem` : `0 0.2rem`)};
@@ -25,7 +28,6 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
   color: ${(props) => props.theme.colors.primary};
 
   transition: width 350ms ease;
-  overflow-x: hidden;
 
   display: flex;
   flex-direction: column;
@@ -100,8 +102,7 @@ export const SidebarLogoutBtn = styled.button`
   font-size: 1.5rem;
   font-weight: bold;
 
-
   &:hover {
     background: ${(props) => shade(0.2, props.theme.colors.secundary)};
   }
-`
+`;

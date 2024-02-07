@@ -1,4 +1,4 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent } from "react";
 import {
   SidebarContainer,
   SidebarLi,
@@ -13,41 +13,41 @@ import { GiMusicalScore } from "react-icons/gi";
 import { TbLogout2 } from "react-icons/tb";
 import { usePlayer } from "../../providers/Players";
 import { IoHomeOutline } from "react-icons/io5";
+import { useDashboard } from "../../providers/Dashboard";
 
 interface SidebarProps {}
 
 const Sidebar: FunctionComponent<SidebarProps> = () => {
-  const [isOpen, setIsOpen] = useState(true);
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const { toggleSidebar, sideBarStatus } = useDashboard()
+
+  console.log(sideBarStatus)
 
   const { playerLogout } = usePlayer();
 
   return (
-    <SidebarContainer isopen={isOpen}>
-      <SidebarToggleBtn isopen={isOpen} onClick={toggleSidebar}>
+    <SidebarContainer isopen={sideBarStatus}>
+      <SidebarToggleBtn isopen={sideBarStatus} onClick={toggleSidebar}>
         <RiExpandLeftLine size={28} />
       </SidebarToggleBtn>
 
       <SidebarUl>
-        <SidebarLi isopen={isOpen}>
+        <SidebarLi isopen={sideBarStatus}>
           <Link to="/dashboard" style={{ textDecoration: "none" }}>
             <IoHomeOutline />
-            {isOpen ? "Home" : ""}
+            {sideBarStatus ? "Home" : ""}
           </Link>
         </SidebarLi>
-        <SidebarLi isopen={isOpen}>
-          <Link to="/dashboard" style={{ textDecoration: "none" }}>
+        <SidebarLi isopen={sideBarStatus}>
+          <Link to="/dashboard/events" style={{ textDecoration: "none" }}>
             <MdEventNote />
-            {isOpen ? "Eventos" : ""}
+            {sideBarStatus ? "Eventos" : ""}
           </Link>
         </SidebarLi>
-        <SidebarLi isopen={isOpen}>
-          <Link to="/dashboard" style={{ textDecoration: "none" }}>
+        <SidebarLi isopen={sideBarStatus}>
+          <Link to="/dashboard/scores" style={{ textDecoration: "none" }}>
             <GiMusicalScore />
-            {isOpen ? "Scores" : ""}
+            {sideBarStatus ? "Scores" : ""}
           </Link>
         </SidebarLi>
       </SidebarUl>
