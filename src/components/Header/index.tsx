@@ -1,4 +1,4 @@
-import { FunctionComponent, useContext } from "react";
+import { FunctionComponent } from "react";
 import { Container } from "./styles";
 import Switch from "react-switch";
 import { useTheme } from "styled-components";
