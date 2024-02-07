@@ -18,7 +18,7 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
   left: 0;
   top: 60px;
   width: ${(props) => (props.isopen ? `12rem` : `5rem`)};
-  height: 100vh;
+  height: calc(100vh - 60px);
   padding: ${(props) => (props.isopen ? `0 0.4rem` : `0 0.2rem`)};
 
   background: ${(props) => props.theme.colors.secundary};
@@ -53,7 +53,7 @@ export const SidebarLi = styled.li<SidebarLiProps>`
   border-radius: 0.2rem;
 
   color: ${(props) => props.theme.colors.primary};
-  font-size: 1rem;
+  font-size: ${(props) => (props.isopen ? `0.9rem` : `1.5rem`)};
 
   &:hover {
     background: ${(props) => shade(0.2, props.theme.colors.secundary)};
@@ -84,3 +84,24 @@ export const SidebarToggleBtn = styled.button<SidebarToggleBtnProps>`
   transform: ${(props) => (props.isopen ? "rotate(0)" : "rotate(180deg)")};
   transition: transform 350ms ease;
 `;
+
+export const SidebarLogoutBtn = styled.button`
+  color: ${(props) => props.theme.colors.primary};
+  width: 100%;
+  border: none;
+  margin: 0rem;
+  padding: 1rem 0 0.75rem 0;
+  width: auto;
+  overflow: visible;
+  background: transparent;
+  color: ${(props) => props.theme.colors.primary};
+  margin-top: auto;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+
+
+  &:hover {
+    background: ${(props) => shade(0.2, props.theme.colors.secundary)};
+  }
+`

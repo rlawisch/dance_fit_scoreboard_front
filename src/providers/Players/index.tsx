@@ -10,6 +10,7 @@ export interface IPlayerContext {
   accToken: string;
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
+  playerLogout: () => void
 }
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
@@ -53,12 +54,19 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
+  const playerLogout = () => {
+    setAccToken("")
+    navigate("/login")
+    localStorage.clear()
+  }
+
   return (
     <PlayerContext.Provider
       value={{
         accToken,
         playerLogin,
         playerSignup,
+        playerLogout
       }}
     >
       {children}
