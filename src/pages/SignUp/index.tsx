@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { GlobalContainer } from "../../styles/global";
-import { FormContainer } from "./signup.style";
+import { FormContainer } from "./styles";
 import Input from "../../components/Input";
 import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";

@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes, FunctionComponent } from "react";
-import StyledButton from "./button.style";
+import StyledButton from "./styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   vanilla: boolean;

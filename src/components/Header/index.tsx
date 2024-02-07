@@ -1,5 +1,5 @@
 import { FunctionComponent, useContext } from "react";
-import { Container } from "./header.style";
+import { Container } from "./styles";
 import Switch from "react-switch";
 import { useTheme } from "styled-components";
 import { shade } from "polished";

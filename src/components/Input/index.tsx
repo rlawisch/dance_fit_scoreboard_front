@@ -1,6 +1,6 @@
 import { FunctionComponent, InputHTMLAttributes } from "react";
 import { IconType } from "react-icons";
-import { ErrorMessage, StyledInput } from "./input.style";
+import { ErrorMessage, StyledInput } from "./styles";
 
 // tech debt typing register function:
 // import { UseFormRegister, FieldValues } from "react-hook-form";

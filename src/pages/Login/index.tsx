@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
-import { FormContainer } from "./login.style";
+import { FormContainer } from "./styles";
 import { Link } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
 
