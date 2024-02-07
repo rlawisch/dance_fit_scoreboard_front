@@ -9,6 +9,6 @@ export const FormContainer = styled.div`
   align-items: center;
 
   h1 {
-    color: var(--malachite-600);
+    color: ${props => props.theme.colors.primary};
   }
 `;

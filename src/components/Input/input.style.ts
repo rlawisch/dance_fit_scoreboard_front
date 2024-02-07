@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 export const StyledInput = styled.div`
   padding: 0.6rem 1rem;
@@ -8,7 +8,7 @@ export const StyledInput = styled.div`
   div {
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
     padding: 0.6rem;
-    border: 1px solid var(--malachite-700);
+    border: 1px solid ${props => props.theme.colors.primary};
     border-radius: 0.3rem;
 
     display: flex;

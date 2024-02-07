@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { shade } from "polished";
 
 interface ButtonProps {
   vanilla: boolean;
@@ -14,38 +15,24 @@ const StyledButton = styled.button<ButtonProps>`
   border-width: 1px;
   border-style: solid;
 
+  color: ${(props) => props.theme.colors.text};
+  border-color: ${(props) => props.theme.colors.text};
   background-color: ${(props) =>
-    props.vanilla ? css`var(--malachite-500)` : `white`};
-  color: ${(props) =>
-    props.vanilla ? css`var(--malachite-50)` : css`var(--malachite-700)`};
-  border-color: ${(props) =>
-    props.vanilla ? css`var(--malachite-500)` : css`var(--malachite-700)`};
+    props.vanilla ? props.theme.colors.primary : props.theme.colors.background};
 
   &:hover {
     background-color: ${(props) =>
-      props.vanilla ? css`var(--malachite-600)` : css`var(--malachite-50)`};
-    color: ${(props) =>
-      props.vanilla ? css`var(--malachite-50)` : css`var(--malachite-700)`};
-    border-color: ${(props) =>
-      props.vanilla ? css`var(--malachite-600)` : css`var(--malachite-700)`};
+      props.vanilla ? shade(0.1, props.theme.colors.primary) : shade(0.1, props.theme.colors.background)};
   }
 
   &:active {
     background-color: ${(props) =>
-      props.vanilla ? css`var(--malachite-700)` : css`var(--malachite-100)`};
-    color: ${(props) =>
-      props.vanilla ? css`var(--malachite-50)` : css`var(--malachite-700)`};
-    border-color: ${(props) =>
-      props.vanilla ? css`var(--malachite-700)` : css`var(--malachite-700)`};
+      props.vanilla ? shade(0.3, props.theme.colors.primary) : shade(0.3, props.theme.colors.background)};
   }
 
   &:disabled {
     background-color: ${(props) =>
-      props.vanilla ? css`var(--malachite-200)` : `white`};
-    color: ${(props) =>
-      props.vanilla ? css`var(--malachite-700)` : css`var(--malachite-700)`};
-    border-color: ${(props) =>
-      props.vanilla ? css`var(--malachite-200)` : css`var(--malachite-700)`};
+      props.vanilla ?  shade(-0.3, props.theme.colors.primary) : shade(-0.3, props.theme.colors.background)};
   }
 `;
 
