@@ -21,7 +21,7 @@ const Header: FunctionComponent<HeaderProps> = ({ toggleTheme }) => {
         uncheckedIcon={false}
         height={10}
         width={40}
-        handleDiameter={20}
+        handleDiameter={16}
         offColor={shade(0.15, colors.primary)}
         onColor={colors.secundary}
       ></Switch>

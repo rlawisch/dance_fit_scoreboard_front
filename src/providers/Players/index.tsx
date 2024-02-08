@@ -1,16 +1,33 @@
 import { createContext, useState, useContext } from "react";
 import api from "../../services/api";
-import { ILogin } from "../../pages/Login/index";
-import { ISignup } from "../../pages/SignUp/index";
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 
 export interface IPlayerContext {
   accToken: string;
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
-  playerLogout: () => void
+  playerLogout: () => void;
+}
+
+export interface ILogin {
+  nickname: string;
+  password: string;
+}
+
+export interface ISignup {
+  nickname: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface IPlayer {
+  player_id: string;
+  nickname: string;
+  password: string;
+  role: string;
 }
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
@@ -21,6 +38,9 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const token = localStorage.getItem("@DFS/PlayerToken") || "";
   const [accToken, setAccToken] = useState<string>(token);
 
+  const player = localStorage.getItem("@DFS/Player") || "";
+  const [playerInfo, setPlayerInfo] = useState(player || {});
+
   const navigate = useNavigate();
 
   const playerLogin = (formData: ILogin) => {
@@ -28,17 +48,21 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       .post("/auth/login", formData)
       .then((res) => {
         const { access_token } = res.data;
-
         setAccToken(access_token);
 
+        const jwtPayload = jwtDecode(access_token);
+        setPlayerInfo(jwtPayload);
+
         localStorage.setItem("@DFS/PlayerToken", JSON.stringify(access_token));
-        toast("Sentimos sua falta!")
+        localStorage.setItem("@DFS/Player", JSON.stringify(jwtPayload));
+
+        toast("Sentimos sua falta!");
         navigate("/dashboard");
       })
       .catch((err) => {
         if (!!err) {
-					toast.error("Usuário ou senha incorretos")
-				}
+          toast.error("Usuário ou senha incorretos");
+        }
       });
   };
 
@@ -55,10 +79,13 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = () => {
-    setAccToken("")
-    navigate("/login")
-    localStorage.clear()
-  }
+    setAccToken("");
+    setPlayerInfo({});
+    navigate("/login");
+    localStorage.removeItem("@DFS/PlayerToken")
+    localStorage.removeItem("@DFS/Player")
+
+  };
 
   return (
     <PlayerContext.Provider
@@ -66,7 +93,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         accToken,
         playerLogin,
         playerSignup,
-        playerLogout
+        playerLogout,
       }}
     >
       {children}

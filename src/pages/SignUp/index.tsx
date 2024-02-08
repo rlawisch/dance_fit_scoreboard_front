@@ -9,12 +9,7 @@ import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
-
-export interface ISignup {
-  nickname: string;
-  password: string;
-  confirmPassword: string;
-}
+import { ISignup } from "../../providers/Players";
 
 const SignUp = () => {
   const formSchema = yup.object<ISignup>().shape({

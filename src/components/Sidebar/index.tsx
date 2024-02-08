@@ -21,8 +21,6 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
 
   const { toggleSidebar, sideBarStatus } = useDashboard()
 
-  console.log(sideBarStatus)
-
   const { playerLogout } = usePlayer();
 
   return (

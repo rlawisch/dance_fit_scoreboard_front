@@ -9,11 +9,7 @@ import Button from "../../components/Button";
 import { FormContainer } from "./styles";
 import { Link } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
-
-export interface ILogin {
-  nickname: string;
-  password: string;
-}
+import { ILogin } from "../../providers/Players";
 
 const Login = () => {
   const formSchema = yup.object<ILogin>().shape({
