@@ -1,17 +1,20 @@
 import Button from "../../components/Button";
 import { GlobalContainer } from "../../styles/global";
 import { Link } from "react-router-dom";
+import { HomeContainer } from "./styles";
 
 const Home = () => {
   return (
     <GlobalContainer>
-      <Link to="/login">
-        <Button vanilla={true}>Login</Button>
-      </Link>
+      <HomeContainer>
+        <Link to="/login">
+          <Button vanilla={true}>Login</Button>
+        </Link>
 
-      <Link to="/signup">
-        <Button vanilla={true}>Signup</Button>
-      </Link>
+        <Link to="/signup">
+          <Button vanilla={true}>Signup</Button>
+        </Link>
+      </HomeContainer>
     </GlobalContainer>
   );
 };

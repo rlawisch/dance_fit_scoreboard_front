@@ -2,21 +2,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { GlobalContainer } from "../../styles/global";
-import { FormContainer } from "./signup.style";
+import { FormContainer } from "./styles";
 import Input from "../../components/Input";
 import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
-
-interface signupCredentials {
-  nickname: string;
-  password: string;
-  confirmPassword: string;
-}
+import { usePlayer } from "../../providers/Players";
+import { ISignup } from "../../providers/Players";
 
 const SignUp = () => {
-  const formSchema = yup.object<signupCredentials>().shape({
+  const formSchema = yup.object<ISignup>().shape({
     nickname: yup.string().required("Preencha este campo"),
     password: yup.string().required("Preencha este campo"),
     confirmPassword: yup
@@ -25,20 +21,18 @@ const SignUp = () => {
       .oneOf([yup.ref("password"), ""], "Senhas devem iguais"),
   });
 
+  const { playerSignup } = usePlayer();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<signupCredentials>({
+  } = useForm<ISignup>({
     resolver: yupResolver(formSchema),
   });
 
-  const onFormSubmit = ({
-    nickname,
-    password,
-    confirmPassword,
-  }: signupCredentials) => {
-    console.log({ nickname, password, confirmPassword });
+  const onFormSubmit = (formData: ISignup) => {
+    playerSignup(formData);
   };
 
   return (
@@ -49,7 +43,7 @@ const SignUp = () => {
         <form id="login_form" onSubmit={handleSubmit(onFormSubmit)}>
           <Input
             icon={AiOutlineUser}
-            name="username"
+            name="nickname"
             register={register}
             error={errors.nickname?.message}
           />

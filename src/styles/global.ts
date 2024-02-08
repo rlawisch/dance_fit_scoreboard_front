@@ -1,4 +1,6 @@
 import styled, { createGlobalStyle } from "styled-components";
+import "@fontsource/roboto";
+import {shade} from 'polished'
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -9,29 +11,16 @@ export const GlobalStyle = createGlobalStyle`
         outline: 0;
     }
 
-    :root {
-        --malachite-50: #ecfde8;
-        --malachite-100: #d4facd;
-        --malachite-200: #aef4a2;
-        --malachite-300: #7beb6b;
-        --malachite-400: #50dd3e;
-        --malachite-500: #33d522;
-        --malachite-600: #209b15;
-        --malachite-700: #1a7714;
-        --malachite-800: #195e16;
-        --malachite-900: #195017;
-        --malachite-950: #072c07;
-    }
-
     body, input, button, select {
-        font-family: 'Montserrat', sans-serif;
+        background: ${(props) => props.theme.colors.background};
+        font-family: 'Roboto', sans-serif;
         font-weight: normal;
-        font-size: 0.9rem;
-        color: var(--malachite-800)
+        font-size: 1rem;
+        color: ${props => props.theme.colors.text}
     }
 
     h1,h2,h3,h4,h5,h6 {
-        font-family: 'Montserrat', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-weight: bold;
     }
 
@@ -39,14 +28,33 @@ export const GlobalStyle = createGlobalStyle`
         cursor: pointer;
     }
 
-    a {
+    a,
+    a:link,
+    a:visited,
+    a:focus,
+    a:hover,
+    a:active {
         text-decoration: none;
-    }
+    cursor: pointer;
+}
 `;
 
 export const GlobalContainer = styled.div`
-    border-radius: 1.5rem;
-    padding: 1rem;
-    background-color: var(--malachite-50);
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 0.5rem;
+  background-color: ${(props) => shade(-0.4, props.theme.colors.background)};
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+`;
+
+
+interface DashboardContainerProps {
+    isopen: boolean
+}
+
+export const DashboardContainer = styled.main<DashboardContainerProps>`
+    margin-left: ${props => props.isopen ? '12rem' : '5rem'};
+    transition: margin 350ms ease;
+    height: auto;
+    box-sizing: border-box;
 `

@@ -6,17 +6,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
-import { FormContainer } from "./login.style";
+import { FormContainer } from "./styles";
 import { Link } from "react-router-dom";
-
-interface loginCredentials {
-  username: string;
-  password: string;
-}
+import { usePlayer } from "../../providers/Players";
+import { ILogin } from "../../providers/Players";
 
 const Login = () => {
-  const formSchema = yup.object<loginCredentials>().shape({
-    username: yup.string().required("Preencha este campo"),
+  const formSchema = yup.object<ILogin>().shape({
+    nickname: yup.string().required("Preencha este campo"),
     password: yup.string().required("Preencha este campo"),
   });
 
@@ -24,12 +21,14 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<loginCredentials>({
+  } = useForm<ILogin>({
     resolver: yupResolver(formSchema),
   });
 
-  const onFormSubmit = ({ username, password }: loginCredentials) => {
-    console.log({ username, password });
+  const { playerLogin } = usePlayer();
+
+  const onFormSubmit = (formData: ILogin) => {
+    playerLogin(formData);
   };
 
   return (
@@ -40,9 +39,9 @@ const Login = () => {
         <form id="login_form" onSubmit={handleSubmit(onFormSubmit)}>
           <Input
             icon={AiOutlineUser}
-            name="username"
+            name="nickname"
             register={register}
-            error={errors.username?.message}
+            error={errors.nickname?.message}
           />
 
           <Input
