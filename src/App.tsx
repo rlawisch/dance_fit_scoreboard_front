@@ -1,4 +1,3 @@
-import Routing from "./routes";
 import { ToastContainer } from "react-toastify";
 import { GlobalStyle } from "./styles/global";
 import "react-toastify/dist/ReactToastify.css";
@@ -8,6 +7,7 @@ import light from "./styles/themes/light";
 import dark from "./styles/themes/dark";
 import usePersistedState from "./utils/usePersistedState";
 import { DefaultTheme } from "styled-components/dist/types";
+import Routing from "./routes";
 
 function App() {
   const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', light);

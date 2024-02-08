@@ -1,32 +1,64 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home";
-import Login from "../pages/Login";
-import SignUp from "../pages/SignUp";
-import PrivateRoute from "./private.route";
+import PrivateRoute from "./privateRouter";
+import RedirectIfLoggedIn from "./loggedInRouter";
+import { public_routes } from "./public.routes";
+import NotFound from "../pages/NotFound";
 import DashboardHome from "../pages/Dashboard_Home";
 import DashboardEvents from "../pages/Dashboard_Events";
 import DashboardScores from "../pages/Dashboard_Scores";
+import Dashboard from "../pages/Dashboard";
 
 export default function Routing() {
+  const unprotectedRoutes = [...public_routes]
+
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/dashboard">
+      {unprotectedRoutes.map((r) => {
+        return (
+          <Route
+            key={r.path}
+            path={r.path}
+            element={<RedirectIfLoggedIn>{r.element}</RedirectIfLoggedIn>}
+          />
+        );
+      })}
+
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard/>
+          </PrivateRoute>
+        }
+      >
+         <Route
+          path="/dashboard/home"
+          element={
+            <PrivateRoute>
+              <DashboardHome />
+            </PrivateRoute>
+          }
+        />
         <Route
-          index={true}
-          element={<PrivateRoute component={DashboardHome} />}
-        ></Route>
+          path="/dashboard/events"
+          element={
+            <PrivateRoute>
+              <DashboardEvents />
+            </PrivateRoute>
+          }
+        />
         <Route
-          path="events"
-          element={<PrivateRoute component={DashboardEvents} />}
-        ></Route>
-        <Route
-          path="scores"
-          element={<PrivateRoute component={DashboardScores} />}
-        ></Route>
+          path="/dashboard/scores"
+          element={
+            <PrivateRoute>
+              <DashboardScores />
+            </PrivateRoute>
+          }
+        />
+        
       </Route>
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

@@ -31,7 +31,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
 
       <SidebarUl>
         <SidebarLi isopen={sideBarStatus}>
-          <Link to="/dashboard" style={{ textDecoration: "none" }}>
+          <Link to="/dashboard/home" style={{ textDecoration: "none" }}>
             <IoHomeOutline />
             {sideBarStatus ? "Home" : ""}
           </Link>

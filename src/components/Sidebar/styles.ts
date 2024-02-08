@@ -39,7 +39,7 @@ export const SidebarUl = styled.ul`
   display: flex;
   flex-direction: column;
   padding: 0.2rem;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
   list-style: none;
   color: ${(props) => props.theme.colors.primary};
 `;

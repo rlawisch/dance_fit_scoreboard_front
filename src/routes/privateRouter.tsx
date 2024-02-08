@@ -1,16 +1,15 @@
-import { FC } from "react";
 import { usePlayer } from "../providers/Players";
 import { Navigate } from "react-router-dom";
 
 interface IPrivateRoute {
-  component: React.FC;
+  children: JSX.Element;
 }
 
-const PrivateRoute: FC<IPrivateRoute> = ({ component: Component }) => {
+const PrivateRoute = ({ children }: IPrivateRoute) => {
   const { accToken } = usePlayer();
 
-  if (!!accToken) {
-    return <Component />;
+  if (accToken !== "") {
+    return children;
   }
   return <Navigate to="/login" />;
 };
