@@ -7,9 +7,11 @@ import DashboardHome from "../pages/Dashboard_Home";
 import DashboardEvents from "../pages/Dashboard_Events";
 import DashboardScores from "../pages/Dashboard_Scores";
 import Dashboard from "../pages/Dashboard";
+import AdminDashboard from "../pages/AdminDashboard";
+import AdminRouter from "./adminRouter";
 
 export default function Routing() {
-  const unprotectedRoutes = [...public_routes]
+  const unprotectedRoutes = [...public_routes];
 
   return (
     <Routes>
@@ -27,11 +29,11 @@ export default function Routing() {
         path="/dashboard"
         element={
           <PrivateRoute>
-            <Dashboard/>
+            <Dashboard />
           </PrivateRoute>
         }
       >
-         <Route
+        <Route
           path="/dashboard/home"
           element={
             <PrivateRoute>
@@ -55,7 +57,18 @@ export default function Routing() {
             </PrivateRoute>
           }
         />
-        
+      </Route>
+
+      <Route
+        path="/admin"
+        element={
+          <AdminRouter>
+            <PrivateRoute>
+              <AdminDashboard />
+            </PrivateRoute>
+          </AdminRouter>
+        }
+      >
       </Route>
 
       <Route path="*" element={<NotFound />} />

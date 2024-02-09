@@ -11,7 +11,7 @@ const AdminRouter = ({ children }: IAdminRouter) => {
   if (decodedPlayerInfo.role === "admin" ) {
     return children;
   }
-  return <Navigate to="/dashboard" />;
+  return <Navigate to="/dashboard/home" />;
 };
 
 export default AdminRouter;

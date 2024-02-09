@@ -60,7 +60,14 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         localStorage.setItem("@DFS/Player", JSON.stringify(jwtPayload));
 
         toast("Sentimos sua falta!");
-        navigate("/dashboard/home");
+
+        console.log(jwtPayload.role === "admin");
+
+        if (jwtPayload.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/dashboard/home");
+        }
       })
       .catch((err) => {
         if (!!err) {
