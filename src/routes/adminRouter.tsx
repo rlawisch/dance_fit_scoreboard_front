@@ -1,3 +1,4 @@
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import { usePlayer } from "../providers/Players";
 import { Navigate } from "react-router-dom";
 
@@ -6,9 +7,11 @@ interface IAdminRouter {
 }
 
 const AdminRouter = ({ children }: IAdminRouter) => {
-  const { decodedPlayerInfo } = usePlayer();
+  const { accToken } = usePlayer();
 
-  if (decodedPlayerInfo.role === "admin" ) {
+  const decoded: JwtPayload = jwtDecode(accToken);
+
+  if (decoded.role === "admin") {
     return children;
   }
   return <Navigate to="/dashboard/home" />;

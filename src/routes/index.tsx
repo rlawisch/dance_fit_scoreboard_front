@@ -9,6 +9,8 @@ import DashboardScores from "../pages/Dashboard_Scores";
 import Dashboard from "../pages/Dashboard";
 import AdminDashboard from "../pages/AdminDashboard";
 import AdminRouter from "./adminRouter";
+import AdminDashboardHome from "../pages/AdminDashboard_Home";
+import AdminDashScoreValidation from "../pages/AdminDashboard_ScoreValidation";
 
 export default function Routing() {
   const unprotectedRoutes = [...public_routes];
@@ -69,6 +71,26 @@ export default function Routing() {
           </AdminRouter>
         }
       >
+        <Route
+          path="/admin/home"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashboardHome />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
+        <Route
+          path="/admin/score_validation"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashScoreValidation />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
       </Route>
 
       <Route path="*" element={<NotFound />} />

@@ -11,6 +11,7 @@ export interface IPlayerContext {
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
+  adminDashboardAccess: () => void;
 }
 
 export interface ILogin {
@@ -61,10 +62,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
         toast("Sentimos sua falta!");
 
-        console.log(jwtPayload.role === "admin");
-
         if (jwtPayload.role === "admin") {
-          navigate("/admin");
+          navigate("/admin/home");
         } else {
           navigate("/dashboard/home");
         }
@@ -89,17 +88,44 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = () => {
-    setAccToken("");
-    setDecodedPlayerInfo({
-      nickname: "",
-      player_id: "",
-      role: "",
-      iat: -1,
-      exp: -1,
-    });
-    navigate("/login");
-    localStorage.removeItem("@DFS/PlayerToken");
-    localStorage.removeItem("@DFS/Player");
+    api
+      .delete("/auth/logout", {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then(() => {
+        setAccToken("");
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
+        });
+        navigate("/login");
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+      })
+      .catch((err) => {
+        console.log(err);
+        toast("Até a próxima! ;)");
+      });
+  };
+
+  const adminDashboardAccess = () => {
+    api
+      .get("/auth/admin")
+      .then((res) => {
+        if (res) {
+          navigate("/admin/home");
+        } else {
+          toast.error("Você não tem permissão para acessar este recurso!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -110,6 +136,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         playerLogin,
         playerSignup,
         playerLogout,
+        adminDashboardAccess,
       }}
     >
       {children}

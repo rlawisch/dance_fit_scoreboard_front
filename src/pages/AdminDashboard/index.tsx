@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
-import Sidebar from "../../components/Sidebar";
 import { DashboardContainer } from "./styles";
 import { useDashboard } from "../../providers/Dashboard";
 import { Outlet } from "react-router-dom";
+import AdminSidebar from "../../components/AdminSidebar";
 
 interface AdminDashboardProps {}
 
@@ -11,7 +11,7 @@ const AdminDashboard: FunctionComponent<AdminDashboardProps> = () => {
 
   return (
     <main>
-      <Sidebar />
+      <AdminSidebar />
       <DashboardContainer isopen={sideBarStatus}>
         <Outlet />
       </DashboardContainer>

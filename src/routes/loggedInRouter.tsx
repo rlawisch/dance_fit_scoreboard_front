@@ -5,7 +5,7 @@ interface IRedirectProps {
 }
 
 const RedirectIfLoggedIn = ({ children }: IRedirectProps) => {
-  const player = localStorage.getItem("@DFS/Player") || "";
+  const player = localStorage.getItem("@DFS/PlayerToken") || "";
 
   if (player !== "") {
     return <Navigate to="/dashboard/home" />;
