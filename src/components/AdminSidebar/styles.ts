@@ -1,19 +1,19 @@
 import styled from "styled-components";
 import { shade } from "polished";
 
-interface SidebarContainerProps {
+interface AdminSidebarContainerProps {
   isopen: boolean;
 }
 
-interface SidebarToggleBtnProps {
+interface AdminSidebarToggleBtnProps {
   isopen: boolean;
 }
 
-interface SidebarLiProps {
+interface AdminSidebarLiProps {
   isopen: boolean;
 }
 
-export const SidebarContainer = styled.aside<SidebarContainerProps>`
+export const AdminSidebarContainer = styled.aside<AdminSidebarContainerProps>`
   z-index: 100;
   position: absolute;
   top: 60px;
@@ -35,7 +35,7 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
   box-shadow: 0.3rem 0 0.5rem rgba(0, 0, 0, 0.1);
 `;
 
-export const SidebarUl = styled.ul`
+export const AdminSidebarUl = styled.ul`
   display: flex;
   flex-direction: column;
   padding: 0.2rem;
@@ -44,7 +44,7 @@ export const SidebarUl = styled.ul`
   color: ${(props) => props.theme.colors.primary};
 `;
 
-export const SidebarLi = styled.li<SidebarLiProps>`
+export const AdminSidebarLi = styled.li<AdminSidebarLiProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -73,7 +73,7 @@ export const SidebarLi = styled.li<SidebarLiProps>`
   }
 `;
 
-export const SidebarToggleBtn = styled.button<SidebarToggleBtnProps>`
+export const AdminSidebarToggleBtn = styled.button<AdminSidebarToggleBtnProps>`
   border: none;
   margin: 0rem;
   padding: 0.5rem 0 0 0;
@@ -87,7 +87,7 @@ export const SidebarToggleBtn = styled.button<SidebarToggleBtnProps>`
   transition: transform 350ms ease;
 `;
 
-export const SidebarLogoutBtn = styled.button`
+export const AdminSidebarLogoutBtn = styled.button`
   color: ${(props) => props.theme.colors.primary};
   width: 100%;
   border: none;

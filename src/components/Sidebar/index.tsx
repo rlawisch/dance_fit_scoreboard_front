@@ -8,7 +8,7 @@ import {
 } from "./styles";
 import { RiExpandLeftLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import { MdEventNote } from "react-icons/md";
+import { MdEventNote, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GiMusicalScore } from "react-icons/gi";
 import { TbLogout2 } from "react-icons/tb";
 import { usePlayer } from "../../providers/Players";
@@ -18,10 +18,9 @@ import { useDashboard } from "../../providers/Dashboard";
 interface SidebarProps {}
 
 const Sidebar: FunctionComponent<SidebarProps> = () => {
+  const { toggleSidebar, sideBarStatus } = useDashboard();
 
-  const { toggleSidebar, sideBarStatus } = useDashboard()
-
-  const { playerLogout } = usePlayer();
+  const { playerLogout, adminDashboardAccess, decodedPlayerInfo } = usePlayer();
 
   return (
     <SidebarContainer isopen={sideBarStatus}>
@@ -31,7 +30,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
 
       <SidebarUl>
         <SidebarLi isopen={sideBarStatus}>
-          <Link to="/dashboard" style={{ textDecoration: "none" }}>
+          <Link to="/dashboard/home" style={{ textDecoration: "none" }}>
             <IoHomeOutline />
             {sideBarStatus ? "Home" : ""}
           </Link>
@@ -48,6 +47,18 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
             {sideBarStatus ? "Scores" : ""}
           </Link>
         </SidebarLi>
+        {decodedPlayerInfo.role === "admin" && (
+          <SidebarLi isopen={sideBarStatus}>
+            <Link
+              to="/admin/home"
+              style={{ textDecoration: "none" }}
+              onClick={() => adminDashboardAccess()}
+            >
+              <MdOutlineAdminPanelSettings />
+              {sideBarStatus ? "Painel de Administrador" : ""}
+            </Link>
+          </SidebarLi>
+        )}
       </SidebarUl>
       <SidebarLogoutBtn onClick={playerLogout}>
         <TbLogout2 />
