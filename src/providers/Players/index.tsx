@@ -12,6 +12,7 @@ export interface IPlayerContext {
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   adminDashboardAccess: () => void;
+  isValidSession: () => void;
 }
 
 export interface ILogin {
@@ -30,6 +31,12 @@ export interface IPlayer {
   nickname: string;
   password: string;
   role: string;
+}
+
+export interface IUnauthorizedException {
+  message: string;
+  error: string;
+  statusCode: number;
 }
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
@@ -88,6 +95,9 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = () => {
+
+    isValidSession()
+
     api
       .delete("/auth/logout", {
         headers: {
@@ -110,6 +120,35 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       .catch((err) => {
         console.log(err);
         toast("Até a próxima! ;)");
+      });
+  };
+
+  const isValidSession = () => {
+    api
+      .get("/auth/session", {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        const response = res.data;
+
+        if (response) {
+          return true;
+        } else if (response.message === "Session expired") {
+          toast.error("Sua sessão expirou, faça login novamente");
+          setAccToken("");
+          setDecodedPlayerInfo({
+            nickname: "",
+            player_id: "",
+            role: "",
+            iat: -1,
+            exp: -1,
+          });
+          navigate("/login");
+          localStorage.removeItem("@DFS/PlayerToken");
+          localStorage.removeItem("@DFS/Player");
+        }
       });
   };
 
@@ -137,6 +176,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         playerSignup,
         playerLogout,
         adminDashboardAccess,
+        isValidSession,
       }}
     >
       {children}
