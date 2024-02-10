@@ -1,30 +1,67 @@
-# React + TypeScript + Vite
+# Dance Fit Scoreboard Front
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## The Idea
 
-Currently, two official plugins are available:
+As explained better in [Dance Fit Scoreboard API](https://github.com/eparraga95/dance_fit_scoreboard_api)'s README, this project has the intention to be UI that connects players from [Dance Fit Gaming House](https://www.instagram.com/dancefitgaming.house/).
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Developed in TypeScript with React, I intend to build the hub where the DFH players can store their Score's data from official Events held at the place.
 
-## Expanding the ESLint configuration
+### Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- React (Vite as builder)
+- TypeScript
+- Styled Components
 
-- Configure the top-level `parserOptions` property like this:
+### Pages
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+# Home
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+:construction: Under Development :construction:
+
+# Login
+
+:construction: Under Development :construction:
+
+# Signup
+
+:construction: Under Development :construction:
+
+# Dashboard (Player)
+
+:construction: Under Development :construction:
+
+## Scores
+
+:construction: Under Development :construction:
+
+### Score/:score_id
+
+:construction: Under Development :construction:
+
+## Events
+
+:construction: Under Development :construction:
+
+### Event/:event_id
+
+:construction: Under Development :construction:
+
+# Admin Dashboard
+
+:construction: Under Development :construction:
+
+## Score Validation
+
+:construction: Under Development :construction:
+
+## Event Creation
+
+:construction: Under Development :construction:
+
+## Player Listing
+
+:construction: Under Development :construction:
+
+# Live Deploy 
+
+:construction: Under Development :construction:
