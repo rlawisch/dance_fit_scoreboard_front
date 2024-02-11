@@ -1,7 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./privateRouter";
 import RedirectIfLoggedIn from "./loggedInRouter";
-import { public_routes } from "./public.routes";
 import NotFound from "../pages/NotFound";
 import DashboardHome from "../pages/Dashboard_Home";
 import DashboardEvents from "../pages/Dashboard_Events";
@@ -11,21 +10,38 @@ import AdminDashboard from "../pages/AdminDashboard";
 import AdminRouter from "./adminRouter";
 import AdminDashboardHome from "../pages/AdminDashboard_Home";
 import AdminDashScoreValidation from "../pages/AdminDashboard_ScoreValidation";
+import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
 
 export default function Routing() {
-  const unprotectedRoutes = [...public_routes];
-
   return (
     <Routes>
-      {unprotectedRoutes.map((r) => {
-        return (
-          <Route
-            key={r.path}
-            path={r.path}
-            element={<RedirectIfLoggedIn>{r.element}</RedirectIfLoggedIn>}
-          />
-        );
-      })}
+      <Route
+        path="/"
+        element={
+          <RedirectIfLoggedIn>
+            <Login />
+          </RedirectIfLoggedIn>
+        }
+      />
+
+      <Route
+        path="/login"
+        element={
+          <RedirectIfLoggedIn>
+            <Login />
+          </RedirectIfLoggedIn>
+        }
+      />
+
+      <Route
+        path="/signup"
+        element={
+          <RedirectIfLoggedIn>
+            <SignUp />
+          </RedirectIfLoggedIn>
+        }
+      />
 
       <Route
         path="/dashboard"

@@ -9,12 +9,19 @@ interface IAdminRouter {
 const AdminRouter = ({ children }: IAdminRouter) => {
   const { accToken } = usePlayer();
 
-  const decoded: JwtPayload = jwtDecode(accToken);
+  if (accToken) {
 
-  if (decoded.role === "admin") {
-    return children;
+    const decoded: JwtPayload = jwtDecode(accToken);
+    
+    if (decoded.role === "admin") {
+      return children;
+    }
+  
+  } else {
+    
+    return <Navigate to="/dashboard/home" />;
   }
-  return <Navigate to="/dashboard/home" />;
+
 };
 
 export default AdminRouter;

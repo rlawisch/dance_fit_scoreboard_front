@@ -1,13 +1,14 @@
 import { Navigate } from "react-router-dom";
+import { usePlayer } from "../providers/Players";
 
 interface IRedirectProps {
   children: JSX.Element;
 }
 
 const RedirectIfLoggedIn = ({ children }: IRedirectProps) => {
-  const player = localStorage.getItem("@DFS/PlayerToken") || "";
+  const { accToken } = usePlayer()
 
-  if (player !== "") {
+  if (accToken) {
     return <Navigate to="/dashboard/home" />;
   } else {
     return children;

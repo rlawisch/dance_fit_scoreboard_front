@@ -8,7 +8,7 @@ interface IPrivateRoute {
 const PrivateRoute = ({ children }: IPrivateRoute) => {
   const { accToken } = usePlayer();
 
-  if (accToken !== "") {
+  if (!!accToken) {
     return children;
   }
   return <Navigate to="/login" />;
