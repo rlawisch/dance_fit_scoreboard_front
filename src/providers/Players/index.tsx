@@ -43,8 +43,8 @@ const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const token = localStorage.getItem("@DFS/PlayerToken") || "";
-  const [accToken, setAccToken] = useState<string>(token);
+
+  const [accToken, setAccToken] = useState<string>(localStorage.getItem("@DFS/PlayerToken") || "");
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
@@ -57,13 +57,13 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     api
       .post("/auth/login", formData)
       .then((res) => {
-        const token: string = res.data.access_token;
-        setAccToken(token);
+        const access_token: string = res.data.access_token;
+        setAccToken(access_token);
 
-        const jwtPayload = jwtDecode(token);
+        const jwtPayload = jwtDecode(access_token);
         setDecodedPlayerInfo(jwtPayload);
 
-        localStorage.setItem("@DFS/PlayerToken", JSON.stringify(token));
+        localStorage.setItem("@DFS/PlayerToken", access_token);
         localStorage.setItem("@DFS/Player", JSON.stringify(jwtPayload));
 
         toast("Sentimos sua falta!");
