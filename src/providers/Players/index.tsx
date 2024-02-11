@@ -11,7 +11,7 @@ export interface IPlayerContext {
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
-  adminDashboardAccess: () => void;
+  hasAdminRights: () => void;
   isValidSession: () => void;
 }
 
@@ -152,7 +152,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
-  const adminDashboardAccess = () => {
+  const hasAdminRights = () => {
     api
       .get("/auth/admin")
       .then((res) => {
@@ -175,7 +175,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         playerLogin,
         playerSignup,
         playerLogout,
-        adminDashboardAccess,
+        hasAdminRights,
         isValidSession,
       }}
     >

@@ -20,7 +20,7 @@ interface SidebarProps {}
 const Sidebar: FunctionComponent<SidebarProps> = () => {
   const { toggleSidebar, sideBarStatus } = useDashboard();
 
-  const { playerLogout, adminDashboardAccess, decodedPlayerInfo } = usePlayer();
+  const { playerLogout, hasAdminRights, decodedPlayerInfo } = usePlayer();
 
   return (
     <SidebarContainer isopen={sideBarStatus}>
@@ -52,7 +52,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
             <Link
               to="/admin/home"
               style={{ textDecoration: "none" }}
-              onClick={() => adminDashboardAccess()}
+              onClick={() => hasAdminRights()}
             >
               <MdOutlineAdminPanelSettings />
               {sideBarStatus ? "Painel de Administrador" : ""}
