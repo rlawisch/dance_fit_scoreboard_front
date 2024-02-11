@@ -12,7 +12,6 @@ export interface IPlayerContext {
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   hasAdminRights: () => void;
-  isValidSession: () => void;
 }
 
 export interface ILogin {
@@ -96,8 +95,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const playerLogout = () => {
 
-    isValidSession()
-
     api
       .delete("/auth/logout", {
         headers: {
@@ -116,6 +113,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         navigate("/login");
         localStorage.removeItem("@DFS/PlayerToken");
         localStorage.removeItem("@DFS/Player");
+        toast("Até a próxima!")
       })
       .catch((err) => {
         console.log(err);
@@ -123,40 +121,15 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
-  const isValidSession = () => {
+  const hasAdminRights = () => {
     api
-      .get("/auth/session", {
+      .get("/auth/admin", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
       })
       .then((res) => {
-        const response = res.data;
-
-        if (response) {
-          return true;
-        } else if (response.message === "Session expired") {
-          toast.error("Sua sessão expirou, faça login novamente");
-          setAccToken("");
-          setDecodedPlayerInfo({
-            nickname: "",
-            player_id: "",
-            role: "",
-            iat: -1,
-            exp: -1,
-          });
-          navigate("/login");
-          localStorage.removeItem("@DFS/PlayerToken");
-          localStorage.removeItem("@DFS/Player");
-        }
-      });
-  };
-
-  const hasAdminRights = () => {
-    api
-      .get("/auth/admin")
-      .then((res) => {
-        if (res) {
+        if (res.data === true) {
           navigate("/admin/home");
         } else {
           toast.error("Você não tem permissão para acessar este recurso!");
@@ -176,7 +149,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         playerSignup,
         playerLogout,
         hasAdminRights,
-        isValidSession,
       }}
     >
       {children}
