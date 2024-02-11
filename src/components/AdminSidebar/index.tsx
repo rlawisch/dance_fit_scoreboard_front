@@ -20,9 +20,7 @@ interface SidebarProps {}
 const AdminSidebar: FunctionComponent<SidebarProps> = () => {
   const { toggleSidebar, sideBarStatus } = useDashboard();
 
-  const { playerLogout, accToken } = usePlayer();
-
-  console.log(accToken)
+  const { playerLogout } = usePlayer();
 
   return (
     <AdminSidebarContainer isopen={sideBarStatus}>
