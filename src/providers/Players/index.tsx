@@ -43,8 +43,9 @@ const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
-  const [accToken, setAccToken] = useState<string>(localStorage.getItem("@DFS/PlayerToken") || "");
+  const [accToken, setAccToken] = useState(
+    localStorage.getItem("@DFS/PlayerToken") || ""
+  );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
@@ -94,14 +95,15 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = () => {
-
     api
       .delete("/auth/logout", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
       })
-      .then(() => {
+      .then((res) => {
+        console.log(res.data.response);
+
         setAccToken("");
         setDecodedPlayerInfo({
           nickname: "",
@@ -113,11 +115,44 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         navigate("/login");
         localStorage.removeItem("@DFS/PlayerToken");
         localStorage.removeItem("@DFS/Player");
-        toast("Até a próxima!")
+        toast("Até a próxima!");
       })
       .catch((err) => {
+        if (err.response.data.message === "Invalid token") {
+          setAccToken("");
+          setDecodedPlayerInfo({
+            nickname: "",
+            player_id: "",
+            role: "",
+            iat: -1,
+            exp: -1,
+          });
+          navigate("/login");
+          localStorage.removeItem("@DFS/PlayerToken");
+          localStorage.removeItem("@DFS/Player");
+          toast(
+            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente"
+          );
+        }
+
+        if (err.response.data.message === "Session expired") {
+          setAccToken("");
+          setDecodedPlayerInfo({
+            nickname: "",
+            player_id: "",
+            role: "",
+            iat: -1,
+            exp: -1,
+          });
+          navigate("/login");
+          localStorage.removeItem("@DFS/PlayerToken");
+          localStorage.removeItem("@DFS/Player");
+          toast(
+            "Parece que sua sessão expirou, por favor, faça o login novamente"
+          );
+        }
+
         console.log(err);
-        toast("Até a próxima! ;)");
       });
   };
 
