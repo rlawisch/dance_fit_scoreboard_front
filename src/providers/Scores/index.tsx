@@ -1,5 +1,4 @@
-import { createContext, useState, useContext } from "react";
-import api from "../../services/api";
+import { createContext, useContext } from "react";
 import * as React from "react";
 
 export interface IScoreContext {
