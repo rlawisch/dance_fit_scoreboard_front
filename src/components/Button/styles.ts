@@ -9,28 +9,37 @@ const StyledButton = styled.button<ButtonProps>`
   padding: 0.3rem 0.6rem;
   margin: 0.4rem;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  min-width: 80px;
+  min-width: 100px;
 
   border-radius: 0.3rem;
-  border-style: none;
+  border-style: solid;
+  border-color: ${(props) =>
+    props.vanilla ? props.theme.colors.primary : props.theme.colors.primary};
 
-  color: ${(props) => props.theme.colors.secundary};
+  color: ${(props) =>
+    props.vanilla ? props.theme.colors.secundary : props.theme.colors.primary};
   background-color: ${(props) =>
     props.vanilla ? props.theme.colors.primary : props.theme.colors.background};
 
   &:hover {
     background-color: ${(props) =>
-      props.vanilla ? shade(0.1, props.theme.colors.primary) : shade(0.1, props.theme.colors.background)};
+      props.vanilla
+        ? shade(0.1, props.theme.colors.primary)
+        : shade(0.1, props.theme.colors.background)};
   }
 
   &:active {
     background-color: ${(props) =>
-      props.vanilla ? shade(0.3, props.theme.colors.primary) : shade(0.3, props.theme.colors.background)};
+      props.vanilla
+        ? shade(0.3, props.theme.colors.primary)
+        : shade(0.3, props.theme.colors.background)};
   }
 
   &:disabled {
     background-color: ${(props) =>
-      props.vanilla ?  shade(-0.3, props.theme.colors.primary) : shade(-0.3, props.theme.colors.background)};
+      props.vanilla
+        ? shade(-0.3, props.theme.colors.primary)
+        : shade(-0.3, props.theme.colors.background)};
   }
 `;
 
