@@ -7,7 +7,7 @@ import {
   SidebarUl,
 } from "./styles";
 import { RiExpandLeftLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdEventNote, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GiMusicalScore } from "react-icons/gi";
 import { TbLogout2 } from "react-icons/tb";

@@ -1,4 +1,4 @@
-import styled, { CSSObject, createGlobalStyle, css } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import "@fontsource/roboto";
 import { shade } from "polished";
 

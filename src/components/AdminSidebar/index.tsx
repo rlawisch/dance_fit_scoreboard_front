@@ -7,7 +7,7 @@ import {
   AdminSidebarUl,
 } from "./styles";
 import { RiExpandLeftLine } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
 import { usePlayer } from "../../providers/Players";
 import { IoHomeOutline } from "react-icons/io5";
