@@ -12,6 +12,7 @@ import AdminDashboardHome from "../pages/AdminDashboard_Home";
 import AdminDashScoreValidation from "../pages/AdminDashboard_ScoreValidation";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
+import DashboardEvent from "../pages/Dashboard_Event";
 
 export default function Routing() {
   return (
@@ -67,6 +68,15 @@ export default function Routing() {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/dashboard/events/:event_id"
+          element={
+            <PrivateRoute>
+              <DashboardEvent />
+            </PrivateRoute>
+          }
+        />
+
         <Route
           path="/dashboard/scores"
           element={

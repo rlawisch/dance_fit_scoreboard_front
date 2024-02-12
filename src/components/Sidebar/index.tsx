@@ -7,7 +7,7 @@ import {
   SidebarUl,
 } from "./styles";
 import { RiExpandLeftLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { MdEventNote, MdOutlineAdminPanelSettings } from "react-icons/md";
 import { GiMusicalScore } from "react-icons/gi";
 import { TbLogout2 } from "react-icons/tb";
@@ -22,6 +22,8 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
 
   const { playerLogout, hasAdminRights, decodedPlayerInfo } = usePlayer();
 
+  const navigate = useNavigate();
+
   return (
     <SidebarContainer isopen={sideBarStatus}>
       <SidebarToggleBtn isopen={sideBarStatus} onClick={toggleSidebar}>
@@ -29,38 +31,43 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
       </SidebarToggleBtn>
 
       <SidebarUl>
-        <SidebarLi isopen={sideBarStatus}>
-          <Link to="/dashboard/home" style={{ textDecoration: "none" }}>
-            <IoHomeOutline />
-            {sideBarStatus ? "Home" : ""}
-          </Link>
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/dashboard")}
+        >
+          <IoHomeOutline />
+          {sideBarStatus ? "Home" : ""}
         </SidebarLi>
-        <SidebarLi isopen={sideBarStatus}>
-          <Link to="/dashboard/events" style={{ textDecoration: "none" }}>
-            <MdEventNote />
-            {sideBarStatus ? "Eventos" : ""}
-          </Link>
+
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/dashboard/events")}
+        >
+          <MdEventNote />
+          {sideBarStatus ? "Eventos" : ""}
         </SidebarLi>
-        <SidebarLi isopen={sideBarStatus}>
-          <Link to="/dashboard/scores" style={{ textDecoration: "none" }}>
-            <GiMusicalScore />
-            {sideBarStatus ? "Scores" : ""}
-          </Link>
+
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/dashboard/scores")}
+        >
+          <GiMusicalScore />
+          {sideBarStatus ? <p>Scores</p> : ""}
         </SidebarLi>
         {decodedPlayerInfo.role === "admin" && (
-          <SidebarLi isopen={sideBarStatus}>
-            <Link
-              to="/admin/home"
-              style={{ textDecoration: "none" }}
-              onClick={() => hasAdminRights()}
-            >
-              <MdOutlineAdminPanelSettings />
-              {sideBarStatus ? "Painel de Administrador" : ""}
-            </Link>
+          <SidebarLi
+            isopen={sideBarStatus}
+            onClick={() => {
+              hasAdminRights();
+              navigate("/admin/home");
+            }}
+          >
+            <MdOutlineAdminPanelSettings />
+            {sideBarStatus ? "Painel de Administrador" : ""}
           </SidebarLi>
         )}
       </SidebarUl>
-      <SidebarLogoutBtn onClick={playerLogout}>
+      <SidebarLogoutBtn onClick={() => playerLogout()}>
         <TbLogout2 />
       </SidebarLogoutBtn>
     </SidebarContainer>

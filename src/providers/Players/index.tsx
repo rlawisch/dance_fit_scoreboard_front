@@ -96,31 +96,31 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = () => {
-    if (hasValidSession()) {
-      api
-        .delete("/auth/logout", {
-          headers: {
-            Authorization: `Bearer ${accToken}`,
-          },
-        })
-        .then(() => {
-          setAccToken("");
-          setDecodedPlayerInfo({
-            nickname: "",
-            player_id: "",
-            role: "",
-            iat: -1,
-            exp: -1,
-          });
-          navigate("/login");
-          localStorage.removeItem("@DFS/PlayerToken");
-          localStorage.removeItem("@DFS/Player");
-          toast("Até a próxima!");
-        })
-        .catch((err) => {
-          console.log(err);
+    hasValidSession();
+
+    api
+      .delete("/auth/logout", {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then(() => {
+        setAccToken("");
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
         });
-    }
+        navigate("/login");
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+        toast("Até a próxima!");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const hasValidSession = () => {
@@ -137,7 +137,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       })
       .catch((err: any) => {
-        console.log(err.response.data.message);
+        
         if (err.response.data.message === "Invalid token") {
           setAccToken("");
           setDecodedPlayerInfo({

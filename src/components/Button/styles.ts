@@ -6,17 +6,15 @@ interface ButtonProps {
 }
 
 const StyledButton = styled.button<ButtonProps>`
-  padding: 0.6rem 1rem;
-  margin: 0.8rem;
-  box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
-  min-width: 128px;
+  padding: 0.3rem 0.6rem;
+  margin: 0.4rem;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  min-width: 80px;
 
   border-radius: 0.3rem;
-  border-width: 1px;
-  border-style: solid;
+  border-style: none;
 
-  color: ${(props) => props.theme.colors.text};
-  border-color: ${(props) => props.theme.colors.text};
+  color: ${(props) => props.theme.colors.secundary};
   background-color: ${(props) =>
     props.vanilla ? props.theme.colors.primary : props.theme.colors.background};
 
