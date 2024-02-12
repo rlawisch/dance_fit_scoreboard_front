@@ -12,6 +12,7 @@ export interface IPlayerContext {
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   hasAdminRights: () => void;
+  hasValidSession: () => boolean;
 }
 
 export interface ILogin {
@@ -76,7 +77,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       })
       .catch((err) => {
-        if (!!err) {
+        if (err) {
           toast.error("Usuário ou senha incorretos");
         }
       });
@@ -95,29 +96,48 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = () => {
+    if (hasValidSession()) {
+      api
+        .delete("/auth/logout", {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        })
+        .then(() => {
+          setAccToken("");
+          setDecodedPlayerInfo({
+            nickname: "",
+            player_id: "",
+            role: "",
+            iat: -1,
+            exp: -1,
+          });
+          navigate("/login");
+          localStorage.removeItem("@DFS/PlayerToken");
+          localStorage.removeItem("@DFS/Player");
+          toast("Até a próxima!");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  const hasValidSession = () => {
     api
-      .delete("/auth/logout", {
+      .get("/auth/session", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
       })
       .then((res) => {
-        console.log(res.data.response);
-
-        setAccToken("");
-        setDecodedPlayerInfo({
-          nickname: "",
-          player_id: "",
-          role: "",
-          iat: -1,
-          exp: -1,
-        });
-        navigate("/login");
-        localStorage.removeItem("@DFS/PlayerToken");
-        localStorage.removeItem("@DFS/Player");
-        toast("Até a próxima!");
+        console.log(res);
+        if (res.data === true) {
+          return true;
+        }
       })
-      .catch((err) => {
+      .catch((err: any) => {
+        console.log(err.response.data.message);
         if (err.response.data.message === "Invalid token") {
           setAccToken("");
           setDecodedPlayerInfo({
@@ -133,6 +153,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           toast(
             "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente"
           );
+          return false;
         }
 
         if (err.response.data.message === "Session expired") {
@@ -150,29 +171,33 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           toast(
             "Parece que sua sessão expirou, por favor, faça o login novamente"
           );
+          return false;
         }
 
-        console.log(err);
+        return false;
       });
+    return false;
   };
 
   const hasAdminRights = () => {
-    api
-      .get("/auth/admin", {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      })
-      .then((res) => {
-        if (res.data === true) {
-          navigate("/admin/home");
-        } else {
-          toast.error("Você não tem permissão para acessar este recurso!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (hasValidSession()) {
+      api
+        .get("/auth/admin", {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        })
+        .then((res) => {
+          if (res.data === true) {
+            navigate("/admin/home");
+          } else {
+            toast.error("Você não tem permissão para acessar este recurso!");
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
   return (
@@ -184,6 +209,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         playerSignup,
         playerLogout,
         hasAdminRights,
+        hasValidSession,
       }}
     >
       {children}
