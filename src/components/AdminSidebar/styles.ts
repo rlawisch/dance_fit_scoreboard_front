@@ -59,17 +59,11 @@ export const AdminSidebarLi = styled.li<AdminSidebarLiProps>`
 
   &:hover {
     background: ${(props) => shade(0.2, props.theme.colors.secundary)};
+    cursor: pointer;
   }
 
-  a {
-    text-decoration: none !important;
-    color: ${(props) => props.theme.colors.primary};
-    display: flex;
-    align-items: center;
-
-    svg {
-      margin-right: ${(props) => (props.isopen ? `0.8rem` : `0`)};
-    }
+  svg {
+    margin-right: ${(props) => (props.isopen ? `0.8rem` : `0`)};
   }
 `;
 

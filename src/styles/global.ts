@@ -1,6 +1,6 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { CSSObject, createGlobalStyle, css } from "styled-components";
 import "@fontsource/roboto";
-import {shade} from 'polished'
+import { shade } from "polished";
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -16,7 +16,7 @@ export const GlobalStyle = createGlobalStyle`
         font-family: 'Roboto', sans-serif;
         font-weight: normal;
         font-size: 1rem;
-        color: ${props => props.theme.colors.text}
+        color: ${(props) => props.theme.colors.text}
     }
 
     h1,h2,h3,h4,h5,h6 {
@@ -39,22 +39,27 @@ export const GlobalStyle = createGlobalStyle`
 }
 `;
 
+
 export const GlobalContainer = styled.div`
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 0.5rem;
   background-color: ${(props) => shade(-0.4, props.theme.colors.background)};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  color: ${props => props.theme.colors.text};
+
+  @media screen and (min-width: 576px) {
+
+  }
 `;
 
-
 interface DashboardContainerProps {
-    isopen: boolean
+  isopen: boolean;
 }
 
 export const DashboardContainer = styled.main<DashboardContainerProps>`
-    margin-left: ${props => props.isopen ? '12rem' : '5rem'};
-    transition: margin 350ms ease;
-    height: auto;
-    box-sizing: border-box;
-`
+  margin-left: ${(props) => (props.isopen ? "12rem" : "5rem")};
+  transition: margin 350ms ease;
+  height: auto;
+  box-sizing: border-box;
+`;

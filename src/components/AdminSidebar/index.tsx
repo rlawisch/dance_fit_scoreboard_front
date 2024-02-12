@@ -7,7 +7,7 @@ import {
   AdminSidebarUl,
 } from "./styles";
 import { RiExpandLeftLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { TbLogout2 } from "react-icons/tb";
 import { usePlayer } from "../../providers/Players";
 import { IoHomeOutline } from "react-icons/io5";
@@ -22,6 +22,8 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
 
   const { playerLogout } = usePlayer();
 
+  const navigate = useNavigate();
+
   return (
     <AdminSidebarContainer isopen={sideBarStatus}>
       <AdminSidebarToggleBtn isopen={sideBarStatus} onClick={toggleSidebar}>
@@ -29,23 +31,26 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
       </AdminSidebarToggleBtn>
 
       <AdminSidebarUl>
-        <AdminSidebarLi isopen={sideBarStatus}>
-          <Link to="/admin/home" style={{ textDecoration: "none" }}>
-            <IoHomeOutline />
-            {sideBarStatus ? "Home" : ""}
-          </Link>
+        <AdminSidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/admin/home")}
+        >
+          <IoHomeOutline />
+          {sideBarStatus ? "Home" : ""}
         </AdminSidebarLi>
-        <AdminSidebarLi isopen={sideBarStatus}>
-          <Link to="/admin/score_validation" style={{ textDecoration: "none" }}>
-            <GrValidate />
-            {sideBarStatus ? "Validar Scores" : ""}
-          </Link>
+        <AdminSidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/admin/score_validation")}
+        >
+          <GrValidate />
+          {sideBarStatus ? "Validar Scores" : ""}
         </AdminSidebarLi>
-        <AdminSidebarLi isopen={sideBarStatus}>
-          <Link to="/dashboard/home" style={{ textDecoration: "none" }}>
-            <FaHouseUser />
-            {sideBarStatus ? "Painel de Jogador" : ""}
-          </Link>
+        <AdminSidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/dashboard/home")}
+        >
+          <FaHouseUser />
+          {sideBarStatus ? "Painel de Jogador" : ""}
         </AdminSidebarLi>
       </AdminSidebarUl>
       <AdminSidebarLogoutBtn onClick={playerLogout}>

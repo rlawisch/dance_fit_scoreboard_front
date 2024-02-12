@@ -1,9 +1,9 @@
-import { ButtonHTMLAttributes, FunctionComponent } from "react";
+import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from "react";
 import StyledButton from "./styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   vanilla: boolean;
-  children: string;
+  children: string | ReactNode ;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
