@@ -8,7 +8,7 @@ export const StyledInput = styled.div`
   div {
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
     padding: 0.6rem;
-    border: 1px solid ${props => props.theme.colors.primary};
+    border: 1px solid ${(props) => props.theme.colors.primary};
     border-radius: 0.3rem;
 
     display: flex;

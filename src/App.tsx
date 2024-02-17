@@ -10,18 +10,18 @@ import { DefaultTheme } from "styled-components/dist/types";
 import Routing from "./routes";
 
 function App() {
-  const [theme, setTheme] = usePersistedState<DefaultTheme>('theme', light);
+  const [theme, setTheme] = usePersistedState<DefaultTheme>("theme", light);
 
   const toggleTheme = () => {
-    setTheme(theme.title === 'light' ? dark : light)
-  }
+    setTheme(theme.title === "light" ? dark : light);
+  };
 
   return (
     <main>
       <ThemeProvider theme={theme}>
         <ToastContainer autoClose={5000} />
         <GlobalStyle />
-        <Header toggleTheme={toggleTheme}/>
+        <Header toggleTheme={toggleTheme} />
         <Routing />
       </ThemeProvider>
     </main>

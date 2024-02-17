@@ -2,12 +2,12 @@ import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from "react";
 import StyledButton from "./styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  vanilla: boolean;
-  children: string | ReactNode ;
+  vanilla?: boolean;
+  children: string | ReactNode;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({
-  vanilla = false,
+  vanilla = true,
   children,
   ...rest
 }) => {

@@ -13,6 +13,8 @@ import AdminDashScoreValidation from "../pages/AdminDashboard_ScoreValidation";
 import Login from "../pages/Login";
 import SignUp from "../pages/SignUp";
 import DashboardEvent from "../pages/Dashboard_Event";
+import AdminDashboardEvents from "../pages/AdminDashboard_Events";
+import AdminDashboardEvent from "../pages/AdminDashboard_Event";
 
 export default function Routing() {
   return (
@@ -107,6 +109,29 @@ export default function Routing() {
             </AdminRouter>
           }
         />
+
+        <Route
+          path="/admin/events"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashboardEvents />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
+
+        <Route
+          path="/admin/events/:event_id"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashboardEvent />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
+
         <Route
           path="/admin/score_validation"
           element={

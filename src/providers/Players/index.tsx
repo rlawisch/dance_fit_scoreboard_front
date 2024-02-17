@@ -4,6 +4,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { ILogin, ISignup } from "../../types/form-types";
 
 export interface IPlayerContext {
   accToken: string;
@@ -15,29 +16,6 @@ export interface IPlayerContext {
   hasValidSession: () => boolean;
 }
 
-export interface ILogin {
-  nickname: string;
-  password: string;
-}
-
-export interface ISignup {
-  nickname: string;
-  password: string;
-  confirmPassword: string;
-}
-
-export interface IPlayer {
-  player_id: string;
-  nickname: string;
-  password: string;
-  role: string;
-}
-
-export interface IUnauthorizedException {
-  message: string;
-  error: string;
-  statusCode: number;
-}
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 
@@ -45,12 +23,12 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || ""
+    localStorage.getItem("@DFS/PlayerToken") || "",
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer)
+    JSON.parse(currentPlayer),
   );
 
   const navigate = useNavigate();
@@ -131,13 +109,11 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       })
       .then((res) => {
-        console.log(res);
         if (res.data === true) {
           return true;
         }
       })
       .catch((err: any) => {
-        
         if (err.response.data.message === "Invalid token") {
           setAccToken("");
           setDecodedPlayerInfo({
@@ -151,7 +127,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente"
+            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente",
           );
           return false;
         }
@@ -169,7 +145,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que sua sessão expirou, por favor, faça o login novamente"
+            "Parece que sua sessão expirou, por favor, faça o login novamente",
           );
           return false;
         }

@@ -1,16 +1,18 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import api from "../../services/api";
 import * as React from "react";
 import { toast } from "react-toastify";
-import { IPlayer, usePlayer } from "../Players";
+import { usePlayer } from "../Players";
+import { IPlayer } from "../../types/entity-types";
 
-export interface IEventContext {
+export interface IEventsContext {
   events: IEvent[];
-  createEvent: (formData: IEventCreate) => void;
+  createEvent: (formData: IEventsCreate) => void;
   getEvents: () => void;
+  joinEvent: (event_id: number | undefined) => void;
 }
 
-export interface IEventCreate {
+export interface IEventsCreate {
   name: string;
   status: boolean;
 }
@@ -22,21 +24,27 @@ export interface IEvent {
   players: IPlayer[];
 }
 
-const EventContext = createContext<IEventContext>({} as IEventContext);
+const EventsContext = createContext<IEventsContext>({} as IEventsContext);
 
-export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
+export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   // Player States
-  const { accToken } = usePlayer();
+  const { accToken, hasValidSession } = usePlayer();
 
   // Event States
   const [events, setEvents] = useState([]);
 
   // CreateEvent (admin only)
-  const createEvent = (formData: IEventCreate) => {
+  const createEvent = (formData: IEventsCreate) => {
+    hasValidSession();
+
     api
-      .post("/events", formData)
+      .post("/events", formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
       .then(() => {
         toast.success("Evento criado com sucesso");
       })
@@ -48,8 +56,14 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Find All Events (logged in player)
   const getEvents = () => {
+    hasValidSession();
+
     api
-      .get("/events")
+      .get("/events", {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
       .then((res) => {
         setEvents(res.data);
       })
@@ -59,31 +73,45 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
-  // on Log in:
-  // fetch Events to be available for rendering in dashboard/events
-  useEffect(() => {
-    if (accToken !== "") {
-      getEvents();
-    }
-  }, [accToken]);
-
   // Join Event (logged in player)
+  const joinEvent = (event_id: number | undefined) => {
+    hasValidSession();
+
+    api
+      .patch(`/events/${event_id}/join`, null, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        toast.success("Voce agora faz parte do Evento:");
+      })
+      .catch((err: any) => {
+        console.log(err);
+
+        if (err.response.data.message === "Player already in Event") {
+          toast.error("Você já faz parte deste Evento");
+        }
+      });
+  };
 
   // Update Events (admin only)
 
   // Delete Event (admin only)
 
   return (
-    <EventContext.Provider
+    <EventsContext.Provider
       value={{
         events,
         createEvent,
         getEvents,
+        joinEvent,
       }}
     >
       {children}
-    </EventContext.Provider>
+    </EventsContext.Provider>
   );
 };
 
-export const useEvent = () => useContext(EventContext);
+export const useEvents = () => useContext(EventsContext);

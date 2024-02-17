@@ -14,6 +14,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { useDashboard } from "../../providers/Dashboard";
 import { FaHouseUser } from "react-icons/fa";
 import { GrValidate } from "react-icons/gr";
+import { MdEventNote } from "react-icons/md";
 
 interface SidebarProps {}
 
@@ -38,6 +39,15 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
           <IoHomeOutline />
           {sideBarStatus ? "Home" : ""}
         </AdminSidebarLi>
+
+        <AdminSidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/admin/events")}
+        >
+          <MdEventNote />
+          {sideBarStatus ? "Eventos" : ""}
+        </AdminSidebarLi>
+
         <AdminSidebarLi
           isopen={sideBarStatus}
           onClick={() => navigate("/admin/score_validation")}
@@ -45,6 +55,7 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
           <GrValidate />
           {sideBarStatus ? "Validar Scores" : ""}
         </AdminSidebarLi>
+
         <AdminSidebarLi
           isopen={sideBarStatus}
           onClick={() => navigate("/dashboard/home")}
@@ -53,6 +64,7 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
           {sideBarStatus ? "Painel de Jogador" : ""}
         </AdminSidebarLi>
       </AdminSidebarUl>
+
       <AdminSidebarLogoutBtn onClick={playerLogout}>
         <TbLogout2 />
       </AdminSidebarLogoutBtn>

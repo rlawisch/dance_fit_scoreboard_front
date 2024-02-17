@@ -6,7 +6,7 @@ interface IRedirectProps {
 }
 
 const RedirectIfLoggedIn = ({ children }: IRedirectProps) => {
-  const { accToken } = usePlayer()
+  const { accToken } = usePlayer();
 
   if (accToken) {
     return <Navigate to="/dashboard/home" />;

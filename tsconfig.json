@@ -21,9 +21,6 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],
-  "files": [
-    "src/styles/styled.d.ts",
-    "src/providers/Players/jwt.d.ts"
-  ],
+  "files": ["src/styles/styled.d.ts", "src/providers/Players/jwt.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

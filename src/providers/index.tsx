@@ -1,8 +1,9 @@
 import { ReactNode } from "react";
 import { PlayerProvider } from "./Players";
 import { DashboardProvider } from "./Dashboard";
-import { EventProvider } from "./Events";
+import { EventsProvider } from "./Events";
 import { ScoreProvider } from "./Scores";
+import { EventProvider } from "./Event";
 
 interface IAppProvider {
   children: ReactNode;
@@ -11,11 +12,13 @@ interface IAppProvider {
 export const AppProvider = ({ children }: IAppProvider) => {
   return (
     <PlayerProvider>
-      <EventProvider>
-        <ScoreProvider>
-          <DashboardProvider>{children}</DashboardProvider>
-        </ScoreProvider>
-      </EventProvider>
+      <EventsProvider>
+        <EventProvider>
+          <ScoreProvider>
+            <DashboardProvider>{children}</DashboardProvider>
+          </ScoreProvider>
+        </EventProvider>
+      </EventsProvider>
     </PlayerProvider>
   );
 };

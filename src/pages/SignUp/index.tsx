@@ -9,7 +9,7 @@ import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
 import { Link } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
-import { ISignup } from "../../providers/Players";
+import { ISignup } from "../../types/form-types";
 
 const SignUp = () => {
   const formSchema = yup.object<ISignup>().shape({

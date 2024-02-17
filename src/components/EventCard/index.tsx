@@ -2,11 +2,10 @@ import { FunctionComponent } from "react";
 import { EventCardContainer } from "./styles";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
+import { IEvent } from "../../types/entity-types";
 
 interface EventCardProps {
-  event_id: string;
-  name: string;
-  status: boolean;
+  eventData: IEvent;
 }
 
 const EventCard: FunctionComponent<EventCardProps> = (props) => {
@@ -14,12 +13,14 @@ const EventCard: FunctionComponent<EventCardProps> = (props) => {
 
   return (
     <EventCardContainer>
-      <h3>{props.name}</h3>
+      <h3>{props.eventData.name}</h3>
 
       <Button
         vanilla={true}
-        disabled={!props.status}
-        onClick={() => navigate(`/dashboard/events/${props.event_id}`)}
+        disabled={!props.eventData.status}
+        onClick={() =>
+          navigate(`/dashboard/events/${props.eventData.event_id}`)
+        }
       >
         Visitar
       </Button>

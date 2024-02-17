@@ -1,35 +1,24 @@
 import { createContext, useContext } from "react";
 import * as React from "react";
 
-export interface IScoreContext {
-
-}
+export interface IScoreContext {}
 
 const ScoreContext = createContext<IScoreContext>({} as IScoreContext);
 
 export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  // Create Score (logged in player)
 
-    // Create Score (logged in player)
+  // Find All (logged in player)
 
-    // Find All (logged in player)
+  // Find By Id (maybe useless... Maybe a URL State filter is better using above route)
 
-    // Find By Id (maybe useless... Maybe a URL State filter is better using above route)
+  // Update Score (admin only, validation)
 
-    // Update Score (admin only, validation)
+  // Delete Score (admin only)
 
-    // Delete Score (admin only)
-
-  return (
-    <ScoreContext.Provider
-      value={{
-  
-      }}
-    >
-      {children}
-    </ScoreContext.Provider>
-  );
+  return <ScoreContext.Provider value={{}}>{children}</ScoreContext.Provider>;
 };
 
 export const useScore = () => useContext(ScoreContext);
