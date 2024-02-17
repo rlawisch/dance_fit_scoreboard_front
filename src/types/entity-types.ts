@@ -30,7 +30,7 @@ export interface IEvent {
 }
 
 export interface ICategory {
-  category_id: number;
+  category_id: string;
   name: string;
   level_min: number;
   level_max: number;
