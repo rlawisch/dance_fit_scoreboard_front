@@ -4,6 +4,7 @@ import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { JwtPayload, jwtDecode } from "jwt-decode";
+import { ILogin, ISignup } from "../../types/form-types";
 
 export interface IPlayerContext {
   accToken: string;
@@ -15,16 +16,6 @@ export interface IPlayerContext {
   hasValidSession: () => boolean;
 }
 
-export interface ILogin {
-  nickname: string;
-  password: string;
-}
-
-export interface ISignup {
-  nickname: string;
-  password: string;
-  confirmPassword: string;
-}
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 

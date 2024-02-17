@@ -2,7 +2,7 @@ import { FunctionComponent } from "react";
 import { EventCardContainer } from "./styles";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
-import { IEvent } from "../../types";
+import { IEvent } from "../../types/entity-types";
 
 interface EventCardProps {
   eventData: IEvent;

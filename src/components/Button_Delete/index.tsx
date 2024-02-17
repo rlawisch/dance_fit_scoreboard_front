@@ -1,12 +1,12 @@
 import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from "react";
-import StyledButton from "./styles";
+import { StyledButton } from "./styles";
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+interface DeleteButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   vanilla?: boolean;
   children: string | ReactNode;
 }
 
-const Button: FunctionComponent<ButtonProps> = ({
+const DeleteButton: FunctionComponent<DeleteButtonProps> = ({
   vanilla = true,
   children,
   ...rest
@@ -18,4 +18,4 @@ const Button: FunctionComponent<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default DeleteButton;

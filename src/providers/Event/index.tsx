@@ -2,7 +2,7 @@ import { createContext, useState, useContext } from "react";
 import api from "../../services/api";
 import * as React from "react";
 import { usePlayer } from "../Players";
-import { IEvent } from "../../types";
+import { IEvent } from "../../types/entity-types";
 
 export interface IEventContext {
   getEventData: (event_id: number) => void;

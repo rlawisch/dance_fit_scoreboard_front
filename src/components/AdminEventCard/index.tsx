@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { IEvent } from "../../types";
+import { IEvent } from "../../types/entity-types";
 import { AdminEventCardContainer } from "./styles";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";

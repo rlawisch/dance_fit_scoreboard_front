@@ -3,7 +3,7 @@ import api from "../../services/api";
 import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
-import { IPlayer } from "../../types";
+import { IPlayer } from "../../types/entity-types";
 
 export interface IEventsContext {
   events: IEvent[];
