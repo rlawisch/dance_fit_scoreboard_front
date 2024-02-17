@@ -1,12 +1,16 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { GlobalContainer } from "../../styles/global";
-import { useEvent } from "../../providers/Events";
+import { useEvents } from "../../providers/Events";
 import EventCard from "../../components/EventCard";
 
 interface DashboardEventsProps {}
 
 const DashboardEvents: FunctionComponent<DashboardEventsProps> = () => {
-  const { events } = useEvent();
+  const { events, getEvents } = useEvents();
+
+  useEffect(() => {
+    getEvents()
+  }, [])
 
   return (
     <GlobalContainer>

@@ -26,18 +26,7 @@ export interface ISignup {
   confirmPassword: string;
 }
 
-export interface IPlayer {
-  player_id: string;
-  nickname: string;
-  password: string;
-  role: string;
-}
 
-export interface IUnauthorizedException {
-  message: string;
-  error: string;
-  statusCode: number;
-}
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 
@@ -131,7 +120,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       })
       .then((res) => {
-        console.log(res);
         if (res.data === true) {
           return true;
         }
