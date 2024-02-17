@@ -26,20 +26,18 @@ export interface ISignup {
   confirmPassword: string;
 }
 
-
-
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || ""
+    localStorage.getItem("@DFS/PlayerToken") || "",
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer)
+    JSON.parse(currentPlayer),
   );
 
   const navigate = useNavigate();
@@ -125,7 +123,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         }
       })
       .catch((err: any) => {
-        
         if (err.response.data.message === "Invalid token") {
           setAccToken("");
           setDecodedPlayerInfo({
@@ -139,7 +136,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente"
+            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente",
           );
           return false;
         }
@@ -157,7 +154,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que sua sessão expirou, por favor, faça o login novamente"
+            "Parece que sua sessão expirou, por favor, faça o login novamente",
           );
           return false;
         }

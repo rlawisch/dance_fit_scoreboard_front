@@ -1,4 +1,4 @@
-import { createContext, useState, useContext} from "react";
+import { createContext, useState, useContext } from "react";
 import api from "../../services/api";
 import * as React from "react";
 import { usePlayer } from "../Players";
@@ -16,11 +16,10 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { accToken, hasValidSession } = usePlayer();
 
-  const [eventData, setEventData] = useState<IEvent>()
+  const [eventData, setEventData] = useState<IEvent>();
 
   const getEventData = (event_id: number) => {
-
-    hasValidSession()
+    hasValidSession();
 
     api
       .get(`/events/${event_id}`, {

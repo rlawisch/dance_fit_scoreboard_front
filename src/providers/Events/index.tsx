@@ -37,8 +37,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // CreateEvent (admin only)
   const createEvent = (formData: IEventsCreate) => {
-
-    hasValidSession()
+    hasValidSession();
 
     api
       .post("/events", formData, {
@@ -57,9 +56,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Find All Events (logged in player)
   const getEvents = () => {
-    
-    hasValidSession()
-    
+    hasValidSession();
+
     api
       .get("/events", {
         headers: {
@@ -77,11 +75,10 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // Join Event (logged in player)
   const joinEvent = (event_id: number | undefined) => {
-
-    hasValidSession()
+    hasValidSession();
 
     api
-      .patch(`/events/${event_id}/join`, null,{
+      .patch(`/events/${event_id}/join`, null, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
@@ -94,7 +91,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         console.log(err);
 
         if (err.response.data.message === "Player already in Event") {
-          toast.error('Você já faz parte deste Evento')
+          toast.error("Você já faz parte deste Evento");
         }
       });
   };

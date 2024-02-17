@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const EventCardContainer = styled.div`
+export const AdminEventCardContainer = styled.div`
   border-radius: 0.5rem;
   background-color: ${(props) => props.theme.colors.secundary};
   color: ${(props) => props.theme.colors.primary};

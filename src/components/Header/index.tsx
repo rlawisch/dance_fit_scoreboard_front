@@ -5,7 +5,7 @@ import { useTheme } from "styled-components";
 import { shade } from "polished";
 
 interface HeaderProps {
-  toggleTheme: () => void
+  toggleTheme: () => void;
 }
 
 const Header: FunctionComponent<HeaderProps> = ({ toggleTheme }) => {
@@ -16,7 +16,7 @@ const Header: FunctionComponent<HeaderProps> = ({ toggleTheme }) => {
       <h3>Dance Fit Scoreboard</h3>
       <Switch
         onChange={toggleTheme}
-        checked={title == 'dark'}
+        checked={title == "dark"}
         checkedIcon={false}
         uncheckedIcon={false}
         height={10}

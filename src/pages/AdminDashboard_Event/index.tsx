@@ -1,14 +1,14 @@
 import { FunctionComponent, useEffect } from "react";
-import { GlobalContainer } from "../../styles/global";
-import { DashboardEventContainer } from "./styles";
-import Button from "../../components/Button";
 import { Link, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
+import { GlobalContainer } from "../../styles/global";
+import { AdminDashboardEventContainer } from "./styles";
+import Button from "../../components/Button";
 
-interface DashboardEventProps {}
+interface AdminDashboardEventProps {}
 
-const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
+const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   const { event_id } = useParams();
 
   const { eventData, getEventData } = useEvent();
@@ -21,8 +21,8 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
 
   return (
     <GlobalContainer>
-      <DashboardEventContainer>
-        <Link to={"/dashboard/events"}>
+      <AdminDashboardEventContainer>
+        <Link to={"/admin/events"}>
           <Button vanilla={true}>Voltar</Button>
         </Link>
 
@@ -50,9 +50,9 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
               </div>
             );
           })}
-      </DashboardEventContainer>
+      </AdminDashboardEventContainer>
     </GlobalContainer>
   );
 };
 
-export default DashboardEvent;
+export default AdminDashboardEvent;

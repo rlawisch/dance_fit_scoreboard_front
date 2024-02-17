@@ -3,7 +3,7 @@ import StyledButton from "./styles";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   vanilla: boolean;
-  children: string | ReactNode ;
+  children: string | ReactNode;
 }
 
 const Button: FunctionComponent<ButtonProps> = ({

@@ -1,11 +1,13 @@
 import { FunctionComponent, useEffect } from "react";
 import { GlobalContainer } from "../../styles/global";
 import { useEvents } from "../../providers/Events";
-import EventCard from "../../components/EventCard";
+import AdminEventCard from "../../components/AdminEventCard";
 
-interface DashboardEventsProps {}
+interface AdminDashboardEventsProps {}
 
-const DashboardEvents: FunctionComponent<DashboardEventsProps> = () => {
+const AdminDashboardEvents: FunctionComponent<
+  AdminDashboardEventsProps
+> = () => {
   const { events, getEvents } = useEvents();
 
   useEffect(() => {
@@ -17,10 +19,10 @@ const DashboardEvents: FunctionComponent<DashboardEventsProps> = () => {
       <h3>Eventos</h3>
 
       {events.map((ev) => {
-        return <EventCard key={ev.event_id} eventData={ev} />;
+        return <AdminEventCard key={ev.event_id} eventData={ev} />;
       })}
     </GlobalContainer>
   );
 };
 
-export default DashboardEvents;
+export default AdminDashboardEvents;

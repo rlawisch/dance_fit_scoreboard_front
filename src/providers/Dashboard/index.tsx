@@ -4,27 +4,30 @@ import usePersistedState from "../../utils/usePersistedState";
 
 export interface IDashboardContext {
   sideBarStatus: boolean;
-  toggleSidebar: () => void
+  toggleSidebar: () => void;
 }
 
 const DashboardContext = createContext<IDashboardContext>(
-  {} as IDashboardContext
+  {} as IDashboardContext,
 );
 
 export const DashboardProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [sideBarStatus, setSidebarStatus] = usePersistedState("sideBarStatus", false);
+  const [sideBarStatus, setSidebarStatus] = usePersistedState(
+    "sideBarStatus",
+    false,
+  );
 
   const toggleSidebar = () => {
-    setSidebarStatus(!sideBarStatus)
-  }
+    setSidebarStatus(!sideBarStatus);
+  };
 
   return (
     <DashboardContext.Provider
       value={{
         sideBarStatus,
-        toggleSidebar
+        toggleSidebar,
       }}
     >
       {children}
