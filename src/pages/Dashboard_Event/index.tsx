@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import { Link, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
-import { EventTitleWrapper, EventTopButtonWrapper, Table, TableDataWrapper } from "../AdminDashboard_Event/styles";
+import { EventTitle, EventTitleWrapper, EventTopButtonWrapper, Table, TableDataWrapper } from "../AdminDashboard_Event/styles";
 
 interface DashboardEventProps {}
 
@@ -34,7 +34,7 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
         </EventTopButtonWrapper>
 
         <EventTitleWrapper>
-          <h1>{!!eventData && eventData.name}</h1>
+          <EventTitle>{!!eventData && eventData.name}</EventTitle>
         </EventTitleWrapper>
 
         <Table>

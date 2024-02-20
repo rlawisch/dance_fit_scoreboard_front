@@ -5,16 +5,12 @@ export const AdminDashboardEventContainer = styled.div`
     text-decoration: none;
     color: ${(props) => props.theme.colors.text};
   }
-
-  h1 {
-    margin: 2rem 0;
-  }
 `;
 
 export const EventTopButtonWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 export const EventTitleWrapper = styled.div`
@@ -57,4 +53,5 @@ export const TableDataWrapper = styled.div`
 export const EventTitle = styled.h1`
   color: ${props => props.theme.colors.primary};
   text-justify: newspaper;
+  margin: 2rem 0;
 `
