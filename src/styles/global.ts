@@ -43,7 +43,7 @@ export const GlobalContainer = styled.div`
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 0.5rem;
-  background-color: ${(props) => shade(-0.4, props.theme.colors.background)};
+  background-color: ${(props) => shade(-0.1, props.theme.colors.background)};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   color: ${(props) => props.theme.colors.text};
 

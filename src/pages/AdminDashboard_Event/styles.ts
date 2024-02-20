@@ -1,3 +1,4 @@
+import { shade } from "polished";
 import styled from "styled-components";
 
 export const AdminDashboardEventContainer = styled.div`
@@ -31,10 +32,10 @@ export const Table = styled.table`
   th,
   td {
     padding: 8px;
-    border: 0.3rem solid ${(props) => props.theme.colors.background};
+    border: 0.3rem solid ${(props) => shade(0.1, props.theme.colors.background)};
     border-radius: 0.3rem;
-    background-color: ${({ theme }) => theme.colors.background};
-    color: ${({ theme }) => theme.colors.primary};
+    background-color: ${(props) => shade(0.1, props.theme.colors.background)};
+    color: ${({ theme }) => shade(0.1, theme.colors.primary)};
   }
 
   th {
