@@ -16,3 +16,9 @@ export const ProfilePicture = styled.img`
 export const ProfilePictureForm = styled.form`
     width: 100%;
 `
+
+export const UploadBtnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+
+`

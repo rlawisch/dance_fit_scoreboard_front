@@ -5,6 +5,7 @@ import { useEvents } from "../../providers/Events";
 import { GlobalContainer, PlayerMiniature } from "../../styles/global";
 import {
   AdminDashboardEventContainer,
+  EventTitle,
   EventTitleWrapper,
   EventTopButtonWrapper,
   Table,
@@ -19,6 +20,7 @@ import { IUpdateEventFormData } from "../../types/form-types";
 import Input from "../../components/Input";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import UpdateButton from "../../components/Button_Update";
+import useModal from "../../providers/Modal";
 
 interface AdminDashboardEventProps {}
 
@@ -26,6 +28,12 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   const { event_id } = useParams();
 
   const { eventData, getEventData, updateEventData } = useEvent();
+
+  const {
+    isOpen: isOpenEventUpdate,
+    openModal: openEventUpdateModal,
+    closeModal: closeEventUpdateModal,
+  } = useModal();
 
   const { joinEvent } = useEvents();
 
@@ -71,9 +79,12 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
         </EventTopButtonWrapper>
 
         <EventTitleWrapper>
-          <h1>{!!eventData && eventData.name}</h1>
+          <EventTitle>{!!eventData && eventData.name}</EventTitle>
 
-          <Modal isOpen={false} openingText="Editar" actionType="update">
+          <UpdateButton onClick={openEventUpdateModal}>
+            Editar Evento
+          </UpdateButton>
+          <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
             <GlobalContainer>
               Alterar informações do Evento: {eventData?.name}
               <form

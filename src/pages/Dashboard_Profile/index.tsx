@@ -1,20 +1,35 @@
-import { FunctionComponent, useState } from "react";
+import { FunctionComponent, useContext } from "react";
 import { GlobalContainer } from "../../styles/global";
-import { ProfilePicture, ProfilePictureForm, ProfileWrapper } from "./styles";
+import {
+  ProfilePicture,
+  ProfilePictureForm,
+  ProfileWrapper,
+  UploadBtnWrapper,
+} from "./styles";
 import { usePlayer } from "../../providers/Players";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
-import * as yup from "yup";
 import UpdateButton from "../../components/Button_Update";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaFileAlt } from "react-icons/fa";
 import { IProfilePicFormData } from "../../types/form-types";
 import { profilePictureResolver } from "../../resolvers";
+import { BallTriangle } from "react-loader-spinner";
+import { ThemeContext } from "styled-components";
+import useModal from "../../providers/Modal";
 
 interface DashboardProfileProps {}
 
 const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
   const { playerData, uploadProfilePicture, isUploading } = usePlayer();
+
+  const {
+    isOpen: isOpenPicUpdate,
+    openModal: openPicUpdateModal,
+    closeModal: closePicUpdateModal,
+  } = useModal();
+
+  const theme = useContext(ThemeContext);
 
   const {
     register,
@@ -42,11 +57,9 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
               : `/src/assets/img/default_player.png`
           }
         />
-        <Modal
-          isOpen={false}
-          openingText="Alterar Foto de Perfil"
-          actionType="update"
-        >
+
+        <UpdateButton onClick={openPicUpdateModal}>Alterar Avatar</UpdateButton>
+        <Modal isOpen={isOpenPicUpdate} onClose={closePicUpdateModal}>
           <GlobalContainer>
             <p>
               Os arquivos de imagem devem ter até 8Mb de tamanho e ser .jpeg ou
@@ -64,9 +77,26 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                 error={errors.file?.message}
               />
             </ProfilePictureForm>
-            <UpdateButton vanilla={false} type="submit" form="profile_pic_form">
-              Enviar
-            </UpdateButton>
+
+            <UploadBtnWrapper>
+              <UpdateButton
+                vanilla={false}
+                type="submit"
+                form="profile_pic_form"
+              >
+                Enviar
+              </UpdateButton>
+              <BallTriangle
+                height={36}
+                width={36}
+                radius={5}
+                color={theme?.colors.primary}
+                ariaLabel="ball-triangle-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={isUploading}
+              />
+            </UploadBtnWrapper>
           </GlobalContainer>
         </Modal>
       </ProfileWrapper>
