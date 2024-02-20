@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
 import { IEvent } from "../../types/entity-types";
-import { AdminEventCardContainer } from "./styles";
 import Button from "../Button";
 import { useNavigate } from "react-router-dom";
+import { EventCardContainer } from "../EventCard/styles";
 
 interface AdminEventCardProps {
   eventData: IEvent;
@@ -12,7 +12,7 @@ const AdminEventCard: FunctionComponent<AdminEventCardProps> = (props) => {
   const navigate = useNavigate();
 
   return (
-    <AdminEventCardContainer>
+    <EventCardContainer>
       <h3>{props.eventData.name}</h3>
 
       <Button
@@ -22,7 +22,7 @@ const AdminEventCard: FunctionComponent<AdminEventCardProps> = (props) => {
       >
         Visitar
       </Button>
-    </AdminEventCardContainer>
+    </EventCardContainer>
   );
 };
 

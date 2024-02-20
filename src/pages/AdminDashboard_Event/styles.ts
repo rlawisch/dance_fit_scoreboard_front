@@ -41,3 +41,10 @@ export const Table = styled.table`
     background-color: ${({ theme }) => theme.colors.primary};
   }
 `;
+
+export const TableDataWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+`

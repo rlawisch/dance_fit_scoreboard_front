@@ -61,3 +61,9 @@ export const DashboardContainer = styled.main<DashboardContainerProps>`
   height: auto;
   box-sizing: border-box;
 `;
+
+export const PlayerMiniature = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+`

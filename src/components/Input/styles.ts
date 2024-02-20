@@ -4,6 +4,7 @@ export const StyledInput = styled.div`
   padding: 0.6rem 1rem;
   margin: 0.8rem;
   background: transparent;
+  min-width: 100px;
 
   div {
     box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.1);
@@ -25,6 +26,7 @@ export const StyledInput = styled.div`
     border: 0;
     margin-left: 0.4rem;
     width: 100%;
+    overflow-wrap: break-word;
   }
 `;
 
@@ -35,3 +37,8 @@ export const ErrorMessage = styled.p`
   padding: 0.2rem;
   text-align: right;
 `;
+
+export const Label = styled.span`
+  color: ${props => props.theme.colors.primary};
+  font-size: small;
+`

@@ -15,6 +15,7 @@ import SignUp from "../pages/SignUp";
 import DashboardEvent from "../pages/Dashboard_Event";
 import AdminDashboardEvents from "../pages/AdminDashboard_Events";
 import AdminDashboardEvent from "../pages/AdminDashboard_Event";
+import DashboardProfile from "../pages/Dashboard_Profile";
 
 export default function Routing() {
   return (
@@ -84,6 +85,15 @@ export default function Routing() {
           element={
             <PrivateRoute>
               <DashboardScores />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/dashboard/profile"
+          element={
+            <PrivateRoute>
+              <DashboardProfile />
             </PrivateRoute>
           }
         />

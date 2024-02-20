@@ -46,7 +46,11 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
         <ProfilePictureWrapper>
           <ProfilePicture
             isopen={sideBarStatus}
-            src={playerData?.profilePicture}
+            src={
+              !!playerData?.profilePicture
+                ? playerData?.profilePicture
+                : `/src/assets/img/default_player.png`
+            }
             alt="Profile Picture"
           />
         </ProfilePictureWrapper>
@@ -56,7 +60,6 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
         </Role>
       </PlayerInfoWrapper>
 
-      
       <SidebarUl>
         <SidebarLi
           isopen={sideBarStatus}

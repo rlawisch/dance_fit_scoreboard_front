@@ -10,13 +10,15 @@ import { IPlayer } from "../../types/entity-types";
 export interface IPlayerContext {
   accToken: string;
   decodedPlayerInfo: JwtPayload;
-  playerData: IPlayer | undefined
+  playerData: IPlayer | undefined;
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   hasAdminRights: () => void;
   hasValidSession: () => boolean;
   getPlayerData: () => void;
+  uploadProfilePicture: (formData: FormData) => void;
+  isUploading: boolean;
 }
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
@@ -88,6 +90,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       .then(() => {
         setAccToken("");
+        setPlayerData({} as IPlayer)
         setDecodedPlayerInfo({
           nickname: "",
           player_id: "",
@@ -115,9 +118,37 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       })
       .then((res) => {
-        setPlayerData(res.data)
+        setPlayerData(res.data);
       })
       .catch((err: any) => {
+        console.log(err);
+      });
+  };
+
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+
+  const uploadProfilePicture = async (formData: FormData) => {
+    hasValidSession();
+
+    setIsUploading(true)
+
+    api
+      .post("/players/profile-picture", formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res: any) => {
+        if (res.status === 201) {
+          setIsUploading(false)
+          toast.success("Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude")
+        } else {
+          toast.error("Algo deu errado");
+        }
+        console.log(res.data);
+      })
+      .catch((err: any) => {
+        toast.error("Algo deu errado");
         console.log(err);
       });
   };
@@ -209,6 +240,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         hasAdminRights,
         hasValidSession,
         getPlayerData,
+        uploadProfilePicture,
+        isUploading,
       }}
     >
       {children}
