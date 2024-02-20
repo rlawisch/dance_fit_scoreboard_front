@@ -9,7 +9,7 @@ export const StyledButton = styled.button<ButtonProps>`
   padding: 0.3rem 0.6rem;
   margin: 0.4rem;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-  min-width: 100px;
+  min-width: auto;
 
   border-radius: 0.3rem;
   border-style: solid;

@@ -40,7 +40,39 @@ export const Table = styled.table`
 
   th {
     background-color: ${({ theme }) => theme.colors.primary};
-    color: ${props => props.theme.colors.secundary}
+    color: ${(props) => props.theme.colors.secundary};
+  }
+`;
+
+export const CategoryTableHeaderWrapper = styled.th`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const CategoryTable = styled.table`
+  width: 100%;
+  border-collapse: separate;
+
+  th,
+  td {
+    padding: 8px;
+    border: 0.3rem solid ${(props) => shade(0.1, props.theme.colors.background)};
+    border-radius: 0.3rem;
+    background-color: ${(props) => shade(0.1, props.theme.colors.background)};
+    color: ${({ theme }) => shade(0.1, theme.colors.primary)};
+  }
+
+  th {
+    background-color: ${({ theme }) => theme.colors.primary};
+    color: ${(props) => props.theme.colors.secundary};
+  }
+
+  td {
+    cursor: pointer;
+    &:hover {
+      background-color: ${(props) => shade(0.3, props.theme.colors.background)};
+    }
   }
 `;
 
@@ -49,10 +81,10 @@ export const TableDataWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 0.6rem;
-`
+`;
 
 export const EventTitle = styled.h1`
-  color: ${props => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.primary};
   text-justify: newspaper;
   margin: 2rem 0;
-`
+`;

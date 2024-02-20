@@ -16,6 +16,7 @@ import DashboardEvent from "../pages/Dashboard_Event";
 import AdminDashboardEvents from "../pages/AdminDashboard_Events";
 import AdminDashboardEvent from "../pages/AdminDashboard_Event";
 import DashboardProfile from "../pages/Dashboard_Profile";
+import AdminDashboardCategory from "../pages/AdminDashboard_Category";
 
 export default function Routing() {
   return (
@@ -137,6 +138,17 @@ export default function Routing() {
             <AdminRouter>
               <PrivateRoute>
                 <AdminDashboardEvent />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
+
+        <Route
+          path="/admin/events/:event_id/categories/:category_id"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashboardCategory />
               </PrivateRoute>
             </AdminRouter>
           }

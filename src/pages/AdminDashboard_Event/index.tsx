@@ -1,10 +1,12 @@
 import { FunctionComponent, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
 import { GlobalContainer, PlayerMiniature } from "../../styles/global";
 import {
   AdminDashboardEventContainer,
+  CategoryTable,
+  CategoryTableHeaderWrapper,
   EventTitle,
   EventTitleWrapper,
   EventTopButtonWrapper,
@@ -28,6 +30,8 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   const { event_id } = useParams();
 
   const { eventData, getEventData, updateEventData } = useEvent();
+
+  const navigate = useNavigate();
 
   const {
     isOpen: isOpenEventUpdate,
@@ -54,12 +58,8 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   });
 
   const onUpdateEventFormSubmit = (formData: IUpdateEventFormData) => {
-    
-    updateEventData(Number(event_id), formData)
-
+    updateEventData(Number(event_id), formData);
   };
-
-  // TODO: Modal > Form to update Event details
 
   // TODO: Modal > Form to add Categories to the Event
 
@@ -139,21 +139,27 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
           </tbody>
         </Table>
 
-        <Table>
+        <CategoryTable>
           <thead>
             <tr>
-              <th>Categorias</th>
+              <CategoryTableHeaderWrapper>
+                Categorias
+                <UpdateButton vanilla={false}>+</UpdateButton>
+              </CategoryTableHeaderWrapper>
             </tr>
           </thead>
           <tbody>
             {!!eventData &&
               eventData.categories?.map((c) => (
-                <tr key={c.category_id}>
+                <tr
+                  key={c.category_id}
+                  onClick={() => navigate(`categories/${c.category_id}`)}
+                >
                   <td>{c.name}</td>
                 </tr>
               ))}
           </tbody>
-        </Table>
+        </CategoryTable>
       </AdminDashboardEventContainer>
     </GlobalContainer>
   );
