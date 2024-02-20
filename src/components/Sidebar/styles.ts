@@ -13,6 +13,18 @@ interface SidebarLiProps {
   isopen: boolean;
 }
 
+interface ProfilePictureProps {
+  isopen: boolean;
+}
+
+interface NicknameProps {
+  isopen: boolean;
+}
+
+interface RoleProps {
+  isopen: boolean;
+}
+
 export const SidebarContainer = styled.aside<SidebarContainerProps>`
   z-index: 100;
   position: absolute;
@@ -20,7 +32,7 @@ export const SidebarContainer = styled.aside<SidebarContainerProps>`
   left: 0;
   overflow: hidden;
 
-  width: ${(props) => (props.isopen ? `12rem` : `5rem`)};
+  width: ${(props) => (props.isopen ? `10rem` : `4rem`)};
   height: calc(100vh - 60px);
   padding: ${(props) => (props.isopen ? `0 0.4rem` : `0 0.2rem`)};
 
@@ -39,7 +51,7 @@ export const SidebarUl = styled.ul`
   display: flex;
   flex-direction: column;
   padding: 0.2rem;
-  margin-top: 2rem;
+  margin-top: 1rem;
   list-style: none;
   color: ${(props) => props.theme.colors.primary};
 `;
@@ -100,3 +112,40 @@ export const SidebarLogoutBtn = styled.button`
     background: ${(props) => shade(0.2, props.theme.colors.secundary)};
   }
 `;
+
+export const PlayerInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+export const ProfilePictureWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+`;
+
+export const ProfilePicture = styled.img<ProfilePictureProps>`
+  width: ${(props) => (props.isopen ? `80px` : `36px`)};
+  height: ${(props) => (props.isopen ? `80px` : `36px`)};
+  border-radius: 50%;
+  transition: width 250ms ease;
+
+  &:hover + button {
+    display: block;
+  }
+`;
+
+export const Nickname = styled.h2<NicknameProps>`
+  color: ${props => props.theme.colors.primary};
+  display: ${props => props.isopen ? 'block' : 'none'};
+  transition: display 250ms ease;
+`
+
+export const Role = styled.span<RoleProps>`
+  color: ${props => props.theme.colors.primary};
+  display: ${props => props.isopen ? 'block' : 'none'};
+  margin-top: 1rem;
+`

@@ -5,7 +5,7 @@ interface DashboardContainerProps {
 }
 
 export const DashboardContainer = styled.main<DashboardContainerProps>`
-  margin-left: ${(props) => (props.isopen ? "12rem" : "5rem")};
+  margin-left: ${(props) => (props.isopen ? "10rem" : "4rem")};
   transition: margin 350ms ease;
   height: auto;
   box-sizing: border-box;

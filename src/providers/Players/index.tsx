@@ -5,17 +5,19 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import { ILogin, ISignup } from "../../types/form-types";
+import { IPlayer } from "../../types/entity-types";
 
 export interface IPlayerContext {
   accToken: string;
   decodedPlayerInfo: JwtPayload;
+  playerData: IPlayer | undefined
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   hasAdminRights: () => void;
   hasValidSession: () => boolean;
+  getPlayerData: () => void;
 }
-
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 
@@ -23,13 +25,15 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || "",
+    localStorage.getItem("@DFS/PlayerToken") || ""
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer),
+    JSON.parse(currentPlayer)
   );
+
+  const [playerData, setPlayerData] = useState<IPlayer>();
 
   const navigate = useNavigate();
 
@@ -101,6 +105,23 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
+  const getPlayerData = () => {
+    hasValidSession();
+
+    api
+      .get(`/players/${decodedPlayerInfo.player_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        setPlayerData(res.data)
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  };
+
   const hasValidSession = () => {
     api
       .get("/auth/session", {
@@ -127,7 +148,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente",
+            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente"
           );
           return false;
         }
@@ -145,7 +166,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que sua sessão expirou, por favor, faça o login novamente",
+            "Parece que sua sessão expirou, por favor, faça o login novamente"
           );
           return false;
         }
@@ -156,24 +177,24 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const hasAdminRights = () => {
-    if (hasValidSession()) {
-      api
-        .get("/auth/admin", {
-          headers: {
-            Authorization: `Bearer ${accToken}`,
-          },
-        })
-        .then((res) => {
-          if (res.data === true) {
-            navigate("/admin/home");
-          } else {
-            toast.error("Você não tem permissão para acessar este recurso!");
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    hasValidSession();
+
+    api
+      .get("/auth/admin", {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.data === true) {
+          navigate("/admin/home");
+        } else {
+          toast.error("Você não tem permissão para acessar este recurso!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -181,11 +202,13 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         accToken,
         decodedPlayerInfo,
+        playerData,
         playerLogin,
         playerSignup,
         playerLogout,
         hasAdminRights,
         hasValidSession,
+        getPlayerData,
       }}
     >
       {children}

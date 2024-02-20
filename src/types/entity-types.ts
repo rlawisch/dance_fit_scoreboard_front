@@ -2,6 +2,7 @@ export interface IPlayer {
   player_id: string;
   nickname: string;
   password: string;
+  profilePicture?: string;
   role: string;
 }
 
