@@ -1,5 +1,10 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import {
+  Nickname,
+  PlayerInfoWrapper,
+  ProfilePicture,
+  ProfilePictureWrapper,
+  Role,
   SidebarContainer,
   SidebarLi,
   SidebarLogoutBtn,
@@ -20,7 +25,17 @@ interface SidebarProps {}
 const Sidebar: FunctionComponent<SidebarProps> = () => {
   const { toggleSidebar, sideBarStatus } = useDashboard();
 
-  const { playerLogout, hasAdminRights, decodedPlayerInfo } = usePlayer();
+  const {
+    playerLogout,
+    hasAdminRights,
+    decodedPlayerInfo,
+    getPlayerData,
+    playerData,
+  } = usePlayer();
+
+  useEffect(() => {
+    getPlayerData();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -29,6 +44,22 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
       <SidebarToggleBtn isopen={sideBarStatus} onClick={toggleSidebar}>
         <RiExpandLeftLine size={28} />
       </SidebarToggleBtn>
+
+      <PlayerInfoWrapper>
+        <Nickname isopen={sideBarStatus}>{playerData?.nickname}</Nickname>
+
+        <ProfilePictureWrapper>
+          <ProfilePicture
+            isopen={sideBarStatus}
+            src={playerData?.profilePicture}
+            alt="Profile Picture"
+          />
+        </ProfilePictureWrapper>
+
+        <Role isopen={sideBarStatus}>
+          {playerData?.role === "player" ? "JOGADOR" : "ADMIN"}
+        </Role>
+      </PlayerInfoWrapper>
 
       <SidebarUl>
         <SidebarLi
@@ -54,6 +85,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
           <GiMusicalScore />
           {sideBarStatus ? <p>Scores</p> : ""}
         </SidebarLi>
+
         {decodedPlayerInfo.role === "admin" && (
           <SidebarLi
             isopen={sideBarStatus}
@@ -63,7 +95,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
             }}
           >
             <MdOutlineAdminPanelSettings />
-            {sideBarStatus ? "Painel de Administrador" : ""}
+            {sideBarStatus ? "Admin" : ""}
           </SidebarLi>
         )}
       </SidebarUl>

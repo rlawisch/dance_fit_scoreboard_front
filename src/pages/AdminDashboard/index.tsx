@@ -1,8 +1,8 @@
 import { FunctionComponent } from "react";
-import { DashboardContainer } from "./styles";
 import { useDashboard } from "../../providers/Dashboard";
 import { Outlet } from "react-router-dom";
 import AdminSidebar from "../../components/AdminSidebar";
+import { DashboardContainer } from "../Dashboard/styles";
 
 interface AdminDashboardProps {}
 
