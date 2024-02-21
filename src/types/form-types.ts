@@ -22,3 +22,10 @@ export interface IProfilePicFormData {
 export interface IUpdateEventFormData {
   name: string
 }
+
+export interface ICategoryCreate {
+  name: string,
+  level_min: number,
+  level_max: number,
+  number_of_phases: number,
+}

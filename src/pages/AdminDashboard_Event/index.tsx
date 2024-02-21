@@ -2,7 +2,11 @@ import { FunctionComponent, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
-import { FormWrapper, GlobalContainer, PlayerMiniature } from "../../styles/global";
+import {
+  FormWrapper,
+  GlobalContainer,
+  PlayerMiniature,
+} from "../../styles/global";
 import {
   AdminDashboardEventContainer,
   CategoryTable,
@@ -16,20 +20,30 @@ import Modal from "../../components/Modal";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IUpdateEventFormData } from "../../types/form-types";
+import { ICategoryCreate, IUpdateEventFormData } from "../../types/form-types";
 import Input from "../../components/Input";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import UpdateButton from "../../components/Button_Update";
 import useModal from "../../providers/Modal";
+import { FaArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
+import { useCategory } from "../../providers/Category";
 
 interface AdminDashboardEventProps {}
 
 const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   const { event_id } = useParams();
 
+  const navigate = useNavigate();
+
   const { eventData, getEventData, updateEventData } = useEvent();
 
-  const navigate = useNavigate();
+  const { createCategory } = useCategory()
+
+  useEffect(() => {
+    getEventData(Number(event_id));
+  }, []);
+
+  const { joinEvent } = useEvents();
 
   const {
     isOpen: isOpenEventUpdate,
@@ -37,20 +51,20 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
     closeModal: closeEventUpdateModal,
   } = useModal();
 
-  const { joinEvent } = useEvents();
-
-  useEffect(() => {
-    getEventData(Number(event_id));
-  }, []);
+  const {
+    isOpen: isOpenCategoryCreate,
+    openModal: openCategoryCreateModal,
+    closeModal: closeCategoryCreateModal,
+  } = useModal();
 
   const updateEventFormSchema = yup.object().shape({
     name: yup.string().required("Preencha este campo"),
   });
 
   const {
-    register,
-    handleSubmit,
-    formState: { errors },
+    register: registerUpdateEvent,
+    handleSubmit: handleSubmitUpdateEvent,
+    formState: { errors: updateEventErrors },
   } = useForm({
     resolver: yupResolver(updateEventFormSchema),
   });
@@ -59,7 +73,25 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
     updateEventData(Number(event_id), formData);
   };
 
-  // TODO: Modal > Form to add Categories to the Event
+  const createCategoryFormSchema = yup.object().shape({
+    name: yup.string().required("Preencha este campo"),
+    level_min: yup.number().required("Preencha este campo"),
+    level_max: yup.number().required("Preencha este campo"),
+    number_of_phases: yup.number().required("Preencha este campo"),
+  });
+
+  const {
+    register: registerCreateCategory,
+    handleSubmit: handleSubmitCreateCategory,
+    formState: { errors: createCategoryErrors },
+  } = useForm({
+    resolver: yupResolver(createCategoryFormSchema),
+  });
+
+  const onCreateCategoryFormSubmit = (formData: ICategoryCreate) => {
+
+    createCategory(formData, Number(event_id))
+  };
 
   // TODO: Each Categorie will render a button to delete with confirmation modal
 
@@ -84,14 +116,14 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
             Alterar informações do Evento: {eventData?.name}
             <FormWrapper
               id="update_event_form"
-              onSubmit={handleSubmit(onUpdateEventFormSubmit)}
+              onSubmit={handleSubmitUpdateEvent(onUpdateEventFormSubmit)}
             >
               <Input
                 label="Nome"
                 icon={MdDriveFileRenameOutline}
                 name="name"
-                register={register}
-                error={errors.name?.message}
+                register={registerUpdateEvent}
+                error={updateEventErrors.name?.message}
               />
 
               <UpdateButton
@@ -101,6 +133,52 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
               >
                 Atualizar
               </UpdateButton>
+            </FormWrapper>
+          </GlobalContainer>
+        </Modal>
+
+        <Modal isOpen={isOpenCategoryCreate} onClose={closeCategoryCreateModal}>
+          <GlobalContainer>
+            Criar Categoria:
+            <FormWrapper
+              id="create_category_form"
+              onSubmit={handleSubmitCreateCategory(onCreateCategoryFormSubmit)}
+            >
+              <Input
+                label="Nome"
+                icon={MdDriveFileRenameOutline}
+                name="name"
+                register={registerCreateCategory}
+                error={createCategoryErrors.name?.message}
+              />
+
+              <Input
+                label="Nivel mínimo"
+                icon={FaArrowAltCircleDown}
+                name="level_min"
+                register={registerCreateCategory}
+                error={createCategoryErrors.level_min?.message}
+              />
+
+              <Input
+                label="Nível máximo"
+                icon={FaArrowAltCircleUp}
+                name="level_max"
+                register={registerCreateCategory}
+                error={createCategoryErrors.level_max?.message}
+              />
+
+              <Input
+                label="Número de Fases"
+                icon={MdDriveFileRenameOutline}
+                name="number_of_phases"
+                register={registerCreateCategory}
+                error={createCategoryErrors.number_of_phases?.message}
+              />
+
+              <Button vanilla={false} type="submit" form="create_category_form">
+                Criar
+              </Button>
             </FormWrapper>
           </GlobalContainer>
         </Modal>
@@ -141,7 +219,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
             <tr>
               <TableHeaderWrapper>
                 <h4>Categorias</h4>
-                <UpdateButton>+</UpdateButton>
+                <UpdateButton onClick={openCategoryCreateModal}>+</UpdateButton>
               </TableHeaderWrapper>
             </tr>
           </thead>
