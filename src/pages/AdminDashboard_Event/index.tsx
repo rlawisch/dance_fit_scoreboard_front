@@ -2,14 +2,12 @@ import { FunctionComponent, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
-import { GlobalContainer, PlayerMiniature } from "../../styles/global";
+import { FormWrapper, GlobalContainer, PlayerMiniature } from "../../styles/global";
 import {
   AdminDashboardEventContainer,
   CategoryTable,
-  CategoryTableHeaderWrapper,
+  TableHeaderWrapper,
   EventTitle,
-  EventTitleWrapper,
-  EventTopButtonWrapper,
   Table,
   TableDataWrapper,
 } from "./styles";
@@ -68,53 +66,52 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   return (
     <GlobalContainer>
       <AdminDashboardEventContainer>
-        <EventTopButtonWrapper>
-          <Link to={"/admin/events"}>
-            <Button vanilla={true}>Voltar</Button>
-          </Link>
+        <Link to={"/admin/events"}>
+          <Button vanilla={true}>Voltar</Button>
+        </Link>
 
-          <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
-            Participar
-          </Button>
-        </EventTopButtonWrapper>
+        <EventTitle>{!!eventData && eventData.name}</EventTitle>
 
-        <EventTitleWrapper>
-          <EventTitle>{!!eventData && eventData.name}</EventTitle>
+        <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
+          Participar
+        </Button>
+        <UpdateButton onClick={openEventUpdateModal}>
+          Editar Evento
+        </UpdateButton>
 
-          <UpdateButton onClick={openEventUpdateModal}>
-            Editar Evento
-          </UpdateButton>
-          <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
-            <GlobalContainer>
-              Alterar informações do Evento: {eventData?.name}
-              <form
-                id="update_event_form"
-                onSubmit={handleSubmit(onUpdateEventFormSubmit)}
+        <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
+          <GlobalContainer>
+            Alterar informações do Evento: {eventData?.name}
+            <FormWrapper
+              id="update_event_form"
+              onSubmit={handleSubmit(onUpdateEventFormSubmit)}
+            >
+              <Input
+                label="Nome"
+                icon={MdDriveFileRenameOutline}
+                name="name"
+                register={register}
+                error={errors.name?.message}
+              />
+
+              <UpdateButton
+                vanilla={false}
+                type="submit"
+                form="update_event_form"
               >
-                <Input
-                  label="Nome"
-                  icon={MdDriveFileRenameOutline}
-                  name="name"
-                  register={register}
-                  error={errors.name?.message}
-                />
-
-                <UpdateButton
-                  vanilla={false}
-                  type="submit"
-                  form="update_event_form"
-                >
-                  Atualizar
-                </UpdateButton>
-              </form>
-            </GlobalContainer>
-          </Modal>
-        </EventTitleWrapper>
+                Atualizar
+              </UpdateButton>
+            </FormWrapper>
+          </GlobalContainer>
+        </Modal>
 
         <Table>
           <thead>
             <tr>
-              <th>Participantes</th>
+              <TableHeaderWrapper>
+                <h4>Participantes</h4>
+                <UpdateButton>+</UpdateButton>
+              </TableHeaderWrapper>
             </tr>
           </thead>
           <tbody>
@@ -142,10 +139,10 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
         <CategoryTable>
           <thead>
             <tr>
-              <CategoryTableHeaderWrapper>
-                Categorias
-                <UpdateButton vanilla={false}>+</UpdateButton>
-              </CategoryTableHeaderWrapper>
+              <TableHeaderWrapper>
+                <h4>Categorias</h4>
+                <UpdateButton>+</UpdateButton>
+              </TableHeaderWrapper>
             </tr>
           </thead>
           <tbody>

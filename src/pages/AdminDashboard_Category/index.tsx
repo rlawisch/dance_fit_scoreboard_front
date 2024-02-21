@@ -3,9 +3,9 @@ import { GlobalContainer, PlayerMiniature } from "../../styles/global";
 import Button from "../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCategory } from "../../providers/Category";
-import { CategoryTitle } from "./styles";
+import { CategoryTitle, ScoreboardTable } from "./styles";
 import { Table, TableDataWrapper } from "../AdminDashboard_Event/styles";
-import { ICategory, IPhase } from "../../types/entity-types";
+import { IPhase } from "../../types/entity-types";
 import React from "react";
 
 interface AdminDashboardCategoryProps {}
@@ -20,6 +20,7 @@ function calculateTotalColumns(phases: IPhase[] | undefined): number {
     phases.reduce((acc, phase) => acc + (phase.musics?.length || 0), 0) + 1
   );
 }
+
 
 const AdminDashboardCategory: FunctionComponent<
   AdminDashboardCategoryProps
@@ -63,10 +64,6 @@ const AdminDashboardCategory: FunctionComponent<
       </Button>
 
       <CategoryTitle>{categoryData?.name}</CategoryTitle>
-      <h3>{categoryData?.event.name}</h3>
-
-      <p>Nível mínimo: {categoryData?.level_min}</p>
-      <p>Nivel máxmio: {categoryData?.level_max}</p>
 
       <Table>
         <thead>
@@ -97,7 +94,7 @@ const AdminDashboardCategory: FunctionComponent<
       </Table>
 
       {!!categoryData && (
-        <Table>
+        <ScoreboardTable>
           <thead>
             <tr>
               <th>Player</th>
@@ -113,7 +110,7 @@ const AdminDashboardCategory: FunctionComponent<
             {categoryData.phases?.map((phase) => (
               <React.Fragment key={phase.phase_id}>
                 <tr>
-                  <td colSpan={calculateTotalColumns(categoryData?.phases)}>
+                  <td colSpan={calculateTotalColumns(categoryData?.phases) +1}>
                     Fase {phase.phase_number}
                   </td>
                 </tr>
@@ -150,8 +147,10 @@ const AdminDashboardCategory: FunctionComponent<
               </React.Fragment>
             ))}
           </tbody>
-        </Table>
+        </ScoreboardTable>
       )}
+
+
     </GlobalContainer>
   );
 };

@@ -7,7 +7,7 @@ interface ButtonProps {
 
 export const StyledButton = styled.button<ButtonProps>`
   padding: 0.3rem 0.6rem;
-  margin: 0.4rem;
+  margin: 0.2rem;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   min-width: auto;
 
@@ -16,7 +16,7 @@ export const StyledButton = styled.button<ButtonProps>`
   border-color: #dc3545;
 
   color: ${(props) =>
-    props.vanilla ? props.theme.colors.text : "#dc3545"}; // Black text for "update" actionType, white text otherwise
+    props.vanilla ? shade(0.5, "#dc3545") : "#dc3545"}; // Black text for "update" actionType, white text otherwise
   background-color: ${(props) =>
     props.vanilla ? "#dc3545" : props.theme.colors.background}; // Yellow background for "update" actionType, light gray otherwise
 

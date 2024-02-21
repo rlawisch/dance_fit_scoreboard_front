@@ -5,7 +5,11 @@ import Button from "../../components/Button";
 import { Link, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
-import { EventTitle, EventTitleWrapper, EventTopButtonWrapper, Table, TableDataWrapper } from "../AdminDashboard_Event/styles";
+import {
+  EventTitle,
+  Table,
+  TableDataWrapper,
+} from "../AdminDashboard_Event/styles";
 
 interface DashboardEventProps {}
 
@@ -23,19 +27,15 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
   return (
     <GlobalContainer>
       <DashboardEventContainer>
-      <EventTopButtonWrapper>
-          <Link to={"/dashboard/events"}>
-            <Button vanilla={true}>Voltar</Button>
-          </Link>
+        <Link to={"/dashboard/events"}>
+          <Button vanilla={true}>Voltar</Button>
+        </Link>
 
-          <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
-            Participar
-          </Button>
-        </EventTopButtonWrapper>
+        <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
+          Participar
+        </Button>
 
-        <EventTitleWrapper>
-          <EventTitle>{!!eventData && eventData.name}</EventTitle>
-        </EventTitleWrapper>
+        <EventTitle>{!!eventData && eventData.name}</EventTitle>
 
         <Table>
           <thead>

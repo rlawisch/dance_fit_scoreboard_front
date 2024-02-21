@@ -7,7 +7,7 @@ interface ButtonProps {
 
 const StyledButton = styled.button<ButtonProps>`
   padding: 0.3rem 0.6rem;
-  margin: 0.4rem;
+  margin: 0.2rem;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   min-width: auto;
 
