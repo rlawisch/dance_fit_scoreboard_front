@@ -16,22 +16,42 @@ export const StyledButton = styled.button<ButtonProps>`
   border-color: #dc3545;
 
   color: ${(props) =>
-    props.vanilla ? shade(0.5, "#dc3545") : "#dc3545"}; // Black text for "update" actionType, white text otherwise
+    props.vanilla
+      ? shade(0.5, "#dc3545")
+      : "#dc3545"}; // Black text for "update" actionType, white text otherwise
   background-color: ${(props) =>
-    props.vanilla ? "#dc3545" : props.theme.colors.background}; // Yellow background for "update" actionType, light gray otherwise
+    props.vanilla
+      ? "#dc3545"
+      : props.theme.colors
+          .background}; // Yellow background for "update" actionType, light gray otherwise
 
   &:hover {
     background-color: ${(props) =>
-      props.vanilla ? shade(0.1, "#dc3545") : shade(0.1, props.theme.colors.background)}; // Darken yellow for "update" on hover, light gray otherwise
+      props.vanilla
+        ? shade(0.1, "#dc3545")
+        : shade(
+            0.1,
+            props.theme.colors.background,
+          )}; // Darken yellow for "update" on hover, light gray otherwise
   }
 
   &:active {
     background-color: ${(props) =>
-      props.vanilla ? shade(0.3, "#dc3545") : shade(0.3, props.theme.colors.background)}; // Darken yellow for "update" on active, light gray otherwise
+      props.vanilla
+        ? shade(0.3, "#dc3545")
+        : shade(
+            0.3,
+            props.theme.colors.background,
+          )}; // Darken yellow for "update" on active, light gray otherwise
   }
 
   &:disabled {
     background-color: ${(props) =>
-      props.vanilla ? shade(-0.3, "#dc3545") : shade(-0.3, props.theme.colors.background)}; // Lighten yellow for "update" when disabled, light gray otherwise
+      props.vanilla
+        ? shade(-0.3, "#dc3545")
+        : shade(
+            -0.3,
+            props.theme.colors.background,
+          )}; // Lighten yellow for "update" when disabled, light gray otherwise
   }
 `;

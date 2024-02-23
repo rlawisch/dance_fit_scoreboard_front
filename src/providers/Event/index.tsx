@@ -43,7 +43,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateEventData = (
     event_id: number,
-    formData: IUpdateEventFormData
+    formData: IUpdateEventFormData,
   ) => {
     hasAdminRights();
 

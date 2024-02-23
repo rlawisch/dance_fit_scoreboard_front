@@ -15,6 +15,7 @@ export const StyledInput = styled.div`
     display: flex;
 
     svg {
+      color: ${(props) => props.theme.colors.primary};
       height: 1.4rem;
       width: 1.4rem;
     }
@@ -39,6 +40,6 @@ export const ErrorMessage = styled.p`
 `;
 
 export const Label = styled.span`
-  color: ${props => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.primary};
   font-size: small;
-`
+`;

@@ -59,7 +59,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       )
       .then((res) => {
         console.log(res.data);
@@ -89,16 +89,21 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       })
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.response);
         if (res.status === 200) {
           toast.success("Adicionado na categoria com sucesso!");
-        } else {
-          toast.error("Algo deu errado");
         }
       })
       .catch((err: any) => {
         console.log(err);
-        toast.error("Algo deu errado");
+        if (
+          err.response.data.message ===
+          "Player already assigned to this Category"
+        ) {
+          toast.error("Jogador já cadastrado na categoria");
+        } else {
+          toast.error("Algo deu errado");
+        }
       });
   };
 
@@ -117,11 +122,9 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           Authorization: `Bearer ${accToken}`,
         },
       })
-      .then((res) => {
-        
-      })
+      .then((res) => {})
       .catch((err: any) => {
-        console.log(err)
+        console.log(err);
       });
   };
 

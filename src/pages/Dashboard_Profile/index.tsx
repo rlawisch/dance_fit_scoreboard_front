@@ -40,7 +40,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
   });
 
   const onProfilePictureSubmit: SubmitHandler<IProfilePicFormData> = async (
-    data: IProfilePicFormData
+    data: IProfilePicFormData,
   ) => {
     const formData = new FormData();
     formData.append("file", data.file[0]);

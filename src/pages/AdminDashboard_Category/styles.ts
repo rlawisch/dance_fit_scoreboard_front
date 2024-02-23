@@ -17,7 +17,6 @@ export const ScoreboardTable = styled.table`
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0px;
-  margin-top: 1rem;
 
   th,
   td {
@@ -53,7 +52,6 @@ export const TableWrapper = styled.div`
 export const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
 `;
 
 export const TableHeader = styled.th`
@@ -72,21 +70,7 @@ export const TableCell = styled.td`
   padding: 8px;
 `;
 
-export const PlayerImage = styled.img`
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
-`;
-
-export const ResponsiveTableWrapper = styled.div`
-  margin-bottom: 20px;
-`;
-
-export const ResponsiveTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
+export const ResponsiveTableWrapper = styled.div``;
 
 export const ResponsiveTableHeader = styled.th`
   background-color: #f2f2f2;

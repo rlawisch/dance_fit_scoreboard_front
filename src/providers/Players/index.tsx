@@ -27,12 +27,12 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || ""
+    localStorage.getItem("@DFS/PlayerToken") || "",
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer)
+    JSON.parse(currentPlayer),
   );
 
   const [playerData, setPlayerData] = useState<IPlayer>();
@@ -90,7 +90,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       .then(() => {
         setAccToken("");
-        setPlayerData({} as IPlayer)
+        setPlayerData({} as IPlayer);
         setDecodedPlayerInfo({
           nickname: "",
           player_id: "",
@@ -130,7 +130,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const uploadProfilePicture = async (formData: FormData) => {
     hasValidSession();
 
-    setIsUploading(true)
+    setIsUploading(true);
 
     api
       .post("/players/profile-picture", formData, {
@@ -140,8 +140,10 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       .then((res: any) => {
         if (res.status === 201) {
-          setIsUploading(false)
-          toast.success("Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude")
+          setIsUploading(false);
+          toast.success(
+            "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude",
+          );
         } else {
           toast.error("Algo deu errado");
         }
@@ -179,7 +181,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente"
+            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente",
           );
           return false;
         }
@@ -197,7 +199,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           localStorage.removeItem("@DFS/PlayerToken");
           localStorage.removeItem("@DFS/Player");
           toast(
-            "Parece que sua sessão expirou, por favor, faça o login novamente"
+            "Parece que sua sessão expirou, por favor, faça o login novamente",
           );
           return false;
         }

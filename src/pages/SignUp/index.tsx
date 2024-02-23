@@ -50,7 +50,7 @@ const SignUp = () => {
           />
 
           <Input
-          label="Senha"
+            label="Senha"
             icon={PiPassword}
             name="password"
             type="password"
@@ -59,7 +59,7 @@ const SignUp = () => {
           />
 
           <Input
-          label="Confirmar Senha"
+            label="Confirmar Senha"
             icon={PiPassword}
             name="confirmPassword"
             type="password"

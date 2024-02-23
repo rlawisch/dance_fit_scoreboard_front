@@ -15,9 +15,9 @@ export const AdminDashboardEventContainer = styled.div`
 export const Table = styled.table`
   width: 100%;
   border-collapse: separate;
-  margin-top: 1rem;
 
-  th,td {
+  th,
+  td {
     padding: 0.8rem;
   }
 
@@ -32,13 +32,12 @@ export const Table = styled.table`
   }
 `;
 
-
 export const CategoryTable = styled.table`
   width: 100%;
   border-collapse: separate;
-  margin-top: 1rem;
 
-  th,td {
+  th,
+  td {
     padding: 0.8rem;
   }
 
@@ -64,7 +63,7 @@ export const TableHeaderWrapper = styled.th`
   display: flex;
   align-items: center;
   justify-content: space-between;
-`
+`;
 
 export const TableDataWrapper = styled.div`
   display: flex;

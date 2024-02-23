@@ -5,6 +5,7 @@ import { EventsProvider } from "./Events";
 import { ScoreProvider } from "./Scores";
 import { EventProvider } from "./Event";
 import { CategoryProvider } from "./Category";
+import { PhasesProvider } from "./Phases";
 
 interface IAppProvider {
   children: ReactNode;
@@ -17,7 +18,9 @@ export const AppProvider = ({ children }: IAppProvider) => {
         <EventProvider>
           <ScoreProvider>
             <CategoryProvider>
-              <DashboardProvider>{children}</DashboardProvider>
+              <PhasesProvider>
+                <DashboardProvider>{children}</DashboardProvider>
+              </PhasesProvider>
             </CategoryProvider>
           </ScoreProvider>
         </EventProvider>

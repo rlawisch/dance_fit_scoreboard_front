@@ -50,7 +50,7 @@ export interface IPhase {
   passing_players: number;
   category: ICategory;
   musics?: IMusic[];
-  scores?: IScore[]
+  scores?: IScore[];
 }
 
 export interface IScore {

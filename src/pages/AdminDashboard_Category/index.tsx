@@ -1,14 +1,16 @@
-import React, { FunctionComponent, useEffect, useState } from "react";
-import { GlobalContainer, PlayerMiniature } from "../../styles/global";
+import { FunctionComponent, useEffect } from "react";
+import {
+  FormWrapper,
+  GlobalContainer,
+  PlayerMiniature,
+} from "../../styles/global";
 import Button from "../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCategory } from "../../providers/Category";
 import {
   CategoryTitle,
   LargeScreenTableDisplay,
-  PhaseTitle,
   PlayerInfoWrapper,
-  ResponsiveTable,
   ResponsiveTableCell,
   ResponsiveTableHeader,
   ResponsiveTableRow,
@@ -20,7 +22,22 @@ import {
   TableWrapper,
 } from "./styles";
 import { Table, TableDataWrapper } from "../AdminDashboard_Event/styles";
-import { IPhase, IPlayer, IScore } from "../../types/entity-types";
+import { IPhase, IScore } from "../../types/entity-types";
+import UpdateButton from "../../components/Button_Update";
+import { FaEdit } from "react-icons/fa";
+import { FaRegTrashCan, FaUserCheck, FaUserPlus } from "react-icons/fa6";
+import { TbMusicMinus, TbMusicPlus } from "react-icons/tb";
+import DeleteButton from "../../components/Button_Delete";
+import useModal from "../../providers/Modal";
+import Modal from "../../components/Modal";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import Input from "../../components/Input";
+import { MdFormatListNumbered } from "react-icons/md";
+import Select from "../../components/Select";
+import { IPhaseFormCreate, IPhaseRealCreate } from "../../types/form-types";
+import { usePhases } from "../../providers/Phases";
 
 interface AdminDashboardCategoryProps {}
 
@@ -31,139 +48,55 @@ const AdminDashboardCategory: FunctionComponent<
 
   const { event_id, category_id } = useParams();
 
-  const { categoryData, getCategoryData } = useCategory();
+  const { categoryData, getCategoryData, joinCategory } = useCategory();
+
+  const { createPhase } = usePhases();
 
   useEffect(() => {
     getCategoryData(Number(category_id));
   }, []);
 
   const sortedPhases = categoryData?.phases?.sort(
-    (a, b) => a.phase_number - b.phase_number
+    (a, b) => a.phase_number - b.phase_number,
   );
 
-  const renderLargeScreenTable = () => {
-    return sortedPhases?.map((phase: IPhase) => (
-      <TableWrapper key={`phase-${phase.phase_number}`}>
-        <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
-        <Table>
-          <thead>
-            <TableRow>
-              <TableHeader>Player</TableHeader>
-              {phase.musics?.map((music) => (
-                <TableHeader key={`music-${music.music_id}`}>
-                  {music.name}
-                </TableHeader>
-              ))}
-              <TableHeader>Total</TableHeader>
-            </TableRow>
-          </thead>
-          <tbody>
-            {categoryData?.players?.map((player) => (
-              <TableRow key={`player-${player.player_id}`}>
-                <TableCell>
-                  <PlayerInfoWrapper>
-                    <PlayerMiniature
-                      src={
-                        player.profilePicture ||
-                        "/src/assets/img/default_player.png"
-                      }
-                      alt={player.nickname}
-                    />
-                    {player.nickname}
-                  </PlayerInfoWrapper>
-                </TableCell>
-                {phase.musics?.map((music) => {
-                  const score: IScore | undefined = phase.scores?.find(
-                    (s: IScore) =>
-                      s.player.player_id === player.player_id &&
-                      s.music.music_id === music.music_id
-                  );
-                  return (
-                    <TableCell
-                      key={`score-${player.player_id}-${music.music_id}`}
-                    >
-                      {score ? score.value : "-"}
-                    </TableCell>
-                  );
-                })}
-                <TableCell>
-                  {/* Calculate total score for this phase */}
-                  {phase.scores
-                    ?.filter(
-                      (score: IScore) =>
-                        score.player.player_id === player.player_id
-                    )
-                    .reduce((acc, curr) => acc + curr.value, 0) || "-"}
-                </TableCell>
-              </TableRow>
-            ))}
-          </tbody>
-        </Table>
-      </TableWrapper>
-    ));
-  };
+  const {
+    isOpen: isOpenPhaseCreate,
+    openModal: openPhaseCreateModal,
+    closeModal: closePhaseCreateModal,
+  } = useModal();
 
-  const renderSmallScreenTable = () => {
-    return sortedPhases?.map((phase) => (
-      <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
-        <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
-        {categoryData?.players?.map((player) => (
-          <Table key={`phase-${phase.phase_number}-player-${player.player_id}`}>
-            <thead>
-              <ResponsiveTableRow>
-                <ResponsiveTableHeader>Música</ResponsiveTableHeader>
-                <ResponsiveTableHeader>Score</ResponsiveTableHeader>
-              </ResponsiveTableRow>
-            </thead>
-            <tbody>
-              <ResponsiveTableRow>
-                <ResponsiveTableCell colSpan={2}>
-                  <PlayerInfoWrapper>
-                    <PlayerMiniature
-                      src={
-                        player.profilePicture ||
-                        "/src/assets/img/default_player.png"
-                      }
-                      alt={player.nickname}
-                    />
-                    {player.nickname}
-                  </PlayerInfoWrapper>
-                </ResponsiveTableCell>
-              </ResponsiveTableRow>
-              {phase.musics?.map((music) => {
-                const score: IScore | undefined = phase.scores?.find(
-                  (s: IScore) =>
-                    s.player.player_id === player.player_id &&
-                    s.music.music_id === music.music_id
-                );
-                return (
-                  <ResponsiveTableRow
-                    key={`player-${player.player_id}-music-${music.music_id}`}
-                  >
-                    <ResponsiveTableCell>{music.name}</ResponsiveTableCell>
-                    <ResponsiveTableCell>
-                      {score ? score.value : "-"}
-                    </ResponsiveTableCell>
-                  </ResponsiveTableRow>
-                );
-              })}
-              <ResponsiveTableRow>
-                <ResponsiveTableCell>Total</ResponsiveTableCell>
-                <ResponsiveTableCell>
-                  {/* Calculate total score for this phase */}
-                  {phase.scores
-                    ?.filter(
-                      (score: IScore) =>
-                        score.player.player_id === player.player_id
-                    )
-                    .reduce((acc, curr) => acc + curr.value, 0) || "-"}
-                </ResponsiveTableCell>
-              </ResponsiveTableRow>
-            </tbody>
-          </Table>
-        ))}
-      </ResponsiveTableWrapper>
-    ));
+  const phaseCreateSchema = yup.object().shape({
+    phase_number: yup.number().required(),
+    music_number: yup.number().required(),
+    modes_available: yup.string().required(),
+    passing_players: yup.number().required(),
+  });
+
+  const {
+    register: registerCreatePhase,
+    handleSubmit: handleSubmitCreatePhase,
+    formState: { errors: createPhaseErrors },
+  } = useForm({
+    resolver: yupResolver(phaseCreateSchema),
+  });
+
+  const modeOptions = [
+    { label: "Single", value: "single" },
+    { label: "Double", value: "double" },
+    { label: "Single + Double", value: "single,double" },
+  ];
+
+  const onCreatePhaseFormSubmit = (formData: IPhaseFormCreate) => {
+    const formatedModes = formData.modes_available.split(",");
+
+    const realFormData: IPhaseRealCreate = {
+      ...formData,
+      modes_available: formatedModes,
+      category_id: Number(categoryData?.category_id),
+    };
+
+    createPhase(realFormData);
   };
 
   return (
@@ -174,10 +107,96 @@ const AdminDashboardCategory: FunctionComponent<
 
       <CategoryTitle>{categoryData?.name}</CategoryTitle>
 
+      {/* TODO: Button -> join Category */}
+      <Button onClick={() => joinCategory(Number(categoryData?.category_id))}>
+        Participar
+      </Button>
+      {/* TODO: Button -> create Phase */}
+      <UpdateButton onClick={openPhaseCreateModal}>Criar Fase</UpdateButton>
+
+      <Modal isOpen={isOpenPhaseCreate} onClose={closePhaseCreateModal}>
+        <GlobalContainer>
+          <FormWrapper
+            id="phase_create_form"
+            onSubmit={handleSubmitCreatePhase(onCreatePhaseFormSubmit)}
+          >
+            <Input
+              label="Número da Fase"
+              icon={MdFormatListNumbered}
+              name="phase_number"
+              register={registerCreatePhase}
+              error={createPhaseErrors.phase_number?.message}
+            />
+
+            <Input
+              label="Número de Músicas"
+              icon={TbMusicPlus}
+              name="music_number"
+              register={registerCreatePhase}
+              error={createPhaseErrors.music_number?.message}
+            />
+
+            <Input
+              label="Quantos passam de Fase?"
+              icon={FaUserCheck}
+              name="passing_players"
+              register={registerCreatePhase}
+              error={createPhaseErrors.passing_players?.message}
+            />
+
+            <Select
+              label="Modos Jogados"
+              placeholder="Selecionar"
+              options={modeOptions}
+              name="modes_available"
+              register={registerCreatePhase}
+              error={createPhaseErrors.modes_available?.message}
+            />
+
+            <Button vanilla={false} type="submit" form="phase_create_form">
+              Criar Fase
+            </Button>
+          </FormWrapper>
+        </GlobalContainer>
+      </Modal>
+
+      {/* TODO: Button -> update Phase */}
+      {/* TODO: Button -> add Music to Phase */}
+      {/* TODO: Button -> remove Music to Phase */}
+
       <Table>
         <thead>
           <tr>
-            <th>Participantes</th>
+            <th>
+              Informações{" "}
+              <UpdateButton>
+                <FaEdit />
+              </UpdateButton>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nível Mínimo: {categoryData?.level_min}</td>
+          </tr>
+          <tr>
+            <td>Nível Máximo: {categoryData?.level_max}</td>
+          </tr>
+          <tr>
+            <td>Número de Fases: {categoryData?.number_of_phases}</td>
+          </tr>
+        </tbody>
+      </Table>
+
+      <Table>
+        <thead>
+          <tr>
+            <th>
+              Participantes{" "}
+              <UpdateButton>
+                <FaUserPlus />
+              </UpdateButton>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -205,7 +224,22 @@ const AdminDashboardCategory: FunctionComponent<
       <SmallScreenTableDisplay>
         {sortedPhases?.map((phase) => (
           <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
-            <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
+            <Table>
+              <thead>
+                <th>
+                  Fase {phase.phase_number}{" "}
+                  <UpdateButton>
+                    <FaEdit />
+                  </UpdateButton>{" "}
+                  <UpdateButton>
+                    <TbMusicPlus />
+                  </UpdateButton>
+                  <DeleteButton>
+                    <FaRegTrashCan />
+                  </DeleteButton>
+                </th>
+              </thead>
+            </Table>
             {categoryData?.players?.map((player) => (
               <Table
                 key={`phase-${phase.phase_number}-player-${player.player_id}`}
@@ -235,13 +269,18 @@ const AdminDashboardCategory: FunctionComponent<
                     const score: IScore | undefined = phase.scores?.find(
                       (s: IScore) =>
                         s.player.player_id === player.player_id &&
-                        s.music.music_id === music.music_id
+                        s.music.music_id === music.music_id,
                     );
                     return (
                       <ResponsiveTableRow
                         key={`player-${player.player_id}-music-${music.music_id}`}
                       >
-                        <ResponsiveTableCell>{music.name}</ResponsiveTableCell>
+                        <ResponsiveTableCell>
+                          {music.name}{" "}
+                          <DeleteButton>
+                            <TbMusicMinus />
+                          </DeleteButton>
+                        </ResponsiveTableCell>
                         <ResponsiveTableCell>
                           {score ? score.value : "-"}
                         </ResponsiveTableCell>
@@ -255,7 +294,7 @@ const AdminDashboardCategory: FunctionComponent<
                       {phase.scores
                         ?.filter(
                           (score: IScore) =>
-                            score.player.player_id === player.player_id
+                            score.player.player_id === player.player_id,
                         )
                         .reduce((acc, curr) => acc + curr.value, 0) || "-"}
                     </ResponsiveTableCell>
@@ -270,14 +309,32 @@ const AdminDashboardCategory: FunctionComponent<
       <LargeScreenTableDisplay>
         {sortedPhases?.map((phase: IPhase) => (
           <TableWrapper key={`phase-${phase.phase_number}`}>
-            <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
+            <Table>
+              <thead>
+                <th>
+                  Fase {phase.phase_number}
+                  <UpdateButton>
+                    <FaEdit />
+                  </UpdateButton>{" "}
+                  <UpdateButton>
+                    <TbMusicPlus />
+                  </UpdateButton>
+                  <DeleteButton>
+                    <FaRegTrashCan />
+                  </DeleteButton>
+                </th>
+              </thead>
+            </Table>
             <Table>
               <thead>
                 <TableRow>
                   <TableHeader>Player</TableHeader>
                   {phase.musics?.map((music) => (
                     <TableHeader key={`music-${music.music_id}`}>
-                      {music.name}
+                      {music.name}{" "}
+                      <DeleteButton>
+                        <TbMusicMinus />
+                      </DeleteButton>
                     </TableHeader>
                   ))}
                   <TableHeader>Total</TableHeader>
@@ -302,7 +359,7 @@ const AdminDashboardCategory: FunctionComponent<
                       const score: IScore | undefined = phase.scores?.find(
                         (s: IScore) =>
                           s.player.player_id === player.player_id &&
-                          s.music.music_id === music.music_id
+                          s.music.music_id === music.music_id,
                       );
                       return (
                         <TableCell
@@ -317,7 +374,7 @@ const AdminDashboardCategory: FunctionComponent<
                       {phase.scores
                         ?.filter(
                           (score: IScore) =>
-                            score.player.player_id === player.player_id
+                            score.player.player_id === player.player_id,
                         )
                         .reduce((acc, curr) => acc + curr.value, 0) || "-"}
                     </TableCell>

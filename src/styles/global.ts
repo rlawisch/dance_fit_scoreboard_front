@@ -63,10 +63,10 @@ export const PlayerMiniature = styled.img`
   width: 36px;
   height: 36px;
   border-radius: 50%;
-`
+`;
 
 export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;

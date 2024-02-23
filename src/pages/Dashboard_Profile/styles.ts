@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 export const ProfileWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 export const ProfilePicture = styled.img`
   width: 100px;
@@ -14,11 +14,10 @@ export const ProfilePicture = styled.img`
 `;
 
 export const ProfilePictureForm = styled.form`
-    width: 100%;
-`
+  width: 100%;
+`;
 
 export const UploadBtnWrapper = styled.div`
   display: flex;
   flex-direction: row;
-
-`
+`;

@@ -5,24 +5,27 @@ import Button from "../Button";
 interface ModalProps {
   isOpen: boolean;
   children: ReactNode | undefined;
-  onClose: () => void
+  onClose: () => void;
 }
 
-const Modal: FunctionComponent<ModalProps> = ({ isOpen, children, onClose }) => {
-
+const Modal: FunctionComponent<ModalProps> = ({
+  isOpen,
+  children,
+  onClose,
+}) => {
   const closeModal = () => {
-    onClose()
-  }
+    onClose();
+  };
 
   return (
-      <ModalWrapper isOpen={isOpen}>
-        <ModalContent>
-          {children}
-          <Button vanilla={false} onClick={() => closeModal()}>
-            Fechar
-          </Button>
-        </ModalContent>
-      </ModalWrapper>
+    <ModalWrapper isOpen={isOpen}>
+      <ModalContent>
+        {children}
+        <Button vanilla={false} onClick={() => closeModal()}>
+          Fechar
+        </Button>
+      </ModalContent>
+    </ModalWrapper>
   );
 };
 

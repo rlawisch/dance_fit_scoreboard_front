@@ -1,4 +1,3 @@
-
 export interface IEventCreate {
   name: string;
   status: boolean;
@@ -20,12 +19,27 @@ export interface IProfilePicFormData {
 }
 
 export interface IUpdateEventFormData {
-  name: string
+  name: string;
 }
 
 export interface ICategoryCreate {
-  name: string,
-  level_min: number,
-  level_max: number,
-  number_of_phases: number,
+  name: string;
+  level_min: number;
+  level_max: number;
+  number_of_phases: number;
+}
+
+export interface IPhaseFormCreate {
+  phase_number: number;
+  music_number: number;
+  modes_available: string;
+  passing_players: number;
+}
+
+export interface IPhaseRealCreate {
+  phase_number: number;
+  music_number: number;
+  modes_available: string[];
+  passing_players: number;
+  category_id: number;
 }

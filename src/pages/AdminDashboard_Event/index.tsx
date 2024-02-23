@@ -37,7 +37,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
 
   const { eventData, getEventData, updateEventData } = useEvent();
 
-  const { createCategory } = useCategory()
+  const { createCategory } = useCategory();
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -89,8 +89,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   });
 
   const onCreateCategoryFormSubmit = (formData: ICategoryCreate) => {
-
-    createCategory(formData, Number(event_id))
+    createCategory(formData, Number(event_id));
   };
 
   // TODO: Each Categorie will render a button to delete with confirmation modal
