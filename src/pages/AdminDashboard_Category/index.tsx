@@ -1,26 +1,28 @@
-import { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { GlobalContainer, PlayerMiniature } from "../../styles/global";
 import Button from "../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCategory } from "../../providers/Category";
-import { CategoryTitle, ScoreboardTable } from "./styles";
+import {
+  CategoryTitle,
+  LargeScreenTableDisplay,
+  PhaseTitle,
+  PlayerInfoWrapper,
+  ResponsiveTable,
+  ResponsiveTableCell,
+  ResponsiveTableHeader,
+  ResponsiveTableRow,
+  ResponsiveTableWrapper,
+  SmallScreenTableDisplay,
+  TableCell,
+  TableHeader,
+  TableRow,
+  TableWrapper,
+} from "./styles";
 import { Table, TableDataWrapper } from "../AdminDashboard_Event/styles";
-import { IPhase } from "../../types/entity-types";
-import React from "react";
+import { IPhase, IPlayer, IScore } from "../../types/entity-types";
 
 interface AdminDashboardCategoryProps {}
-
-interface ScoreSum {
-  [playerId: string]: number;
-}
-
-function calculateTotalColumns(phases: IPhase[] | undefined): number {
-  if (!phases) return 0;
-  return (
-    phases.reduce((acc, phase) => acc + (phase.musics?.length || 0), 0) + 1
-  );
-}
-
 
 const AdminDashboardCategory: FunctionComponent<
   AdminDashboardCategoryProps
@@ -35,27 +37,134 @@ const AdminDashboardCategory: FunctionComponent<
     getCategoryData(Number(category_id));
   }, []);
 
-  const [scoreSum, setScoreSum] = useState<ScoreSum>({});
+  const sortedPhases = categoryData?.phases?.sort(
+    (a, b) => a.phase_number - b.phase_number
+  );
 
-  useEffect(() => {
-    // Calculate sum of scores for each player
+  const renderLargeScreenTable = () => {
+    return sortedPhases?.map((phase: IPhase) => (
+      <TableWrapper key={`phase-${phase.phase_number}`}>
+        <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
+        <Table>
+          <thead>
+            <TableRow>
+              <TableHeader>Player</TableHeader>
+              {phase.musics?.map((music) => (
+                <TableHeader key={`music-${music.music_id}`}>
+                  {music.name}
+                </TableHeader>
+              ))}
+              <TableHeader>Total</TableHeader>
+            </TableRow>
+          </thead>
+          <tbody>
+            {categoryData?.players?.map((player) => (
+              <TableRow key={`player-${player.player_id}`}>
+                <TableCell>
+                  <PlayerInfoWrapper>
+                    <PlayerMiniature
+                      src={
+                        player.profilePicture ||
+                        "/src/assets/img/default_player.png"
+                      }
+                      alt={player.nickname}
+                    />
+                    {player.nickname}
+                  </PlayerInfoWrapper>
+                </TableCell>
+                {phase.musics?.map((music) => {
+                  const score: IScore | undefined = phase.scores?.find(
+                    (s: IScore) =>
+                      s.player.player_id === player.player_id &&
+                      s.music.music_id === music.music_id
+                  );
+                  return (
+                    <TableCell
+                      key={`score-${player.player_id}-${music.music_id}`}
+                    >
+                      {score ? score.value : "-"}
+                    </TableCell>
+                  );
+                })}
+                <TableCell>
+                  {/* Calculate total score for this phase */}
+                  {phase.scores
+                    ?.filter(
+                      (score: IScore) =>
+                        score.player.player_id === player.player_id
+                    )
+                    .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                </TableCell>
+              </TableRow>
+            ))}
+          </tbody>
+        </Table>
+      </TableWrapper>
+    ));
+  };
 
-    categoryData?.players?.forEach((player) => {
-      let totalScore = 0;
-      categoryData.phases?.forEach((phase) => {
-        phase.musics?.forEach((music) => {
-          const score = music.scores?.find(
-            (s) => s.player.player_id === player.player_id
-          );
-          if (score) {
-            totalScore += score.value;
-          }
-        });
-      });
-      scoreSum[player.player_id] = totalScore;
-    });
-    setScoreSum(scoreSum);
-  }, [categoryData]);
+  const renderSmallScreenTable = () => {
+    return sortedPhases?.map((phase) => (
+      <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
+        <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
+        {categoryData?.players?.map((player) => (
+          <Table key={`phase-${phase.phase_number}-player-${player.player_id}`}>
+            <thead>
+              <ResponsiveTableRow>
+                <ResponsiveTableHeader>Música</ResponsiveTableHeader>
+                <ResponsiveTableHeader>Score</ResponsiveTableHeader>
+              </ResponsiveTableRow>
+            </thead>
+            <tbody>
+              <ResponsiveTableRow>
+                <ResponsiveTableCell colSpan={2}>
+                  <PlayerInfoWrapper>
+                    <PlayerMiniature
+                      src={
+                        player.profilePicture ||
+                        "/src/assets/img/default_player.png"
+                      }
+                      alt={player.nickname}
+                    />
+                    {player.nickname}
+                  </PlayerInfoWrapper>
+                </ResponsiveTableCell>
+              </ResponsiveTableRow>
+              {phase.musics?.map((music) => {
+                const score: IScore | undefined = phase.scores?.find(
+                  (s: IScore) =>
+                    s.player.player_id === player.player_id &&
+                    s.music.music_id === music.music_id
+                );
+                return (
+                  <ResponsiveTableRow
+                    key={`player-${player.player_id}-music-${music.music_id}`}
+                  >
+                    <ResponsiveTableCell>{music.name}</ResponsiveTableCell>
+                    <ResponsiveTableCell>
+                      {score ? score.value : "-"}
+                    </ResponsiveTableCell>
+                  </ResponsiveTableRow>
+                );
+              })}
+              <ResponsiveTableRow>
+                <ResponsiveTableCell>Total</ResponsiveTableCell>
+                <ResponsiveTableCell>
+                  {/* Calculate total score for this phase */}
+                  {phase.scores
+                    ?.filter(
+                      (score: IScore) =>
+                        score.player.player_id === player.player_id
+                    )
+                    .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                </ResponsiveTableCell>
+              </ResponsiveTableRow>
+            </tbody>
+          </Table>
+        ))}
+      </ResponsiveTableWrapper>
+    ));
+  };
 
   return (
     <GlobalContainer>
@@ -93,64 +202,132 @@ const AdminDashboardCategory: FunctionComponent<
         </tbody>
       </Table>
 
-      {!!categoryData && (
-        <ScoreboardTable>
-          <thead>
-            <tr>
-              <th>Player</th>
-              {categoryData?.phases?.flatMap((phase) =>
-                phase.musics?.map((music) => (
-                  <th key={music.music_id}>{music.name}</th>
-                ))
-              )}
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {categoryData.phases?.map((phase) => (
-              <React.Fragment key={phase.phase_id}>
-                <tr>
-                  <td colSpan={calculateTotalColumns(categoryData?.phases) +1}>
-                    Fase {phase.phase_number}
-                  </td>
-                </tr>
-                {phase.musics &&
-                  phase.musics.length > 0 &&
-                  categoryData.players?.map((player) => (
-                    <tr key={player.player_id}>
-                      <td>
-                        <TableDataWrapper>
-                          <PlayerMiniature
-                            src={
-                              player.profilePicture
-                                ? player.profilePicture
-                                : "/src/assets/img/default_player.png"
-                            }
-                            alt="Mini Profile Picture"
-                          />
-                          {player.nickname}
-                        </TableDataWrapper>
-                      </td>
-                      {phase.musics?.map((music) => (
-                        <td key={music.music_id}>
-                          {
-                            music.scores?.find(
-                              (score) =>
-                                score.player.player_id === player.player_id
-                            )?.value
+      <SmallScreenTableDisplay>
+        {sortedPhases?.map((phase) => (
+          <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
+            <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
+            {categoryData?.players?.map((player) => (
+              <Table
+                key={`phase-${phase.phase_number}-player-${player.player_id}`}
+              >
+                <thead>
+                  <ResponsiveTableRow>
+                    <ResponsiveTableHeader>Música</ResponsiveTableHeader>
+                    <ResponsiveTableHeader>Score</ResponsiveTableHeader>
+                  </ResponsiveTableRow>
+                </thead>
+                <tbody>
+                  <ResponsiveTableRow>
+                    <ResponsiveTableCell colSpan={2}>
+                      <PlayerInfoWrapper>
+                        <PlayerMiniature
+                          src={
+                            player.profilePicture ||
+                            "/src/assets/img/default_player.png"
                           }
-                        </td>
-                      ))}
-                      <td>{scoreSum[player.player_id]}</td>
-                    </tr>
-                  ))}
-              </React.Fragment>
+                          alt={player.nickname}
+                        />
+                        {player.nickname}
+                      </PlayerInfoWrapper>
+                    </ResponsiveTableCell>
+                  </ResponsiveTableRow>
+                  {phase.musics?.map((music) => {
+                    const score: IScore | undefined = phase.scores?.find(
+                      (s: IScore) =>
+                        s.player.player_id === player.player_id &&
+                        s.music.music_id === music.music_id
+                    );
+                    return (
+                      <ResponsiveTableRow
+                        key={`player-${player.player_id}-music-${music.music_id}`}
+                      >
+                        <ResponsiveTableCell>{music.name}</ResponsiveTableCell>
+                        <ResponsiveTableCell>
+                          {score ? score.value : "-"}
+                        </ResponsiveTableCell>
+                      </ResponsiveTableRow>
+                    );
+                  })}
+                  <ResponsiveTableRow>
+                    <ResponsiveTableCell>Total</ResponsiveTableCell>
+                    <ResponsiveTableCell>
+                      {/* Calculate total score for this phase */}
+                      {phase.scores
+                        ?.filter(
+                          (score: IScore) =>
+                            score.player.player_id === player.player_id
+                        )
+                        .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                    </ResponsiveTableCell>
+                  </ResponsiveTableRow>
+                </tbody>
+              </Table>
             ))}
-          </tbody>
-        </ScoreboardTable>
-      )}
+          </ResponsiveTableWrapper>
+        ))}
+      </SmallScreenTableDisplay>
 
-
+      <LargeScreenTableDisplay>
+        {sortedPhases?.map((phase: IPhase) => (
+          <TableWrapper key={`phase-${phase.phase_number}`}>
+            <PhaseTitle>Fase {phase.phase_number}</PhaseTitle>
+            <Table>
+              <thead>
+                <TableRow>
+                  <TableHeader>Player</TableHeader>
+                  {phase.musics?.map((music) => (
+                    <TableHeader key={`music-${music.music_id}`}>
+                      {music.name}
+                    </TableHeader>
+                  ))}
+                  <TableHeader>Total</TableHeader>
+                </TableRow>
+              </thead>
+              <tbody>
+                {categoryData?.players?.map((player) => (
+                  <TableRow key={`player-${player.player_id}`}>
+                    <TableCell>
+                      <PlayerInfoWrapper>
+                        <PlayerMiniature
+                          src={
+                            player.profilePicture ||
+                            "/src/assets/img/default_player.png"
+                          }
+                          alt={player.nickname}
+                        />
+                        {player.nickname}
+                      </PlayerInfoWrapper>
+                    </TableCell>
+                    {phase.musics?.map((music) => {
+                      const score: IScore | undefined = phase.scores?.find(
+                        (s: IScore) =>
+                          s.player.player_id === player.player_id &&
+                          s.music.music_id === music.music_id
+                      );
+                      return (
+                        <TableCell
+                          key={`score-${player.player_id}-${music.music_id}`}
+                        >
+                          {score ? score.value : "-"}
+                        </TableCell>
+                      );
+                    })}
+                    <TableCell>
+                      {/* Calculate total score for this phase */}
+                      {phase.scores
+                        ?.filter(
+                          (score: IScore) =>
+                            score.player.player_id === player.player_id
+                        )
+                        .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </tbody>
+            </Table>
+          </TableWrapper>
+        ))}
+      </LargeScreenTableDisplay>
     </GlobalContainer>
   );
 };

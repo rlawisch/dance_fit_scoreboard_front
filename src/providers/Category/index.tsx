@@ -106,6 +106,25 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   // update category
 
+  // delete category
+
+  const deleteCategory = (category_id: number) => {
+    hasAdminRights();
+
+    api
+      .delete(`/categories/${category_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        
+      })
+      .catch((err: any) => {
+        console.log(err)
+      });
+  };
+
   return (
     <CategoryContext.Provider
       value={{ categoryData, getCategoryData, createCategory, joinCategory }}
