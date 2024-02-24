@@ -43,3 +43,15 @@ export interface IPhaseRealCreate {
   passing_players: number;
   category_id: number;
 }
+
+export interface IPhaseFormUpdate {
+  music_number?: number
+  modes_available?: string 
+  passing_players?: number 
+}
+
+export interface IPhaseRealUpdate {
+  music_number?: number 
+  modes_available?: string[] 
+  passing_players?: number 
+}

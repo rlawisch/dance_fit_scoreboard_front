@@ -90,8 +90,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       .catch((err: any) => {
         console.log(err);
 
-        if (err.response.data.message === "Player already in Event") {
-          toast.error("Você já faz parte deste Evento");
+        if (err.response.data.message === "Player already assigned to this event") {
+          toast.error("Você já faz parte deste evento");
         }
       });
   };

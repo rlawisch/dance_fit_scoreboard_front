@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
 import {
-  FormWrapper,
   GlobalContainer,
   PlayerMiniature,
 } from "../../styles/global";
@@ -17,16 +16,10 @@ import {
 } from "./styles";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ICategoryCreate, IUpdateEventFormData } from "../../types/form-types";
-import Input from "../../components/Input";
-import { MdDriveFileRenameOutline } from "react-icons/md";
 import UpdateButton from "../../components/Button_Update";
 import useModal from "../../providers/Modal";
-import { FaArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
-import { useCategory } from "../../providers/Category";
+import EventUpdateForm from "../../components/Forms/EventUpdate";
+import CategoryCreateForm from "../../components/Forms/CategoryCreate";
 
 interface AdminDashboardEventProps {}
 
@@ -35,9 +28,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
 
   const navigate = useNavigate();
 
-  const { eventData, getEventData, updateEventData } = useEvent();
-
-  const { createCategory } = useCategory();
+  const { eventData, getEventData } = useEvent();
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -57,43 +48,6 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
     closeModal: closeCategoryCreateModal,
   } = useModal();
 
-  const updateEventFormSchema = yup.object().shape({
-    name: yup.string().required("Preencha este campo"),
-  });
-
-  const {
-    register: registerUpdateEvent,
-    handleSubmit: handleSubmitUpdateEvent,
-    formState: { errors: updateEventErrors },
-  } = useForm({
-    resolver: yupResolver(updateEventFormSchema),
-  });
-
-  const onUpdateEventFormSubmit = (formData: IUpdateEventFormData) => {
-    updateEventData(Number(event_id), formData);
-  };
-
-  const createCategoryFormSchema = yup.object().shape({
-    name: yup.string().required("Preencha este campo"),
-    level_min: yup.number().required("Preencha este campo"),
-    level_max: yup.number().required("Preencha este campo"),
-    number_of_phases: yup.number().required("Preencha este campo"),
-  });
-
-  const {
-    register: registerCreateCategory,
-    handleSubmit: handleSubmitCreateCategory,
-    formState: { errors: createCategoryErrors },
-  } = useForm({
-    resolver: yupResolver(createCategoryFormSchema),
-  });
-
-  const onCreateCategoryFormSubmit = (formData: ICategoryCreate) => {
-    createCategory(formData, Number(event_id));
-  };
-
-  // TODO: Each Categorie will render a button to delete with confirmation modal
-
   return (
     <GlobalContainer>
       <AdminDashboardEventContainer>
@@ -111,75 +65,11 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
         </UpdateButton>
 
         <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
-          <GlobalContainer>
-            Alterar informações do Evento: {eventData?.name}
-            <FormWrapper
-              id="update_event_form"
-              onSubmit={handleSubmitUpdateEvent(onUpdateEventFormSubmit)}
-            >
-              <Input
-                label="Nome"
-                icon={MdDriveFileRenameOutline}
-                name="name"
-                register={registerUpdateEvent}
-                error={updateEventErrors.name?.message}
-              />
-
-              <UpdateButton
-                vanilla={false}
-                type="submit"
-                form="update_event_form"
-              >
-                Atualizar
-              </UpdateButton>
-            </FormWrapper>
-          </GlobalContainer>
+          <EventUpdateForm event={eventData}/>
         </Modal>
 
         <Modal isOpen={isOpenCategoryCreate} onClose={closeCategoryCreateModal}>
-          <GlobalContainer>
-            Criar Categoria:
-            <FormWrapper
-              id="create_category_form"
-              onSubmit={handleSubmitCreateCategory(onCreateCategoryFormSubmit)}
-            >
-              <Input
-                label="Nome"
-                icon={MdDriveFileRenameOutline}
-                name="name"
-                register={registerCreateCategory}
-                error={createCategoryErrors.name?.message}
-              />
-
-              <Input
-                label="Nivel mínimo"
-                icon={FaArrowAltCircleDown}
-                name="level_min"
-                register={registerCreateCategory}
-                error={createCategoryErrors.level_min?.message}
-              />
-
-              <Input
-                label="Nível máximo"
-                icon={FaArrowAltCircleUp}
-                name="level_max"
-                register={registerCreateCategory}
-                error={createCategoryErrors.level_max?.message}
-              />
-
-              <Input
-                label="Número de Fases"
-                icon={MdDriveFileRenameOutline}
-                name="number_of_phases"
-                register={registerCreateCategory}
-                error={createCategoryErrors.number_of_phases?.message}
-              />
-
-              <Button vanilla={false} type="submit" form="create_category_form">
-                Criar
-              </Button>
-            </FormWrapper>
-          </GlobalContainer>
+          <CategoryCreateForm event={eventData}/>
         </Modal>
 
         <Table>

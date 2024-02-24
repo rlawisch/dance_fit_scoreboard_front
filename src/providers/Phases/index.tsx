@@ -3,13 +3,13 @@ import api from "../../services/api";
 import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
-import { IPhase } from "../../types/entity-types";
-import { IPhaseRealCreate } from "../../types/form-types";
+import { IPhaseRealCreate, IPhaseRealUpdate } from "../../types/form-types";
 import { useNavigate } from "react-router-dom";
 import { useCategory } from "../Category";
 
 export interface IPhasesContext {
   createPhase: (formData: IPhaseRealCreate) => void;
+  updatePhase: (formData: IPhaseRealUpdate, phase_id: number) => void;
 }
 
 const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
@@ -43,7 +43,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         if (res.status === 201) {
           toast.success("Fase criada com sucesso");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`,
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
           );
         } else {
           toast.error("Algo deu errado");
@@ -58,7 +58,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         ) {
           toast.error("A categoria atingiu o limite máximo de fases");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`,
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
           );
         } else if (
           err.response.data.message ===
@@ -66,14 +66,56 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         ) {
           toast.error("Uma fase com este número já existe");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`,
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          );
+        }
+      });
+  };
+
+  const updatePhase = (formData: IPhaseRealUpdate, phase_id: number) => {
+    hasAdminRights();
+
+    api
+      .patch(`/phases/${phase_id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Informações da fase atualizadas");
+        }
+        navigate(
+          `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+        );
+      })
+      .catch((err: any) => {
+        if (
+          err.response.data.message ===
+          "Cannot set music number lower than the actual number of musics already assigned to this phase"
+        ) {
+          toast.error(
+            "Não é possível atualizar o número de músicas da fase para um número menor do que o número de músicas que já estão cadastradas nesta fase"
+          );
+          navigate(
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          );
+        } else if (
+          err.response.data.message ===
+          "Music modes cannot be updated since there are musics in this phase that will not respect the new modes available"
+        ) {
+          toast.error(
+            "Não é possível atualizar os modos disponíveis na fase pois uma música presente na fase não estará dentro dos modos escolhidos"
+          );
+          navigate(
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
           );
         }
       });
   };
 
   return (
-    <PhasesContext.Provider value={{ createPhase }}>
+    <PhasesContext.Provider value={{ createPhase, updatePhase }}>
       {children}
     </PhasesContext.Provider>
   );
