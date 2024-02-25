@@ -1,5 +1,5 @@
 import { FunctionComponent } from "react";
-import { FormWrapper } from "../../../styles/global";
+import { FormWrapper, GlobalContainer } from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -55,47 +55,49 @@ const PhaseCreateForm: FunctionComponent<PhaseCreateFormProps> = ({
   };
 
   return (
-    <FormWrapper
-      id="phase_create_form"
-      onSubmit={handleSubmitCreatePhase(onCreatePhaseFormSubmit)}
-    >
-      <Input
-        label="Número da Fase"
-        icon={MdFormatListNumbered}
-        name="phase_number"
-        register={registerCreatePhase}
-        error={createPhaseErrors.phase_number?.message}
-      />
+    <GlobalContainer>
+      <FormWrapper
+        id="phase_create_form"
+        onSubmit={handleSubmitCreatePhase(onCreatePhaseFormSubmit)}
+      >
+        <Input
+          label="Número da Fase"
+          icon={MdFormatListNumbered}
+          name="phase_number"
+          register={registerCreatePhase}
+          error={createPhaseErrors.phase_number?.message}
+        />
 
-      <Input
-        label="Número de Músicas"
-        icon={TbMusicPlus}
-        name="music_number"
-        register={registerCreatePhase}
-        error={createPhaseErrors.music_number?.message}
-      />
+        <Input
+          label="Número de Músicas"
+          icon={TbMusicPlus}
+          name="music_number"
+          register={registerCreatePhase}
+          error={createPhaseErrors.music_number?.message}
+        />
 
-      <Input
-        label="Quantos passam de Fase?"
-        icon={FaUserCheck}
-        name="passing_players"
-        register={registerCreatePhase}
-        error={createPhaseErrors.passing_players?.message}
-      />
+        <Input
+          label="Quantos passam de Fase?"
+          icon={FaUserCheck}
+          name="passing_players"
+          register={registerCreatePhase}
+          error={createPhaseErrors.passing_players?.message}
+        />
 
-      <Select
-        label="Modos Jogados"
-        placeholder="Selecionar"
-        options={modeOptions}
-        name="modes_available"
-        register={registerCreatePhase}
-        error={createPhaseErrors.modes_available?.message}
-      />
+        <Select
+          label="Modos Jogados"
+          placeholder="Selecionar"
+          options={modeOptions}
+          name="modes_available"
+          register={registerCreatePhase}
+          error={createPhaseErrors.modes_available?.message}
+        />
 
-      <Button vanilla={false} type="submit" form="phase_create_form">
-        Criar Fase
-      </Button>
-    </FormWrapper>
+        <Button vanilla={false} type="submit" form="phase_create_form">
+          Criar Fase
+        </Button>
+      </FormWrapper>
+    </GlobalContainer>
   );
 };
 

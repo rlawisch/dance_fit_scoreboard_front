@@ -55,3 +55,9 @@ export interface IPhaseRealUpdate {
   modes_available?: string[] 
   passing_players?: number 
 }
+
+export interface IMusicCreate {
+  name: string,
+  level: number,
+  mode: string
+}

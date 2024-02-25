@@ -1,7 +1,7 @@
 import { FunctionComponent, useEffect } from "react";
 import { RiExpandLeftLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-import { TbLogout2 } from "react-icons/tb";
+import { TbLogout2, TbMusicShare } from "react-icons/tb";
 import { usePlayer } from "../../providers/Players";
 import { IoHomeOutline } from "react-icons/io5";
 import { useDashboard } from "../../providers/Dashboard";
@@ -83,6 +83,14 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
         >
           <GrValidate />
           {sideBarStatus ? "Validar Scores" : ""}
+        </SidebarLi>
+
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/admin/musics")}
+        >
+          <TbMusicShare />
+          {sideBarStatus ? "Músicas" : ""}
         </SidebarLi>
 
         <SidebarLi

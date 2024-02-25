@@ -1,5 +1,9 @@
 import { FunctionComponent, useEffect } from "react";
-import { GlobalContainer, PlayerMiniature } from "../../styles/global";
+import {
+  GlobalContainer,
+  MusicLevelMiniature,
+  PlayerMiniature,
+} from "../../styles/global";
 import Button from "../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCategory } from "../../providers/Category";
@@ -29,6 +33,7 @@ import Modal from "../../components/Modal";
 import PhaseCreateForm from "../../components/Forms/PhaseCreate";
 import useDynamicModal from "../../providers/DynamicModal";
 import PhaseUpdateForm from "../../components/Forms/PhaseUpdate";
+import { MusicWrapper } from "../AdminDashboard_Musics/styles";
 
 interface AdminDashboardCategoryProps {}
 
@@ -75,9 +80,7 @@ const AdminDashboardCategory: FunctionComponent<
 
       <UpdateButton onClick={openPhaseCreateModal}>Criar Fase</UpdateButton>
       <Modal isOpen={isOpenPhaseCreate} onClose={closePhaseCreateModal}>
-        <GlobalContainer>
           <PhaseCreateForm category_id={categoryData?.category_id} />
-        </GlobalContainer>
       </Modal>
 
       {/* TODO: Button -> update Phase */}
@@ -206,10 +209,15 @@ const AdminDashboardCategory: FunctionComponent<
                         key={`player-${player.player_id}-music-${music.music_id}`}
                       >
                         <ResponsiveTableCell>
-                          {music.name}{" "}
-                          <DeleteButton>
-                            <TbMusicMinus />
-                          </DeleteButton>
+                          <MusicWrapper>
+                            {music.name}
+                            <MusicLevelMiniature
+                              src={`/src/assets/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                            />
+                            <DeleteButton>
+                              <TbMusicMinus />
+                            </DeleteButton>
+                          </MusicWrapper>
                         </ResponsiveTableCell>
                         <ResponsiveTableCell>
                           {score ? score.value : "-"}
@@ -268,13 +276,18 @@ const AdminDashboardCategory: FunctionComponent<
             <Table>
               <thead>
                 <TableRow>
-                  <TableHeader>Player</TableHeader>
+                  <TableHeader>Jogador</TableHeader>
                   {phase.musics?.map((music) => (
                     <TableHeader key={`music-${music.music_id}`}>
-                      {music.name}
-                      <DeleteButton>
-                        <TbMusicMinus />
-                      </DeleteButton>
+                      <MusicWrapper>
+                            {music.name}
+                            <MusicLevelMiniature
+                              src={`/src/assets/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                            />
+                            <DeleteButton>
+                              <TbMusicMinus />
+                            </DeleteButton>
+                          </MusicWrapper>
                     </TableHeader>
                   ))}
                   <TableHeader>Total</TableHeader>

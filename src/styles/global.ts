@@ -70,3 +70,9 @@ export const FormWrapper = styled.form`
   flex-direction: column;
   align-items: center;
 `;
+
+export const MusicLevelMiniature = styled.img`
+  width: 40px;
+  height: 40px;
+
+`
