@@ -11,6 +11,7 @@ export interface ICategoryContext {
   categoryData: ICategory | undefined;
   getCategoryData: (category_id: number) => void;
   createCategory: (formData: ICategoryCreate, event_id: number) => void;
+  deleteCategory: (category_id: number) => void
   joinCategory: (category_id: number) => void;
 }
 
@@ -122,7 +123,9 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           Authorization: `Bearer ${accToken}`,
         },
       })
-      .then((res) => {})
+      .then((res) => {
+        console.log(res)
+      })
       .catch((err: any) => {
         console.log(err);
       });
@@ -130,7 +133,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <CategoryContext.Provider
-      value={{ categoryData, getCategoryData, createCategory, joinCategory }}
+      value={{ categoryData, getCategoryData, createCategory, joinCategory, deleteCategory }}
     >
       {children}
     </CategoryContext.Provider>
