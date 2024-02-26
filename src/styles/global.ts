@@ -43,12 +43,9 @@ export const GlobalContainer = styled.div`
   border-radius: 0.5rem;
   padding: 1rem;
   margin: 0.5rem;
-  background-color: ${(props) => shade(-0.4, props.theme.colors.background)};
+  background-color: ${(props) => shade(-0.1, props.theme.colors.background)};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   color: ${(props) => props.theme.colors.text};
-
-  @media screen and (min-width: 576px) {
-  }
 `;
 
 interface DashboardContainerProps {
@@ -61,3 +58,27 @@ export const DashboardContainer = styled.main<DashboardContainerProps>`
   height: auto;
   box-sizing: border-box;
 `;
+
+export const PlayerMiniature = styled.img`
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+`;
+
+export const FormWrapper = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const MusicLevelMiniature = styled.img`
+  width: 40px;
+  height: 40px;
+
+`
+
+export const DeleteWarning = styled.p`
+    color: red;
+    font-weight: bold;
+
+`

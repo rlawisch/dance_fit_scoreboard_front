@@ -1,10 +1,15 @@
 import { FunctionComponent, useEffect } from "react";
-import { GlobalContainer } from "../../styles/global";
+import { GlobalContainer, PlayerMiniature } from "../../styles/global";
 import { DashboardEventContainer } from "./styles";
 import Button from "../../components/Button";
 import { Link, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
+import {
+  EventTitle,
+  Table,
+  TableDataWrapper,
+} from "../AdminDashboard_Event/styles";
 
 interface DashboardEventProps {}
 
@@ -29,27 +34,52 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
         <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
           Participar
         </Button>
-        <h1>{!!eventData && eventData.name}</h1>
 
-        <h2>Participantes:</h2>
+        <EventTitle>{!!eventData && eventData.name}</EventTitle>
 
-        {!!eventData &&
-          eventData.players?.map((p) => {
-            return <h3 key={p.player_id}>{p.nickname}</h3>;
-          })}
+        <Table>
+          <thead>
+            <tr>
+              <th>Participantes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {!!eventData &&
+              eventData.players?.map((p) => (
+                <tr key={p.player_id}>
+                  <td>
+                    <TableDataWrapper>
+                      <PlayerMiniature
+                        src={
+                          p.profilePicture
+                            ? p.profilePicture
+                            : "/src/assets/img/default_player.png"
+                        }
+                        alt="Mini Profile Picture"
+                      />
+                      {p.nickname}
+                    </TableDataWrapper>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
 
-        <h2>Categorias:</h2>
-
-        {!!eventData &&
-          eventData.categories?.map((c) => {
-            return (
-              <div key={c.category_id}>
-                <h3>{c.name}</h3>
-                <p>Nivel mínimo: {c.level_min}</p>
-                <p>Nivel máximo: {c.level_max}</p>
-              </div>
-            );
-          })}
+        <Table>
+          <thead>
+            <tr>
+              <th>Categorias</th>
+            </tr>
+          </thead>
+          <tbody>
+            {!!eventData &&
+              eventData.categories?.map((c) => (
+                <tr key={c.category_id}>
+                  <td>{c.name}</td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
       </DashboardEventContainer>
     </GlobalContainer>
   );

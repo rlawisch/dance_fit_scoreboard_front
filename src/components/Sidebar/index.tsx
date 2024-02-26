@@ -19,6 +19,7 @@ import { TbLogout2 } from "react-icons/tb";
 import { usePlayer } from "../../providers/Players";
 import { IoHomeOutline } from "react-icons/io5";
 import { useDashboard } from "../../providers/Dashboard";
+import { FaRegCircleUser } from "react-icons/fa6";
 
 interface SidebarProps {}
 
@@ -51,7 +52,11 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         <ProfilePictureWrapper>
           <ProfilePicture
             isopen={sideBarStatus}
-            src={playerData?.profilePicture}
+            src={
+              playerData?.profilePicture
+                ? playerData?.profilePicture
+                : `/src/assets/img/default_player.png`
+            }
             alt="Profile Picture"
           />
         </ProfilePictureWrapper>
@@ -84,6 +89,14 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         >
           <GiMusicalScore />
           {sideBarStatus ? <p>Scores</p> : ""}
+        </SidebarLi>
+
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/dashboard/profile")}
+        >
+          <FaRegCircleUser />
+          {sideBarStatus ? <p>Perfil</p> : ""}
         </SidebarLi>
 
         {decodedPlayerInfo.role === "admin" && (

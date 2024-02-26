@@ -1,52 +1,31 @@
-import { FunctionComponent, ReactNode, useState } from "react";
+import { FunctionComponent, ReactNode } from "react";
 import { ModalContent, ModalWrapper } from "./styles";
 import Button from "../Button";
-import UpdateButton from "../Button_Update";
-import DeleteButton from "../Button_Delete";
 
 interface ModalProps {
   isOpen: boolean;
   children: ReactNode | undefined;
-  actionType?: "update" | "delete";
-  openingText: string;
+  onClose: () => void;
 }
 
-const Modal: FunctionComponent<ModalProps> = (props) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const toggleModal = () => {
-    setIsOpen(!isOpen);
-  };
-
+const Modal: FunctionComponent<ModalProps> = ({
+  isOpen,
+  children,
+  onClose,
+}) => {
   const closeModal = () => {
-    setIsOpen(false);
+    onClose();
   };
 
   return (
-    <div>
-      {!props.actionType && (
-        <Button vanilla={true} onClick={() => toggleModal()}>
-          {props.openingText}
+    <ModalWrapper isOpen={isOpen}>
+      <ModalContent>
+        {children}
+        <Button vanilla={false} onClick={() => closeModal()}>
+          Fechar
         </Button>
-      )}
-
-      {props.actionType === "update" && (
-        <UpdateButton onClick={() => toggleModal()}>{props.openingText}</UpdateButton>
-      )}
-
-      {props.actionType === "delete" && (
-        <DeleteButton onClick={() => toggleModal()}>{props.openingText}</DeleteButton>
-      )}
-
-      <ModalWrapper isOpen={isOpen}>
-        <ModalContent>
-          {props.children}
-          <Button vanilla={false} onClick={() => closeModal()}>
-            Fechar
-          </Button>
-        </ModalContent>
-      </ModalWrapper>
-    </div>
+      </ModalContent>
+    </ModalWrapper>
   );
 };
 

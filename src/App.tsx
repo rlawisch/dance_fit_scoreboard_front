@@ -19,7 +19,7 @@ function App() {
   return (
     <main>
       <ThemeProvider theme={theme}>
-        <ToastContainer autoClose={5000} />
+        <ToastContainer autoClose={5000} style={{ zIndex: "1000" }} />
         <GlobalStyle />
         <Header toggleTheme={toggleTheme} />
         <Routing />

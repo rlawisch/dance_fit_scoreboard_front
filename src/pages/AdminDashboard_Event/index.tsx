@@ -1,88 +1,129 @@
 import { FunctionComponent, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
-import { GlobalContainer } from "../../styles/global";
+import {
+  GlobalContainer,
+  PlayerMiniature,
+} from "../../styles/global";
 import {
   AdminDashboardEventContainer,
-  EventTitleWrapper,
-  EventTopButtonWrapper,
+  CategoryTable,
+  TableHeaderWrapper,
+  EventTitle,
   Table,
+  TableDataWrapper,
 } from "./styles";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
+import UpdateButton from "../../components/Button_Update";
+import useModal from "../../providers/Modal";
+import EventUpdateForm from "../../components/Forms/EventUpdate";
+import CategoryCreateForm from "../../components/Forms/CategoryCreate";
 
 interface AdminDashboardEventProps {}
 
 const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
   const { event_id } = useParams();
 
-  const { eventData, getEventData } = useEvent();
+  const navigate = useNavigate();
 
-  const { joinEvent } = useEvents();
+  const { eventData, getEventData } = useEvent();
 
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
+  const { joinEvent } = useEvents();
+
+  const {
+    isOpen: isOpenEventUpdate,
+    openModal: openEventUpdateModal,
+    closeModal: closeEventUpdateModal,
+  } = useModal();
+
+  const {
+    isOpen: isOpenCategoryCreate,
+    openModal: openCategoryCreateModal,
+    closeModal: closeCategoryCreateModal,
+  } = useModal();
+
   return (
     <GlobalContainer>
       <AdminDashboardEventContainer>
-        <EventTopButtonWrapper>
-          <Link to={"/admin/events"}>
-            <Button vanilla={true}>Voltar</Button>
-          </Link>
+        <Link to={"/admin/events"}>
+          <Button vanilla={true}>Voltar</Button>
+        </Link>
 
-          <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
-            Participar
-          </Button>
-        </EventTopButtonWrapper>
+        <EventTitle>{!!eventData && eventData.name}</EventTitle>
 
-        <EventTitleWrapper>
-          <h1>{!!eventData && eventData.name}</h1>
-          
-          <Modal isOpen={false} openingText="Editar" actionType="update">
-            <GlobalContainer>
-              Alterar informações do Evento: {eventData?.name}
-            </GlobalContainer>
-          </Modal>
-        </EventTitleWrapper>
+        <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
+          Participar
+        </Button>
+        <UpdateButton onClick={openEventUpdateModal}>
+          Editar Evento
+        </UpdateButton>
+
+        <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
+          <EventUpdateForm event={eventData}/>
+        </Modal>
+
+        <Modal isOpen={isOpenCategoryCreate} onClose={closeCategoryCreateModal}>
+          <CategoryCreateForm event={eventData}/>
+        </Modal>
 
         <Table>
           <thead>
             <tr>
-              <th>Participantes</th>
+              <TableHeaderWrapper>
+                <h4>Participantes</h4>
+                <UpdateButton>+</UpdateButton>
+              </TableHeaderWrapper>
             </tr>
           </thead>
           <tbody>
             {!!eventData &&
               eventData.players?.map((p) => (
                 <tr key={p.player_id}>
-                  <td>{p.nickname}</td>
+                  <td>
+                    <TableDataWrapper>
+                      <PlayerMiniature
+                        src={
+                          p.profilePicture
+                            ? p.profilePicture
+                            : "/src/assets/img/default_player.png"
+                        }
+                        alt="Mini Profile Picture"
+                      />
+                      {p.nickname}
+                    </TableDataWrapper>
+                  </td>
                 </tr>
               ))}
           </tbody>
         </Table>
 
-        <Table>
+        <CategoryTable>
           <thead>
             <tr>
-              <th>Categoria</th>
-              <th>Level Mín.</th>
-              <th>Level Máx.</th>
+              <TableHeaderWrapper>
+                <h4>Categorias</h4>
+                <UpdateButton onClick={openCategoryCreateModal}>+</UpdateButton>
+              </TableHeaderWrapper>
             </tr>
           </thead>
           <tbody>
             {!!eventData &&
               eventData.categories?.map((c) => (
-                <tr key={c.category_id}>
+                <tr
+                  key={c.category_id}
+                  onClick={() => navigate(`categories/${c.category_id}`)}
+                >
                   <td>{c.name}</td>
-                  <td>{c.level_min}</td>
-                  <td>{c.level_max}</td>
                 </tr>
               ))}
           </tbody>
-        </Table>
+        </CategoryTable>
       </AdminDashboardEventContainer>
     </GlobalContainer>
   );

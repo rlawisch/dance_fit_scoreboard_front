@@ -12,16 +12,21 @@ export const ModalWrapper = styled.div<ModalWrapperProps>`
   width: 100%;
   height: 100%;
   background: ${(props) => props.theme.colors.background};
-  z-index: 9999;
+  z-index: 999;
 `;
 
 export const ModalContent = styled.div`
   background: ${(props) => props.theme.colors.primary};
   color: ${(props) => props.theme.colors.text};
   padding: 20px;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   position: absolute;
+  min-width: 300px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;

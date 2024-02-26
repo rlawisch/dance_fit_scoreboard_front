@@ -38,6 +38,7 @@ const Login = () => {
 
         <form id="login_form" onSubmit={handleSubmit(onFormSubmit)}>
           <Input
+            label="Nickname"
             icon={AiOutlineUser}
             name="nickname"
             register={register}
@@ -45,6 +46,7 @@ const Login = () => {
           />
 
           <Input
+            label="Senha"
             icon={PiPassword}
             name="password"
             type="password"

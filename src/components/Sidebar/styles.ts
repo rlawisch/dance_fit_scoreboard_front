@@ -117,7 +117,7 @@ export const PlayerInfoWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`
+`;
 
 export const ProfilePictureWrapper = styled.div`
   position: relative;
@@ -139,13 +139,13 @@ export const ProfilePicture = styled.img<ProfilePictureProps>`
 `;
 
 export const Nickname = styled.h2<NicknameProps>`
-  color: ${props => props.theme.colors.primary};
-  display: ${props => props.isopen ? 'block' : 'none'};
+  color: ${(props) => props.theme.colors.primary};
+  display: ${(props) => (props.isopen ? "block" : "none")};
   transition: display 250ms ease;
-`
+`;
 
 export const Role = styled.span<RoleProps>`
-  color: ${props => props.theme.colors.primary};
-  display: ${props => props.isopen ? 'block' : 'none'};
+  color: ${(props) => props.theme.colors.primary};
+  display: ${(props) => (props.isopen ? "block" : "none")};
   margin-top: 1rem;
-`
+`;
