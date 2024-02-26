@@ -76,3 +76,9 @@ export const MusicLevelMiniature = styled.img`
   height: 40px;
 
 `
+
+export const DeleteWarning = styled.p`
+    color: red;
+    font-weight: bold;
+
+`

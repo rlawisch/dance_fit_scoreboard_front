@@ -61,3 +61,9 @@ export interface IMusicCreate {
   level: number,
   mode: string
 }
+
+export interface IMusicUpdate {
+  name?: string,
+  level?: number,
+  mode?: string
+}
