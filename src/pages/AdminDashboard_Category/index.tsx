@@ -132,7 +132,7 @@ const AdminDashboardCategory: FunctionComponent<
                       src={
                         p.profilePicture
                           ? p.profilePicture
-                          : "/src/assets/img/default_player.png"
+                          : "/img/default_player.png"
                       }
                       alt="Mini Profile Picture"
                     />
@@ -190,7 +190,7 @@ const AdminDashboardCategory: FunctionComponent<
                         <PlayerMiniature
                           src={
                             player.profilePicture ||
-                            "/src/assets/img/default_player.png"
+                            "/img/default_player.png"
                           }
                           alt={player.nickname}
                         />
@@ -212,7 +212,7 @@ const AdminDashboardCategory: FunctionComponent<
                           <MusicWrapper>
                             {music.name}
                             <MusicLevelMiniature
-                              src={`/public/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                              src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                             />
                             <DeleteButton>
                               <TbMusicMinus />
@@ -282,7 +282,7 @@ const AdminDashboardCategory: FunctionComponent<
                       <MusicWrapper>
                             {music.name}
                             <MusicLevelMiniature
-                              src={`/public/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                              src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                             />
                             <DeleteButton>
                               <TbMusicMinus />
@@ -301,7 +301,7 @@ const AdminDashboardCategory: FunctionComponent<
                         <PlayerMiniature
                           src={
                             player.profilePicture ||
-                            "/src/assets/img/default_player.png"
+                            "/img/default_player.png"
                           }
                           alt={player.nickname}
                         />

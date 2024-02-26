@@ -49,7 +49,7 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
             src={
               !!playerData?.profilePicture
                 ? playerData?.profilePicture
-                : `/src/assets/img/default_player.png`
+                : `/img/default_player.png`
             }
             alt="Profile Picture"
           />
