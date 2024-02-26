@@ -91,7 +91,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
                         src={
                           p.profilePicture
                             ? p.profilePicture
-                            : "/src/assets/img/default_player.png"
+                            : "/img/default_player.png"
                         }
                         alt="Mini Profile Picture"
                       />
