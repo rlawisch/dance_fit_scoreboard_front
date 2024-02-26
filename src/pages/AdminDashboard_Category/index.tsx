@@ -212,7 +212,7 @@ const AdminDashboardCategory: FunctionComponent<
                           <MusicWrapper>
                             {music.name}
                             <MusicLevelMiniature
-                              src={`/src/assets/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                              src={`/public/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                             />
                             <DeleteButton>
                               <TbMusicMinus />
@@ -282,7 +282,7 @@ const AdminDashboardCategory: FunctionComponent<
                       <MusicWrapper>
                             {music.name}
                             <MusicLevelMiniature
-                              src={`/src/assets/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                              src={`/public/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                             />
                             <DeleteButton>
                               <TbMusicMinus />
