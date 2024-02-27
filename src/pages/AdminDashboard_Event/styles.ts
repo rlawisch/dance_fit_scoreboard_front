@@ -51,12 +51,6 @@ export const CategoryTable = styled.table`
     color: ${(props) => props.theme.colors.secundary};
   }
 
-  td {
-    cursor: pointer;
-    &:hover {
-      background-color: ${(props) => shade(0.3, props.theme.colors.background)};
-    }
-  }
 `;
 
 export const TableHeaderWrapper = styled.th`

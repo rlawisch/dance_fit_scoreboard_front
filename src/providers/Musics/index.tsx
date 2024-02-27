@@ -12,7 +12,7 @@ export interface IMusicsContext {
   getMusicsData: () => void;
   createMusic: (formData: IMusicCreate) => void;
   updateMusic: (formData: IMusicUpdate, music_id: number) => void;
-  deleteMusic: (music_id: number) => void
+  deleteMusic: (music_id: number) => void;
 }
 
 const MusicsContext = createContext<IMusicsContext>({} as IMusicsContext);
@@ -57,8 +57,8 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       .then((res) => {
         if (res.status === 201) {
           toast.success("Música criada com sucesso");
+          navigate("/admin/musics");
         }
-        navigate("/admin/musics");
       })
       .catch((err: any) => {
         if (
@@ -66,6 +66,7 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
           "Music with exact same data already exists"
         ) {
           toast.error("Música com os mesmos dados já existe no sistema");
+          navigate("/admin/musics");
         }
         console.log(err);
         navigate("/admin/musics");
@@ -85,12 +86,17 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       .then((res) => {
         if (res.status === 200) {
           toast.success("Informações da música atualzadas");
+          navigate("/admin/musics");
         }
-        navigate("/admin/musics");
         console.log(res);
       })
       .catch((err: any) => {
         console.log(err);
+        if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate("/admin/musics");
+        }
+        navigate("/admin/musics");
       });
   };
 
@@ -112,6 +118,8 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       })
       .catch((err: any) => {
         console.log(err);
+        navigate("/admin/musics");
+
       });
   };
 
@@ -122,7 +130,7 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
         getMusicsData,
         createMusic,
         updateMusic,
-        deleteMusic
+        deleteMusic,
       }}
     >
       {children}

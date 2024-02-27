@@ -98,10 +98,11 @@ const AdminDashboardMusics: FunctionComponent<
                         <FaEdit />
                       </UpdateButton>
                       <Modal
+                        key={music.music_id}
                         isOpen={isMusicUpdateModalOpen(music.music_id)}
                         onClose={() => closeMusicUpdateModal(music.music_id)}
                       >
-                        <MusicUpdateForm music={music} />
+                        <MusicUpdateForm key={music.music_id} music={music} />
                       </Modal>
 
                       <DeleteButton

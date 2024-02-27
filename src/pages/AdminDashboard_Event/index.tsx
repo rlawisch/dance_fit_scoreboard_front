@@ -2,10 +2,7 @@ import { FunctionComponent, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
-import {
-  GlobalContainer,
-  PlayerMiniature,
-} from "../../styles/global";
+import { GlobalContainer, PlayerMiniature } from "../../styles/global";
 import {
   AdminDashboardEventContainer,
   CategoryTable,
@@ -20,6 +17,11 @@ import UpdateButton from "../../components/Button_Update";
 import useModal from "../../providers/Modal";
 import EventUpdateForm from "../../components/Forms/EventUpdate";
 import CategoryCreateForm from "../../components/Forms/CategoryCreate";
+import DeleteButton from "../../components/Button_Delete";
+import useDynamicModal from "../../providers/DynamicModal";
+import CategoryDeleteForm from "../../components/Forms/CategoryDelete";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface AdminDashboardEventProps {}
 
@@ -48,6 +50,12 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
     closeModal: closeCategoryCreateModal,
   } = useModal();
 
+  const {
+    isModalOpen: isCategoryDeleteModalOpen,
+    openModal: openCategoryDeleteModal,
+    closeModal: closeCategoryDeleteModal,
+  } = useDynamicModal();
+
   return (
     <GlobalContainer>
       <AdminDashboardEventContainer>
@@ -65,11 +73,11 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
         </UpdateButton>
 
         <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
-          <EventUpdateForm event={eventData}/>
+          <EventUpdateForm event={eventData} />
         </Modal>
 
         <Modal isOpen={isOpenCategoryCreate} onClose={closeCategoryCreateModal}>
-          <CategoryCreateForm event={eventData}/>
+          <CategoryCreateForm event={eventData} />
         </Modal>
 
         <Table>
@@ -114,12 +122,27 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
           </thead>
           <tbody>
             {!!eventData &&
-              eventData.categories?.map((c) => (
+              eventData.categories?.map((category) => (
                 <tr
-                  key={c.category_id}
-                  onClick={() => navigate(`categories/${c.category_id}`)}
+                  key={category.category_id}
                 >
-                  <td>{c.name}</td>
+                  <td>
+                    {category.name}
+                    <Button onClick={() => navigate(`/admin/events/${event_id}/categories/${category.category_id}`)}>
+                    <AiOutlineArrowRight />
+                    </Button>
+                    <DeleteButton
+                      onClick={() => openCategoryDeleteModal(category.category_id)}
+                    >
+                      <FaRegTrashCan />
+                    </DeleteButton>
+                    <Modal
+                      isOpen={isCategoryDeleteModalOpen(category.category_id)}
+                      onClose={() => closeCategoryDeleteModal(category.category_id)}
+                    >
+                      <CategoryDeleteForm category={category}/>
+                    </Modal>
+                  </td>
                 </tr>
               ))}
           </tbody>

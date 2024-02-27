@@ -22,9 +22,21 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
   const { updatePhase } = usePhases();
 
   const phaseUpdateSchema = yup.object().shape({
-    music_number: yup.number(),
-    modes_available: yup.string(),
-    passing_players: yup.number(),
+    music_number: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
+    modes_available: yup
+      .string()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
+    passing_players: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
   });
 
   const {
@@ -46,22 +58,28 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     phase: IPhase
   ) => {
     const { phase_id } = phase;
-
+  
     // Filter out undefined properties from formData
     const filteredFormData: Partial<IPhaseFormUpdate> = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined)
     );
-
-    // Construct realFormData
-    const realFormData: IPhaseRealUpdate = {
-      ...filteredFormData,
-      modes_available: formData.modes_available
-        ? formData.modes_available.split(",")
-        : undefined,
-    };
-
+  
+    console.log("filtered:", filteredFormData);
+  
+    let realFormData: IPhaseRealUpdate = { ...filteredFormData };
+  
+    if (filteredFormData.modes_available !== undefined) {
+      realFormData = {
+        ...realFormData,
+        modes_available: filteredFormData.modes_available.split(",")
+      };
+    }
+  
+    console.log("real:", realFormData);
+  
     updatePhase(realFormData, Number(phase_id));
   };
+  
 
   return (
     <GlobalContainer>

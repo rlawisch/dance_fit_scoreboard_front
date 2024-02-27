@@ -34,6 +34,7 @@ import PhaseCreateForm from "../../components/Forms/PhaseCreate";
 import useDynamicModal from "../../providers/DynamicModal";
 import PhaseUpdateForm from "../../components/Forms/PhaseUpdate";
 import { MusicWrapper } from "../AdminDashboard_Musics/styles";
+import CategoryUpdateForm from "../../components/Forms/CategoryUpdate";
 
 interface AdminDashboardCategoryProps {}
 
@@ -49,6 +50,12 @@ const AdminDashboardCategory: FunctionComponent<
   useEffect(() => {
     getCategoryData(Number(category_id));
   }, []);
+
+  const {
+    isOpen: isOpenCategoryUpdate,
+    openModal: openCategoryUpdateModal,
+    closeModal: closeCategoryUpdateModal,
+  } = useModal();
 
   const sortedPhases = categoryData?.phases?.sort(
     (a, b) => a.phase_number - b.phase_number
@@ -80,69 +87,79 @@ const AdminDashboardCategory: FunctionComponent<
 
       <UpdateButton onClick={openPhaseCreateModal}>Criar Fase</UpdateButton>
       <Modal isOpen={isOpenPhaseCreate} onClose={closePhaseCreateModal}>
-          <PhaseCreateForm category_id={categoryData?.category_id} />
+        <PhaseCreateForm category_id={categoryData?.category_id} />
       </Modal>
 
       {/* TODO: Button -> update Phase */}
       {/* TODO: Button -> add Music to Phase */}
       {/* TODO: Button -> remove Music to Phase */}
 
-      <Table>
-        <thead>
-          <tr>
-            <th>
-              Informações
-              <UpdateButton>
-                <FaEdit />
-              </UpdateButton>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Nível Mínimo: {categoryData?.level_min}</td>
-          </tr>
-          <tr>
-            <td>Nível Máximo: {categoryData?.level_max}</td>
-          </tr>
-          <tr>
-            <td>Número de Fases: {categoryData?.number_of_phases}</td>
-          </tr>
-        </tbody>
-      </Table>
+      {categoryData && (
+        <Table>
+          <thead>
+            <tr>
+              <th>
+                Informações
+                <UpdateButton onClick={openCategoryUpdateModal}>
+                  <FaEdit />
+                </UpdateButton>
+                <Modal
+                  isOpen={isOpenCategoryUpdate}
+                  onClose={closeCategoryUpdateModal}
+                >
+                  <CategoryUpdateForm category={categoryData} />
+                </Modal>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Nível Mínimo: {categoryData.level_min}</td>
+            </tr>
+            <tr>
+              <td>Nível Máximo: {categoryData.level_max}</td>
+            </tr>
+            <tr>
+              <td>Número de Fases: {categoryData.number_of_phases}</td>
+            </tr>
+          </tbody>
+        </Table>
+      )}
 
-      <Table>
-        <thead>
-          <tr>
-            <th>
-              Participantes
-              <UpdateButton>
-                <FaUserPlus />
-              </UpdateButton>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {!!categoryData &&
-            categoryData.players?.map((p) => (
-              <tr key={p.player_id}>
-                <td>
-                  <TableDataWrapper>
-                    <PlayerMiniature
-                      src={
-                        p.profilePicture
-                          ? p.profilePicture
-                          : "/img/default_player.png"
-                      }
-                      alt="Mini Profile Picture"
-                    />
-                    {p.nickname}
-                  </TableDataWrapper>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </Table>
+      {categoryData?.players && (
+        <Table>
+          <thead>
+            <tr>
+              <th>
+                Participantes
+                <UpdateButton>
+                  <FaUserPlus />
+                </UpdateButton>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {!!categoryData &&
+              categoryData.players.map((p) => (
+                <tr key={p.player_id}>
+                  <td>
+                    <TableDataWrapper>
+                      <PlayerMiniature
+                        src={
+                          p.profilePicture
+                            ? p.profilePicture
+                            : "/img/default_player.png"
+                        }
+                        alt="Mini Profile Picture"
+                      />
+                      {p.nickname}
+                    </TableDataWrapper>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </Table>
+      )}
 
       <SmallScreenTableDisplay>
         {sortedPhases?.map((phase: IPhase) => (
@@ -189,8 +206,7 @@ const AdminDashboardCategory: FunctionComponent<
                       <PlayerInfoWrapper>
                         <PlayerMiniature
                           src={
-                            player.profilePicture ||
-                            "/img/default_player.png"
+                            player.profilePicture || "/img/default_player.png"
                           }
                           alt={player.nickname}
                         />
@@ -280,14 +296,14 @@ const AdminDashboardCategory: FunctionComponent<
                   {phase.musics?.map((music) => (
                     <TableHeader key={`music-${music.music_id}`}>
                       <MusicWrapper>
-                            {music.name}
-                            <MusicLevelMiniature
-                              src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-                            />
-                            <DeleteButton>
-                              <TbMusicMinus />
-                            </DeleteButton>
-                          </MusicWrapper>
+                        {music.name}
+                        <MusicLevelMiniature
+                          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                        />
+                        <DeleteButton>
+                          <TbMusicMinus />
+                        </DeleteButton>
+                      </MusicWrapper>
                     </TableHeader>
                   ))}
                   <TableHeader>Total</TableHeader>
@@ -300,8 +316,7 @@ const AdminDashboardCategory: FunctionComponent<
                       <PlayerInfoWrapper>
                         <PlayerMiniature
                           src={
-                            player.profilePicture ||
-                            "/img/default_player.png"
+                            player.profilePicture || "/img/default_player.png"
                           }
                           alt={player.nickname}
                         />

@@ -4,14 +4,15 @@ import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
 import { ICategory } from "../../types/entity-types";
-import { ICategoryCreate } from "../../types/form-types";
+import { ICategoryCreate, ICategoryUpdate } from "../../types/form-types";
 import { useNavigate } from "react-router-dom";
 
 export interface ICategoryContext {
   categoryData: ICategory | undefined;
   getCategoryData: (category_id: number) => void;
   createCategory: (formData: ICategoryCreate, event_id: number) => void;
-  deleteCategory: (category_id: number) => void
+  updateCategory: (formData: ICategoryUpdate, category: ICategory) => void;
+  deleteCategory: (category_id: number, event_id: number) => void;
   joinCategory: (category_id: number) => void;
 }
 
@@ -60,22 +61,21 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        },
+        }
       )
       .then((res) => {
         console.log(res.data);
-        const { category_id, event } = res.data;
+        const { category_id } = res.data;
 
         if (res.status === 201) {
           toast.success("Categoria criada com sucesso");
-          navigate(`/admin/events/${event.event_id}/categories/${category_id}`);
-        } else {
-          toast.error("Algo deu errado");
-        }
+          navigate(`/admin/events/${event_id}/categories/${category_id}`);
+        } 
       })
       .catch((err: any) => {
         console.log(err);
         toast.error("Algo deu errado");
+        navigate(`/admin/events/${event_id}`);
       });
   };
 
@@ -111,10 +111,40 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   // remove player from category
 
   // update category
+  const updateCategory = (formData: ICategoryUpdate, category: ICategory) => {
+    hasAdminRights();
+
+    const { category_id, event: event_id } = category;
+
+    api
+      .patch(`/categories/${category_id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Informações da categoria atualizadas");
+          navigate(`/admin/events/${event_id}/categories/${category_id}`);
+        } else {
+          toast.error("Algo deu errado");
+          navigate(`/admin/events/${event_id}/categories/${category_id}`);
+        }
+        console.log(res);
+      })
+      .catch((err: any) => {
+        console.log(err);
+        if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate(`/admin/events/${event_id}/categories/${category_id}`);
+        }
+        navigate(`/admin/events/${event_id}/categories/${category_id}`);
+      });
+  };
 
   // delete category
 
-  const deleteCategory = (category_id: number) => {
+  const deleteCategory = (category_id: number, event_id: number) => {
     hasAdminRights();
 
     api
@@ -124,16 +154,29 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       })
       .then((res) => {
-        console.log(res)
+        console.log(res);
+        if (res.status === 200) {
+          toast.success('Categoria deletada com sucesso')
+          navigate(`/admin/events/${event_id}`)
+        }
       })
       .catch((err: any) => {
         console.log(err);
+        navigate(`/admin/events/${event_id}`)
+
       });
   };
 
   return (
     <CategoryContext.Provider
-      value={{ categoryData, getCategoryData, createCategory, joinCategory, deleteCategory }}
+      value={{
+        categoryData,
+        getCategoryData,
+        createCategory,
+        updateCategory,
+        deleteCategory,
+        joinCategory,
+      }}
     >
       {children}
     </CategoryContext.Provider>

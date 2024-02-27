@@ -43,7 +43,7 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateEventData = (
     event_id: number,
-    formData: IUpdateEventFormData,
+    formData: IUpdateEventFormData
   ) => {
     hasAdminRights();
 
@@ -56,13 +56,12 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       .then((res) => {
         if (res.status === 200) {
           toast.success("Informações do evento atualizadas com sucesso");
-          navigate("/admin/events");
-        } else {
-          toast.error("Algo deu errado");
+          navigate(`/admin/events/${event_id}`);
         }
       })
       .catch((err: any) => {
         toast.error("Algo deu errado");
+        navigate(`/admin/events/${event_id}`);
         console.log(err);
       });
   };

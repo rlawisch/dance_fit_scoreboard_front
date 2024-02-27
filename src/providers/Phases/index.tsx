@@ -68,7 +68,16 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
           navigate(
             `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
           );
+        } else if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate(
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          );
         }
+
+        navigate(
+          `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+        );
       });
   };
 
@@ -87,7 +96,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         }
         navigate(
           `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
-        );
+        ) 
       })
       .catch((err: any) => {
         if (
@@ -110,7 +119,15 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
           navigate(
             `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
           );
+        } else if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate(
+            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          );
         }
+        navigate(
+          `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+        );
       });
   };
 
