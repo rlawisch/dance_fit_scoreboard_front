@@ -85,10 +85,14 @@ const AdminDashboardCategory: FunctionComponent<
         Participar
       </Button>
 
-      <UpdateButton onClick={openPhaseCreateModal}>Criar Fase</UpdateButton>
-      <Modal isOpen={isOpenPhaseCreate} onClose={closePhaseCreateModal}>
-        <PhaseCreateForm category_id={categoryData?.category_id} />
-      </Modal>
+      {categoryData && (
+        <>
+          <UpdateButton onClick={openPhaseCreateModal}>Criar Fase</UpdateButton>
+          <Modal isOpen={isOpenPhaseCreate} onClose={closePhaseCreateModal}>
+            <PhaseCreateForm category={categoryData} />
+          </Modal>
+        </>
+      )}
 
       {/* TODO: Button -> update Phase */}
       {/* TODO: Button -> add Music to Phase */}
@@ -162,7 +166,7 @@ const AdminDashboardCategory: FunctionComponent<
       )}
 
       <SmallScreenTableDisplay>
-        {sortedPhases?.map((phase: IPhase) => (
+        {categoryData && sortedPhases?.map((phase: IPhase) => (
           <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
             <Table>
               <thead>
@@ -178,7 +182,7 @@ const AdminDashboardCategory: FunctionComponent<
                       isOpen={isPhaseUpdateModalOpen(phase.phase_number)}
                       onClose={() => closePhaseUpdateModal(phase.phase_number)}
                     >
-                      <PhaseUpdateForm phase={phase} />
+                      <PhaseUpdateForm phase={phase} category={categoryData} />
                     </Modal>
                     <UpdateButton>
                       <TbMusicPlus />
@@ -261,7 +265,7 @@ const AdminDashboardCategory: FunctionComponent<
       </SmallScreenTableDisplay>
 
       <LargeScreenTableDisplay>
-        {sortedPhases?.map((phase: IPhase) => (
+        {categoryData && sortedPhases?.map((phase: IPhase) => (
           <TableWrapper key={`phase-${phase.phase_number}`}>
             <Table>
               <thead>
@@ -277,7 +281,7 @@ const AdminDashboardCategory: FunctionComponent<
                       isOpen={isPhaseUpdateModalOpen(phase.phase_number)}
                       onClose={() => closePhaseUpdateModal(phase.phase_number)}
                     >
-                      <PhaseUpdateForm phase={phase} />
+                      <PhaseUpdateForm phase={phase} category={categoryData} />
                     </Modal>
                     <UpdateButton>
                       <TbMusicPlus />

@@ -11,13 +11,14 @@ import Button from "../../Button";
 import { MdFormatListNumbered } from "react-icons/md";
 import { TbMusicPlus } from "react-icons/tb";
 import { FaUserCheck } from "react-icons/fa6";
+import { ICategory } from "../../../types/entity-types";
 
 interface PhaseCreateFormProps {
-  category_id: string | undefined;
+  category: ICategory
 }
 
 const PhaseCreateForm: FunctionComponent<PhaseCreateFormProps> = ({
-  category_id,
+  category
 }) => {
   const { createPhase } = usePhases();
 
@@ -48,14 +49,15 @@ const PhaseCreateForm: FunctionComponent<PhaseCreateFormProps> = ({
     const realFormData: IPhaseRealCreate = {
       ...formData,
       modes_available: formatedModes,
-      category_id: Number(category_id),
+      category_id: Number(category.category_id),
     };
 
-    createPhase(realFormData);
+    createPhase(realFormData, category);
   };
 
   return (
     <GlobalContainer>
+      <p>Criar Fase</p>
       <FormWrapper
         id="phase_create_form"
         onSubmit={handleSubmitCreatePhase(onCreatePhaseFormSubmit)}

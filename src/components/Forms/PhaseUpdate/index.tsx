@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { IPhaseFormUpdate, IPhaseRealUpdate } from "../../../types/form-types";
-import { IPhase } from "../../../types/entity-types";
+import { ICategory, IPhase } from "../../../types/entity-types";
 import { usePhases } from "../../../providers/Phases";
 import { FormWrapper, GlobalContainer } from "../../../styles/global";
 import { TbMusicPlus } from "react-icons/tb";
@@ -14,10 +14,12 @@ import UpdateButton from "../../Button_Update";
 
 interface PhaseUpdateFormProps {
   phase: IPhase;
+  category: ICategory;
 }
 
 const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
   phase,
+  category,
 }) => {
   const { updatePhase } = usePhases();
 
@@ -58,28 +60,27 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     phase: IPhase
   ) => {
     const { phase_id } = phase;
-  
+
     // Filter out undefined properties from formData
     const filteredFormData: Partial<IPhaseFormUpdate> = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined)
     );
-  
+
     console.log("filtered:", filteredFormData);
-  
+
     let realFormData: IPhaseRealUpdate = { ...filteredFormData };
-  
+
     if (filteredFormData.modes_available !== undefined) {
       realFormData = {
         ...realFormData,
-        modes_available: filteredFormData.modes_available.split(",")
+        modes_available: filteredFormData.modes_available.split(","),
       };
     }
-  
+
     console.log("real:", realFormData);
-  
-    updatePhase(realFormData, Number(phase_id));
+
+    updatePhase(realFormData, Number(phase_id), category);
   };
-  
 
   return (
     <GlobalContainer>

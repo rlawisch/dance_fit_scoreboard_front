@@ -6,10 +6,11 @@ import { usePlayer } from "../Players";
 import { IPhaseRealCreate, IPhaseRealUpdate } from "../../types/form-types";
 import { useNavigate } from "react-router-dom";
 import { useCategory } from "../Category";
+import { ICategory } from "../../types/entity-types";
 
 export interface IPhasesContext {
-  createPhase: (formData: IPhaseRealCreate) => void;
-  updatePhase: (formData: IPhaseRealUpdate, phase_id: number) => void;
+  createPhase: (formData: IPhaseRealCreate, category: ICategory) => void;
+  updatePhase: (formData: IPhaseRealUpdate, phase_id: number, category: ICategory) => void;
 }
 
 const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
@@ -22,13 +23,8 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   // Player States
   const { accToken, hasAdminRights } = usePlayer();
 
-  // Category Data
-
-  const { categoryData } = useCategory();
-
   // API Consuming
-
-  const createPhase = (formData: IPhaseRealCreate) => {
+  const createPhase = (formData: IPhaseRealCreate, category: ICategory) => {
     hasAdminRights();
 
     api
@@ -43,7 +39,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         if (res.status === 201) {
           toast.success("Fase criada com sucesso");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         } else {
           toast.error("Algo deu errado");
@@ -58,7 +54,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         ) {
           toast.error("A categoria atingiu o limite máximo de fases");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         } else if (
           err.response.data.message ===
@@ -66,22 +62,22 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         ) {
           toast.error("Uma fase com este número já existe");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         } else if (err.response.data.message === "Internal server error") {
           toast.error("Algo deu errado");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         }
 
         navigate(
-          `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          `/admin/events/${category.event.event_id}/categories/${category.category_id}`
         );
       });
   };
 
-  const updatePhase = (formData: IPhaseRealUpdate, phase_id: number) => {
+  const updatePhase = (formData: IPhaseRealUpdate, phase_id: number, category: ICategory) => {
     hasAdminRights();
 
     api
@@ -95,7 +91,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
           toast.success("Informações da fase atualizadas");
         }
         navigate(
-          `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          `/admin/events/${category.event.event_id}/categories/${category.category_id}`
         ) 
       })
       .catch((err: any) => {
@@ -107,7 +103,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
             "Não é possível atualizar o número de músicas da fase para um número menor do que o número de músicas que já estão cadastradas nesta fase"
           );
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         } else if (
           err.response.data.message ===
@@ -117,16 +113,16 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
             "Não é possível atualizar os modos disponíveis na fase pois uma música presente na fase não estará dentro dos modos escolhidos"
           );
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         } else if (err.response.data.message === "Internal server error") {
           toast.error("Algo deu errado");
           navigate(
-            `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
           );
         }
         navigate(
-          `/admin/events/${categoryData?.event.event_id}/categories/${categoryData?.category_id}`
+          `/admin/events/${category.event.event_id}/categories/${category.category_id}`
         );
       });
   };
