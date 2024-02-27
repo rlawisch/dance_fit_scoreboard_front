@@ -12,6 +12,7 @@ export interface IEventsContext {
   createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
   joinEvent: (event_id: number | undefined) => void;
+  deleteEvent: (event_id: number) => void
 }
 
 const EventsContext = createContext<IEventsContext>({} as IEventsContext);
@@ -101,6 +102,31 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
+  const deleteEvent = (event_id: number) => {
+    hasAdminRights();
+
+    api
+      .delete(`/events/${event_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Evento deletado com sucesso");
+          navigate("/admin/events");
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate("/admin/events");
+        }
+        navigate("/admin/events");
+      });
+  };
+
   // Update Events (admin only)
 
   // Delete Event (admin only)
@@ -112,6 +138,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         createEvent,
         getEvents,
         joinEvent,
+        deleteEvent,
       }}
     >
       {children}

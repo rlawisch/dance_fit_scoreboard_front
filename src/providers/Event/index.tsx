@@ -66,6 +66,8 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
+
+
   return (
     <EventContext.Provider
       value={{
