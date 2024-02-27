@@ -27,7 +27,7 @@ export const Table = styled.table`
   }
 
   th {
-    background-color: ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => shade(0.2, theme.colors.primary)};
     color: ${(props) => props.theme.colors.secundary};
   }
 `;

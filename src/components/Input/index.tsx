@@ -5,9 +5,9 @@ import { UseFormRegister } from "react-hook-form";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon: IconType;
-  register: UseFormRegister<any>;
-  name: string;
-  error: string | undefined;
+  register?: UseFormRegister<any>; // Making register prop optional
+  name?: string; // Making name prop optional
+  error?: string | undefined; // Making error prop optional
   label?: string;
 }
 
@@ -15,7 +15,7 @@ const Input: FunctionComponent<InputProps> = ({
   icon: Icon,
   register,
   name,
-  error = "",
+  error,
   label,
   ...rest
 }) => {
@@ -24,9 +24,13 @@ const Input: FunctionComponent<InputProps> = ({
       {label && <Label>{label}</Label>}
       <div>
         {Icon && <Icon />}
-        <input {...register(name)} {...rest} />
+        {register && name ? ( // Check if register and name are provided
+          <input {...register(name)} {...rest} /> // Only include register if it's provided
+        ) : (
+          <input {...rest} />
+        )}
       </div>
-      <ErrorMessage>{error}</ErrorMessage>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
     </StyledInput>
   );
 };

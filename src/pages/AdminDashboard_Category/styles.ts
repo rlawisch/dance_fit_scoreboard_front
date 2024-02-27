@@ -46,7 +46,6 @@ export const ScoreboardTable = styled.table`
 `;
 
 export const TableWrapper = styled.div`
-  margin-bottom: 20px;
 `;
 
 export const Table = styled.table`
@@ -96,21 +95,21 @@ export const PlayerInfoWrapper = styled.div`
 `;
 
 export const SmallScreenTableDisplay = styled.div`
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 900px) {
     display: block;
   }
 
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 900px) {
     display: none;
   }
 `;
 
 export const LargeScreenTableDisplay = styled.div`
-  @media screen and (max-width: 769px) {
+  @media screen and (max-width: 900px) {
     display: none;
   }
 
-  @media screen and (min-width: 769px) {
+  @media screen and (min-width: 900px) {
     display: block;
   }
 `;

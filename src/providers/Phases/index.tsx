@@ -5,12 +5,17 @@ import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
 import { IPhaseRealCreate, IPhaseRealUpdate } from "../../types/form-types";
 import { useNavigate } from "react-router-dom";
-import { useCategory } from "../Category";
-import { ICategory } from "../../types/entity-types";
+import { ICategory, IPhase } from "../../types/entity-types";
 
 export interface IPhasesContext {
   createPhase: (formData: IPhaseRealCreate, category: ICategory) => void;
-  updatePhase: (formData: IPhaseRealUpdate, phase_id: number, category: ICategory) => void;
+  updatePhase: (
+    formData: IPhaseRealUpdate,
+    phase_id: number,
+    category: ICategory
+  ) => void;
+  addMusic: (category: ICategory, phase: IPhase, music_id: number) => void;
+  removeMusic: (category: ICategory, phase: IPhase, music_id: number) => void;
 }
 
 const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
@@ -24,6 +29,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   const { accToken, hasAdminRights } = usePlayer();
 
   // API Consuming
+
   const createPhase = (formData: IPhaseRealCreate, category: ICategory) => {
     hasAdminRights();
 
@@ -77,7 +83,11 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
-  const updatePhase = (formData: IPhaseRealUpdate, phase_id: number, category: ICategory) => {
+  const updatePhase = (
+    formData: IPhaseRealUpdate,
+    phase_id: number,
+    category: ICategory
+  ) => {
     hasAdminRights();
 
     api
@@ -92,7 +102,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         }
         navigate(
           `/admin/events/${category.event.event_id}/categories/${category.category_id}`
-        ) 
+        );
       })
       .catch((err: any) => {
         if (
@@ -127,8 +137,122 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       });
   };
 
+  // TODO: add music to phase
+  const addMusic = (category: ICategory, phase: IPhase, music_id: number) => {
+    hasAdminRights();
+
+    api
+      .patch(
+        `/phases/${phase.phase_id}/add_music`,
+        {
+          music_id: music_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success(`Música adicionada a Fase com sucesso`);
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        if (
+          err.response.data.message ===
+          "Music level is not in range with this Category"
+        ) {
+          toast.error(
+            "O Nível da música escolhida não está na faixa permitida pela categoria"
+          );
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        } else if (
+          err.response.data.message ===
+          "Music is already assigned to this phase"
+        ) {
+          toast.error("Esta música já esta cadastrada nesta fase");
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        } else if (
+          err.response.data.message ===
+          "This Phase has already reached the maximum number of Musics"
+        ) {
+          toast.error("A Fase já alcançou o número máximo de músicas");
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        } else if (
+          err.response.data.message ===
+          "This music mode is not available in this Event Category Phase"
+        ) {
+          toast.error(
+            "O modo da música escolhida não está entre os modos permitidos nesta fase"
+          );
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        } else if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        }
+        navigate(
+          `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+        );
+      });
+  };
+
+  // TODO: remove music from phase
+  const removeMusic = (category: ICategory, phase: IPhase, music_id: number) => {
+    hasAdminRights();
+
+    api
+      .patch(
+        `/phases/${phase.phase_id}/remove_music`,
+        {
+          music_id: music_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Música removida da fase com sucesso");
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate(
+            `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+          );
+        }
+        navigate(
+          `/admin/events/${category.event.event_id}/categories/${category.category_id}`
+        );
+      });
+  };
+
   return (
-    <PhasesContext.Provider value={{ createPhase, updatePhase }}>
+    <PhasesContext.Provider
+      value={{ createPhase, updatePhase, addMusic, removeMusic }}
+    >
       {children}
     </PhasesContext.Provider>
   );

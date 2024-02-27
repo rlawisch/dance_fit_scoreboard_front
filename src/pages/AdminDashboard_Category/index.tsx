@@ -35,6 +35,9 @@ import useDynamicModal from "../../providers/DynamicModal";
 import PhaseUpdateForm from "../../components/Forms/PhaseUpdate";
 import { MusicWrapper } from "../AdminDashboard_Musics/styles";
 import CategoryUpdateForm from "../../components/Forms/CategoryUpdate";
+import PhaseAddMusicForm from "../../components/Forms/PhaseAddMusic";
+import PhaseRemoveMusicForm from "../../components/Forms/PhaseRemoveMusic";
+import { TiUploadOutline } from "react-icons/ti";
 
 interface AdminDashboardCategoryProps {}
 
@@ -71,6 +74,18 @@ const AdminDashboardCategory: FunctionComponent<
     isModalOpen: isPhaseUpdateModalOpen,
     openModal: openPhaseUpdateModal,
     closeModal: closePhaseUpdateModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isPhaseAddMusicModalOpen,
+    openModal: openPhaseAddMusicModal,
+    closeModal: closePhaseAddMusicModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isPhaseRemoveMusicModalOpen,
+    openModal: openPhaseRemoveMusicModal,
+    closeModal: closePhaseRemoveMusicModal,
   } = useDynamicModal();
 
   return (
@@ -166,167 +181,79 @@ const AdminDashboardCategory: FunctionComponent<
       )}
 
       <SmallScreenTableDisplay>
-        {categoryData && sortedPhases?.map((phase: IPhase) => (
-          <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
-            <Table>
-              <thead>
-                <tr>
-                  <th>
-                    Fase {phase.phase_number}
-                    <UpdateButton
-                      onClick={() => openPhaseUpdateModal(phase.phase_number)}
-                    >
-                      <FaEdit />
-                    </UpdateButton>
-                    <Modal
-                      isOpen={isPhaseUpdateModalOpen(phase.phase_number)}
-                      onClose={() => closePhaseUpdateModal(phase.phase_number)}
-                    >
-                      <PhaseUpdateForm phase={phase} category={categoryData} />
-                    </Modal>
-                    <UpdateButton>
-                      <TbMusicPlus />
-                    </UpdateButton>
-                    <DeleteButton>
-                      <FaRegTrashCan />
-                    </DeleteButton>
-                  </th>
-                </tr>
-              </thead>
-            </Table>
-            {categoryData?.players?.map((player) => (
-              <Table
-                key={`phase-${phase.phase_number}-player-${player.player_id}`}
-              >
+        {categoryData &&
+          sortedPhases?.map((phase: IPhase) => (
+            <ResponsiveTableWrapper key={`phase-${phase.phase_number}`}>
+              <Table>
                 <thead>
-                  <ResponsiveTableRow>
-                    <ResponsiveTableHeader>Música</ResponsiveTableHeader>
-                    <ResponsiveTableHeader>Score</ResponsiveTableHeader>
-                  </ResponsiveTableRow>
-                </thead>
-                <tbody>
-                  <ResponsiveTableRow>
-                    <ResponsiveTableCell colSpan={2}>
-                      <PlayerInfoWrapper>
-                        <PlayerMiniature
-                          src={
-                            player.profilePicture || "/img/default_player.png"
-                          }
-                          alt={player.nickname}
-                        />
-                        {player.nickname}
-                      </PlayerInfoWrapper>
-                    </ResponsiveTableCell>
-                  </ResponsiveTableRow>
-                  {phase.musics?.map((music) => {
-                    const score: IScore | undefined = phase.scores?.find(
-                      (s: IScore) =>
-                        s.player.player_id === player.player_id &&
-                        s.music.music_id === music.music_id
-                    );
-                    return (
-                      <ResponsiveTableRow
-                        key={`player-${player.player_id}-music-${music.music_id}`}
+                  <tr>
+                    <th>
+                      Fase {phase.phase_number}
+                      <UpdateButton
+                        onClick={() => openPhaseUpdateModal(phase.phase_number)}
                       >
-                        <ResponsiveTableCell>
-                          <MusicWrapper>
-                            {music.name}
-                            <MusicLevelMiniature
-                              src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-                            />
-                            <DeleteButton>
-                              <TbMusicMinus />
-                            </DeleteButton>
-                          </MusicWrapper>
-                        </ResponsiveTableCell>
-                        <ResponsiveTableCell>
-                          {score ? score.value : "-"}
-                        </ResponsiveTableCell>
-                      </ResponsiveTableRow>
-                    );
-                  })}
-                  <ResponsiveTableRow>
-                    <ResponsiveTableCell>Total</ResponsiveTableCell>
-                    <ResponsiveTableCell>
-                      {/* Calculate total score for this phase */}
-                      {phase.scores
-                        ?.filter(
-                          (score: IScore) =>
-                            score.player.player_id === player.player_id
-                        )
-                        .reduce((acc, curr) => acc + curr.value, 0) || "-"}
-                    </ResponsiveTableCell>
-                  </ResponsiveTableRow>
-                </tbody>
+                        <FaEdit />
+                      </UpdateButton>
+                      <Modal
+                        isOpen={isPhaseUpdateModalOpen(phase.phase_number)}
+                        onClose={() =>
+                          closePhaseUpdateModal(phase.phase_number)
+                        }
+                      >
+                        <PhaseUpdateForm
+                          phase={phase}
+                          category={categoryData}
+                        />
+                      </Modal>
+                      <UpdateButton
+                        onClick={() =>
+                          openPhaseAddMusicModal(phase.phase_number)
+                        }
+                      >
+                        <TbMusicPlus />
+                      </UpdateButton>
+                      <Modal
+                        isOpen={isPhaseAddMusicModalOpen(phase.phase_number)}
+                        onClose={() =>
+                          closePhaseAddMusicModal(phase.phase_number)
+                        }
+                      >
+                        <PhaseAddMusicForm
+                          phase={phase}
+                          category={categoryData}
+                        />
+                      </Modal>
+                      <DeleteButton>
+                        <FaRegTrashCan />
+                      </DeleteButton>
+                    </th>
+                  </tr>
+                </thead>
               </Table>
-            ))}
-          </ResponsiveTableWrapper>
-        ))}
-      </SmallScreenTableDisplay>
-
-      <LargeScreenTableDisplay>
-        {categoryData && sortedPhases?.map((phase: IPhase) => (
-          <TableWrapper key={`phase-${phase.phase_number}`}>
-            <Table>
-              <thead>
-                <tr>
-                  <th>
-                    Fase {phase.phase_number}
-                    <UpdateButton
-                      onClick={() => openPhaseUpdateModal(phase.phase_number)}
-                    >
-                      <FaEdit />
-                    </UpdateButton>
-                    <Modal
-                      isOpen={isPhaseUpdateModalOpen(phase.phase_number)}
-                      onClose={() => closePhaseUpdateModal(phase.phase_number)}
-                    >
-                      <PhaseUpdateForm phase={phase} category={categoryData} />
-                    </Modal>
-                    <UpdateButton>
-                      <TbMusicPlus />
-                    </UpdateButton>
-                    <DeleteButton>
-                      <FaRegTrashCan />
-                    </DeleteButton>
-                  </th>
-                </tr>
-              </thead>
-            </Table>
-            <Table>
-              <thead>
-                <TableRow>
-                  <TableHeader>Jogador</TableHeader>
-                  {phase.musics?.map((music) => (
-                    <TableHeader key={`music-${music.music_id}`}>
-                      <MusicWrapper>
-                        {music.name}
-                        <MusicLevelMiniature
-                          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-                        />
-                        <DeleteButton>
-                          <TbMusicMinus />
-                        </DeleteButton>
-                      </MusicWrapper>
-                    </TableHeader>
-                  ))}
-                  <TableHeader>Total</TableHeader>
-                </TableRow>
-              </thead>
-              <tbody>
-                {categoryData?.players?.map((player) => (
-                  <TableRow key={`player-${player.player_id}`}>
-                    <TableCell>
-                      <PlayerInfoWrapper>
-                        <PlayerMiniature
-                          src={
-                            player.profilePicture || "/img/default_player.png"
-                          }
-                          alt={player.nickname}
-                        />
-                        {player.nickname}
-                      </PlayerInfoWrapper>
-                    </TableCell>
+              {categoryData?.players?.map((player) => (
+                <Table
+                  key={`phase-${phase.phase_number}-player-${player.player_id}`}
+                >
+                  <thead>
+                    <ResponsiveTableRow>
+                      <ResponsiveTableHeader>Música</ResponsiveTableHeader>
+                      <ResponsiveTableHeader>Score</ResponsiveTableHeader>
+                    </ResponsiveTableRow>
+                  </thead>
+                  <tbody>
+                    <ResponsiveTableRow>
+                      <ResponsiveTableCell colSpan={2}>
+                        <PlayerInfoWrapper>
+                          <PlayerMiniature
+                            src={
+                              player.profilePicture || "/img/default_player.png"
+                            }
+                            alt={player.nickname}
+                          />
+                          {player.nickname}
+                        </PlayerInfoWrapper>
+                      </ResponsiveTableCell>
+                    </ResponsiveTableRow>
                     {phase.musics?.map((music) => {
                       const score: IScore | undefined = phase.scores?.find(
                         (s: IScore) =>
@@ -334,28 +261,199 @@ const AdminDashboardCategory: FunctionComponent<
                           s.music.music_id === music.music_id
                       );
                       return (
-                        <TableCell
-                          key={`score-${player.player_id}-${music.music_id}`}
+                        <ResponsiveTableRow
+                          key={`player-${player.player_id}-music-${music.music_id}`}
                         >
-                          {score ? score.value : "-"}
-                        </TableCell>
+                          <ResponsiveTableCell>
+                            <MusicWrapper>
+                              {music.name}
+                              <MusicLevelMiniature
+                                src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                              />
+                              <Button vanilla={true}>
+                                <TiUploadOutline />
+                              </Button>
+                              <DeleteButton
+                                onClick={() =>
+                                  openPhaseRemoveMusicModal(music.music_id)
+                                }
+                              >
+                                <TbMusicMinus />
+                              </DeleteButton>
+                              <Modal
+                                isOpen={isPhaseRemoveMusicModalOpen(
+                                  music.music_id
+                                )}
+                                onClose={() =>
+                                  closePhaseRemoveMusicModal(music.music_id)
+                                }
+                              >
+                                <PhaseRemoveMusicForm
+                                  category={categoryData}
+                                  phase={phase}
+                                  music={music}
+                                />
+                              </Modal>
+                            </MusicWrapper>
+                          </ResponsiveTableCell>
+                          <ResponsiveTableCell>
+                            {score ? score.value : "-"}
+                          </ResponsiveTableCell>
+                        </ResponsiveTableRow>
                       );
                     })}
-                    <TableCell>
-                      {/* Calculate total score for this phase */}
-                      {phase.scores
-                        ?.filter(
-                          (score: IScore) =>
-                            score.player.player_id === player.player_id
-                        )
-                        .reduce((acc, curr) => acc + curr.value, 0) || "-"}
-                    </TableCell>
+                    <ResponsiveTableRow>
+                      <ResponsiveTableCell>Total</ResponsiveTableCell>
+                      <ResponsiveTableCell>
+                        {/* Calculate total score for this phase */}
+                        {phase.scores
+                          ?.filter(
+                            (score: IScore) =>
+                              score.player.player_id === player.player_id
+                          )
+                          .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                      </ResponsiveTableCell>
+                    </ResponsiveTableRow>
+                  </tbody>
+                </Table>
+              ))}
+            </ResponsiveTableWrapper>
+          ))}
+      </SmallScreenTableDisplay>
+
+      <LargeScreenTableDisplay>
+        {categoryData &&
+          sortedPhases?.map((phase: IPhase) => (
+            <TableWrapper key={`phase-${phase.phase_number}`}>
+              <Table>
+                <thead>
+                  <tr>
+                    <th>
+                      Fase {phase.phase_number}
+                      <UpdateButton
+                        onClick={() => openPhaseUpdateModal(phase.phase_number)}
+                      >
+                        <FaEdit />
+                      </UpdateButton>
+                      <Modal
+                        isOpen={isPhaseUpdateModalOpen(phase.phase_number)}
+                        onClose={() =>
+                          closePhaseUpdateModal(phase.phase_number)
+                        }
+                      >
+                        <PhaseUpdateForm
+                          phase={phase}
+                          category={categoryData}
+                        />
+                      </Modal>
+                      <UpdateButton
+                        onClick={() =>
+                          openPhaseAddMusicModal(phase.phase_number)
+                        }
+                      >
+                        <TbMusicPlus />
+                      </UpdateButton>
+                      <Modal
+                        isOpen={isPhaseAddMusicModalOpen(phase.phase_number)}
+                        onClose={() =>
+                          closePhaseAddMusicModal(phase.phase_number)
+                        }
+                      >
+                        <PhaseAddMusicForm
+                          phase={phase}
+                          category={categoryData}
+                        />
+                      </Modal>
+                      <DeleteButton>
+                        <FaRegTrashCan />
+                      </DeleteButton>
+                    </th>
+                  </tr>
+                </thead>
+              </Table>
+              <Table>
+                <thead>
+                  <TableRow>
+                    <TableHeader>Jogador</TableHeader>
+                    {phase.musics?.map((music) => (
+                      <TableHeader key={`music-${music.music_id}`}>
+                        <MusicWrapper>
+                          {music.name}
+                          <MusicLevelMiniature
+                            src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                          />
+                        </MusicWrapper>
+                        <Button vanilla={false}>
+                          <TiUploadOutline />
+                        </Button>
+                        <DeleteButton
+                          vanilla={false}
+                          onClick={() =>
+                            openPhaseRemoveMusicModal(music.music_id)
+                          }
+                        >
+                          <TbMusicMinus />
+                        </DeleteButton>
+                        <Modal
+                          isOpen={isPhaseRemoveMusicModalOpen(music.music_id)}
+                          onClose={() =>
+                            closePhaseRemoveMusicModal(music.music_id)
+                          }
+                        >
+                          <PhaseRemoveMusicForm
+                            category={categoryData}
+                            phase={phase}
+                            music={music}
+                          />
+                        </Modal>
+                      </TableHeader>
+                    ))}
+                    <TableHeader>Total</TableHeader>
                   </TableRow>
-                ))}
-              </tbody>
-            </Table>
-          </TableWrapper>
-        ))}
+                </thead>
+                <tbody>
+                  {categoryData?.players?.map((player) => (
+                    <TableRow key={`player-${player.player_id}`}>
+                      <TableCell>
+                        <PlayerInfoWrapper>
+                          <PlayerMiniature
+                            src={
+                              player.profilePicture || "/img/default_player.png"
+                            }
+                            alt={player.nickname}
+                          />
+                          {player.nickname}
+                        </PlayerInfoWrapper>
+                      </TableCell>
+                      {phase.musics?.map((music) => {
+                        const score: IScore | undefined = phase.scores?.find(
+                          (s: IScore) =>
+                            s.player.player_id === player.player_id &&
+                            s.music.music_id === music.music_id
+                        );
+                        return (
+                          <TableCell
+                            key={`score-${player.player_id}-${music.music_id}`}
+                          >
+                            {score ? score.value : "-"}
+                          </TableCell>
+                        );
+                      })}
+                      <TableCell>
+                        {/* Calculate total score for this phase */}
+                        {phase.scores
+                          ?.filter(
+                            (score: IScore) =>
+                              score.player.player_id === player.player_id
+                          )
+                          .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </tbody>
+              </Table>
+            </TableWrapper>
+          ))}
       </LargeScreenTableDisplay>
     </GlobalContainer>
   );
