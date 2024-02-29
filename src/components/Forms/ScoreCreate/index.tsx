@@ -40,7 +40,12 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     bad: yup.number().required(),
     miss: yup.number().required(),
     max_combo: yup.number().required(),
-    stage_pass: yup.boolean().required(),
+    stage_pass: yup
+      .boolean()
+      .required()
+      .transform((value, originalValue) =>
+        originalValue === "true" ? true : false
+      ),
     grade: yup.string().required(),
     plate: yup.string().required(),
   });
@@ -54,9 +59,9 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   });
 
   const stagePassOptions = [
-    {label: "Pass", value: true},
-    {label: "Break", value: false}
-  ]
+    { label: "Pass", value: "true" },
+    { label: "Break", value: "false" },
+  ];
 
   const gradeOptions = [
     { label: "SSS+", value: "SSS+" },
@@ -105,7 +110,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
       music_id: Number(music_id),
     };
 
-    console.log(realFormData)
+    console.log(realFormData);
     createScore(realFormData);
   };
 

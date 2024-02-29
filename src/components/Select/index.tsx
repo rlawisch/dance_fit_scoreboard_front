@@ -5,7 +5,7 @@ import { ErrorMessage, Label } from "../Input/styles";
 
 interface SelectProps {
   label?: string;
-  options: { label: string; value: string | boolean }[];
+  options: { label: string; value: string }[];
   name: string;
   register: UseFormRegister<any>;
   placeholder?: string;
