@@ -13,6 +13,10 @@ export interface IProfilePicFormData {
   file: FileList;
 }
 
+export interface IEventCreate {
+  name: string;
+}
+
 export interface IUpdateEventFormData {
   name: string;
 }
@@ -25,10 +29,10 @@ export interface ICategoryCreate {
 }
 
 export interface ICategoryUpdate {
-  name?: string,
-  level_min?: number,
-  level_max?: number,
-  number_of_phases?: number
+  name?: string;
+  level_min?: number;
+  level_max?: number;
+  number_of_phases?: number;
 }
 
 export interface IPhaseFormCreate {
@@ -70,6 +74,30 @@ export interface IMusicUpdate {
   mode?: string;
 }
 
-export interface IEventCreate {
-  name: string;
+export interface IScoreFormCreate {
+  value: number;
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  grade: string;
+  plate: string;
+}
+
+export interface IScoreCreate {
+  value: number;
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  grade: string;
+  plate: string;
+  event_id: number;
+  category_id: number;
+  phase_id: number;
+  music_id: number;
 }

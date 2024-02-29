@@ -1,12 +1,11 @@
 import { FunctionComponent, useEffect } from "react";
-import { GlobalContainer } from "../../styles/global";
+import { GlobalContainer, Table } from "../../styles/global";
 import { useEvents } from "../../providers/Events";
 import Button from "../../components/Button";
 import useModal from "../../providers/Modal";
 import Modal from "../../components/Modal";
 import EventCreateForm from "../../components/Forms/EventCreate";
 import useDynamicModal from "../../providers/DynamicModal";
-import { Table } from "../AdminDashboard_Event/styles";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import DeleteButton from "../../components/Button_Delete";
@@ -40,7 +39,6 @@ const AdminDashboardEvents: FunctionComponent<
 
   return (
     <GlobalContainer>
-      <h3>Eventos</h3>
 
       <Button onClick={openEventCreateModal}>Criar Evento</Button>
       <Modal isOpen={isOpenEventCreateModal} onClose={closeEventCreateModal}>

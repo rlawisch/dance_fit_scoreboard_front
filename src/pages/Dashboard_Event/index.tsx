@@ -1,15 +1,18 @@
 import { FunctionComponent, useEffect } from "react";
-import { GlobalContainer, PlayerMiniature } from "../../styles/global";
-import { DashboardEventContainer } from "./styles";
-import Button from "../../components/Button";
-import { Link, useParams } from "react-router-dom";
-import { useEvent } from "../../providers/Event";
-import { useEvents } from "../../providers/Events";
 import {
-  EventTitle,
+  GlobalContainer,
+  PlayerMiniature,
   Table,
   TableDataWrapper,
-} from "../AdminDashboard_Event/styles";
+  TableHeader,
+  TableHeaderWrapper,
+  Title,
+} from "../../styles/global";
+import Button from "../../components/Button";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEvent } from "../../providers/Event";
+import { useEvents } from "../../providers/Events";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface DashboardEventProps {}
 
@@ -17,6 +20,8 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
   const { event_id } = useParams();
 
   const { eventData, getEventData } = useEvent();
+
+  const navigate = useNavigate();
 
   const { joinEvent } = useEvents();
 
@@ -26,61 +31,81 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
 
   return (
     <GlobalContainer>
-      <DashboardEventContainer>
-        <Link to={"/dashboard/events"}>
-          <Button vanilla={true}>Voltar</Button>
-        </Link>
+      <Button onClick={() => navigate("/dashboard/events")}>Voltar</Button>
 
-        <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
-          Participar
-        </Button>
+      <Title>{!!eventData && eventData.name}</Title>
 
-        <EventTitle>{!!eventData && eventData.name}</EventTitle>
+      <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
+        Participar
+      </Button>
 
-        <Table>
-          <thead>
-            <tr>
-              <th>Participantes</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!!eventData &&
-              eventData.players?.map((p) => (
-                <tr key={p.player_id}>
-                  <td>
-                    <TableDataWrapper>
-                      <PlayerMiniature
-                        src={
-                          p.profilePicture
-                            ? p.profilePicture
-                            : "/img/default_player.png"
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>
+              <TableHeaderWrapper>
+                <h4>Participantes</h4>
+              </TableHeaderWrapper>
+            </TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {!!eventData &&
+            eventData.players?.map((p) => (
+              <tr key={p.player_id}>
+                <td>
+                  <TableDataWrapper>
+                    <PlayerMiniature
+                      src={
+                        p.profilePicture
+                          ? p.profilePicture
+                          : "/img/default_player.png"
+                      }
+                      alt="Mini Profile Picture"
+                    />
+                    {p.nickname}
+                  </TableDataWrapper>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
+
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>
+              <TableHeaderWrapper>
+                <h4>Categorias</h4>
+              </TableHeaderWrapper>
+            </TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {!!eventData &&
+            eventData.categories?.map((category) => (
+              <tr key={category.category_id}>
+                <td>
+                  <TableDataWrapper>
+                    {category.name}
+
+                    <div>
+                      <Button
+                        onClick={() =>
+                          navigate(
+                            `/admin/events/${event_id}/categories/${category.category_id}`
+                          )
                         }
-                        alt="Mini Profile Picture"
-                      />
-                      {p.nickname}
-                    </TableDataWrapper>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-
-        <Table>
-          <thead>
-            <tr>
-              <th>Categorias</th>
-            </tr>
-          </thead>
-          <tbody>
-            {!!eventData &&
-              eventData.categories?.map((c) => (
-                <tr key={c.category_id}>
-                  <td>{c.name}</td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
-      </DashboardEventContainer>
+                      >
+                        <AiOutlineArrowRight />
+                      </Button>
+                    </div>
+                  </TableDataWrapper>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
     </GlobalContainer>
   );
 };

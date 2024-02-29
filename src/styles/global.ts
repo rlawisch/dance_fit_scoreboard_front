@@ -39,6 +39,16 @@ export const GlobalStyle = createGlobalStyle`
 }
 `;
 
+export const MainContainer = styled.main`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100vh - 60px);
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-x: auto;
+`;
+
 export const GlobalContainer = styled.div`
   border-radius: 0.5rem;
   padding: 1rem;
@@ -46,6 +56,7 @@ export const GlobalContainer = styled.div`
   background-color: ${(props) => shade(-0.1, props.theme.colors.background)};
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   color: ${(props) => props.theme.colors.text};
+  overflow-y: auto;
 `;
 
 interface DashboardContainerProps {
@@ -53,10 +64,100 @@ interface DashboardContainerProps {
 }
 
 export const DashboardContainer = styled.main<DashboardContainerProps>`
-  margin-left: ${(props) => (props.isopen ? "12rem" : "5rem")};
+  margin-left: 4rem;
   transition: margin 350ms ease;
-  height: auto;
+  height: 100%;
+  width: 100%;
   box-sizing: border-box;
+  flex: 1;
+  overflow-y: auto;
+`;
+
+export const Table = styled.table`
+  width: 100%;
+  border-collapse: separate;
+  text-align: center;
+  font-weight: bold;
+
+  th,
+  td {
+    padding: 0.6rem;
+  }
+
+  td {
+    background-color: ${(props) => shade(0.1, props.theme.colors.background)};
+    color: ${({ theme }) => shade(0.1, theme.colors.text)};
+  }
+
+  th {
+    background-color: ${({ theme }) => shade(0, theme.colors.secundary)};
+    color: ${(props) => props.theme.colors.text};
+  }
+
+  @media screen and (max-width: 576px) {
+    font-size: small;
+  }
+
+  @media (min-width: 577px) and (max-width: 768px) {
+  }
+`;
+
+export const TableWrapper = styled.div``;
+
+export const TableHeader = styled.th``;
+
+export const TableHeaderWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const TableData = styled.td``;
+
+export const TableDataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+
+  @media screen and (max-width: 900px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+`;
+
+export const TableDataButtonWrapper = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;
+
+@media screen and (min-width: 576px) {
+  flex-direction: row;
+}
+`
+
+export const TableRow = styled.tr``;
+
+export const SmallScreenTableDisplay = styled.div`
+  @media screen and (max-width: 900px) {
+    display: block;
+  }
+
+  @media screen and (min-width: 900px) {
+    display: none;
+  }
+`;
+
+export const LargeScreenTableDisplay = styled.div`
+  @media screen and (max-width: 900px) {
+    display: none;
+  }
+
+  @media screen and (min-width: 900px) {
+    display: block;
+  }
 `;
 
 export const PlayerMiniature = styled.img`
@@ -65,20 +166,45 @@ export const PlayerMiniature = styled.img`
   border-radius: 50%;
 `;
 
+export const PlayerInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.6rem;
+`;
+
+export const MusicLevelMiniature = styled.img`
+  width: 40px;
+  height: 40px;
+`;
+
+export const MusicWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+
+  @media screen and (min-width: 576px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.6rem;
+  }
+`;
+
 export const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-export const MusicLevelMiniature = styled.img`
-  width: 40px;
-  height: 40px;
-
-`
-
 export const DeleteWarning = styled.p`
-    color: red;
-    font-weight: bold;
+  color: red;
+  font-weight: bold;
+`;
 
-`
+export const Title = styled.h1`
+  color: ${(props) => props.theme.colors.primary};
+  margin: 2rem 0;
+  text-align: center;
+`;

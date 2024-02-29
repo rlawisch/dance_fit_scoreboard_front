@@ -18,6 +18,7 @@ import AdminDashboardEvent from "../pages/AdminDashboard_Event";
 import DashboardProfile from "../pages/Dashboard_Profile";
 import AdminDashboardCategory from "../pages/AdminDashboard_Category";
 import AdminDashboardMusics from "../pages/AdminDashboard_Musics";
+import DashboardCategory from "../pages/Dashboard_Category";
 
 export default function Routing() {
   return (
@@ -79,6 +80,15 @@ export default function Routing() {
             <PrivateRoute>
               <DashboardEvent />
             </PrivateRoute>
+          }
+        />
+
+<Route
+          path="/dashboard/events/:event_id/categories/:category_id"
+          element={
+              <PrivateRoute>
+                <DashboardCategory/>
+              </PrivateRoute>
           }
         />
 

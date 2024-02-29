@@ -3,6 +3,7 @@ import {
   FormWrapper,
   GlobalContainer,
   MusicLevelMiniature,
+  MusicWrapper,
 } from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -14,7 +15,6 @@ import { MdOutlineNumbers } from "react-icons/md";
 import { IMusicUpdate } from "../../../types/form-types";
 import UpdateButton from "../../Button_Update";
 import { IMusic } from "../../../types/entity-types";
-import { MusicWrapper } from "../../../pages/AdminDashboard_Musics/styles";
 import { useMusics } from "../../../providers/Musics";
 
 interface MusicUpdateFormProps {

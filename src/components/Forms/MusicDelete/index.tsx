@@ -3,9 +3,9 @@ import {
   DeleteWarning,
   GlobalContainer,
   MusicLevelMiniature,
+  MusicWrapper,
 } from "../../../styles/global";
 import { IMusic } from "../../../types/entity-types";
-import { MusicWrapper } from "../../../pages/AdminDashboard_Musics/styles";
 import DeleteButton from "../../Button_Delete";
 import { useMusics } from "../../../providers/Musics";
 

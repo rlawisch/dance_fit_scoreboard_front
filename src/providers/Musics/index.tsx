@@ -59,6 +59,7 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
           toast.success("Música criada com sucesso");
           navigate("/admin/musics");
         }
+        navigate("/admin/musics");
       })
       .catch((err: any) => {
         if (

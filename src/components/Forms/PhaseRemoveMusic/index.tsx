@@ -4,10 +4,10 @@ import {
   DeleteWarning,
   GlobalContainer,
   MusicLevelMiniature,
+  MusicWrapper,
 } from "../../../styles/global";
 import { usePhases } from "../../../providers/Phases";
 import DeleteButton from "../../Button_Delete";
-import { MusicWrapper } from "../../../pages/AdminDashboard_Musics/styles";
 
 interface PhaseRemoveMusicFormProps {
   category: ICategory;

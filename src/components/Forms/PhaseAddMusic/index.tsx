@@ -1,9 +1,8 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { ICategory, IMusic, IPhase } from "../../../types/entity-types";
-import { GlobalContainer, MusicLevelMiniature } from "../../../styles/global";
+import { GlobalContainer, MusicLevelMiniature, MusicWrapper } from "../../../styles/global";
 import { usePhases } from "../../../providers/Phases";
 import { useMusics } from "../../../providers/Musics";
-import { MusicWrapper } from "../../../pages/AdminDashboard_Musics/styles";
 import { MusicLi, SelectedMusicWrapper } from "./styles";
 import Input from "../../Input";
 import { TbMusic } from "react-icons/tb";

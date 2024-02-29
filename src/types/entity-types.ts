@@ -55,6 +55,13 @@ export interface IPhase {
 
 export interface IScore {
   score_id: string;
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  stage_pass: boolean;
   value: number;
   grade: string;
   plate: string;
