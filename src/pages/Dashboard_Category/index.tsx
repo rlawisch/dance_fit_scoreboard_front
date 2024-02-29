@@ -56,7 +56,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
 
       <Title>{categoryData?.name}</Title>
 
-      <Button onClick={() => joinCategory(Number(categoryData?.category_id))}>
+      <Button onClick={() => joinCategory(Number(event_id), Number(categoryData?.category_id))}>
         Participar
       </Button>
 
