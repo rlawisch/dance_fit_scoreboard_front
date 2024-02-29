@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { IPhaseFormUpdate, IPhaseRealUpdate } from "../../../types/form-types";
-import { IPhase } from "../../../types/entity-types";
+import { ICategory, IPhase } from "../../../types/entity-types";
 import { usePhases } from "../../../providers/Phases";
 import { FormWrapper, GlobalContainer } from "../../../styles/global";
 import { TbMusicPlus } from "react-icons/tb";
@@ -14,17 +14,31 @@ import UpdateButton from "../../Button_Update";
 
 interface PhaseUpdateFormProps {
   phase: IPhase;
+  category: ICategory;
 }
 
 const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
   phase,
+  category,
 }) => {
   const { updatePhase } = usePhases();
 
   const phaseUpdateSchema = yup.object().shape({
-    music_number: yup.number(),
-    modes_available: yup.string(),
-    passing_players: yup.number(),
+    music_number: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
+    modes_available: yup
+      .string()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
+    passing_players: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
   });
 
   const {
@@ -52,15 +66,20 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
       Object.entries(formData).filter(([_, value]) => value !== undefined)
     );
 
-    // Construct realFormData
-    const realFormData: IPhaseRealUpdate = {
-      ...filteredFormData,
-      modes_available: formData.modes_available
-        ? formData.modes_available.split(",")
-        : undefined,
-    };
+    console.log("filtered:", filteredFormData);
 
-    updatePhase(realFormData, Number(phase_id));
+    let realFormData: IPhaseRealUpdate = { ...filteredFormData };
+
+    if (filteredFormData.modes_available !== undefined) {
+      realFormData = {
+        ...realFormData,
+        modes_available: filteredFormData.modes_available.split(","),
+      };
+    }
+
+    console.log("real:", realFormData);
+
+    updatePhase(realFormData, Number(phase_id), category);
   };
 
   return (

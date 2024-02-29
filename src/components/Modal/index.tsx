@@ -17,16 +17,16 @@ const Modal: FunctionComponent<ModalProps> = ({
     onClose();
   };
 
-  return (
+  return isOpen ? (
     <ModalWrapper isOpen={isOpen}>
       <ModalContent>
         {children}
-        <Button vanilla={false} onClick={() => closeModal()}>
+        <Button vanilla={false} onClick={closeModal}>
           Fechar
         </Button>
       </ModalContent>
     </ModalWrapper>
-  );
+  ) : null;
 };
 
 export default Modal;

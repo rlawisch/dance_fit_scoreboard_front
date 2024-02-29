@@ -27,9 +27,8 @@ interface RoleProps {
 
 export const SidebarContainer = styled.aside<SidebarContainerProps>`
   z-index: 100;
-  position: absolute;
-  top: 60px;
-  left: 0;
+  position: fixed;
+  left: ${(props) => (props.isopen ? `0rem` : `0rem`)};
   overflow: hidden;
 
   width: ${(props) => (props.isopen ? `10rem` : `4rem`)};

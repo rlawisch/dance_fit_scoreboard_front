@@ -3,6 +3,7 @@ import {
   FormWrapper,
   GlobalContainer,
   MusicLevelMiniature,
+  MusicWrapper,
 } from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -14,7 +15,6 @@ import { MdOutlineNumbers } from "react-icons/md";
 import { IMusicUpdate } from "../../../types/form-types";
 import UpdateButton from "../../Button_Update";
 import { IMusic } from "../../../types/entity-types";
-import { MusicWrapper } from "../../../pages/AdminDashboard_Musics/styles";
 import { useMusics } from "../../../providers/Musics";
 
 interface MusicUpdateFormProps {
@@ -25,11 +25,22 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
   music,
 }) => {
   const { updateMusic } = useMusics();
-
+  
   const musicCreateSchema = yup.object().shape({
-    name: yup.string(),
-    level: yup.number(),
-    mode: yup.string(),
+    name: yup
+      .string()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
+    level: yup
+      .number()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
+    mode: yup
+      .string().transform((value, originalValue) =>
+      originalValue === "" ? undefined : value
+    ),
   });
 
   const {
@@ -40,25 +51,24 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
     resolver: yupResolver(musicCreateSchema),
   });
 
+
   const modeOptions = [
     { label: "Single", value: "single" },
     { label: "Double", value: "double" },
   ];
 
   const onUpdateMusicFormSubmit = (formData: IMusicUpdate, music: IMusic) => {
-    console.log(formData);
-    // updateMusic(formData);
 
     const { music_id } = music;
 
     // Filter out undefined properties from formData
     const filteredFormData: Partial<IMusicUpdate> = Object.fromEntries(
-      Object.entries(formData).filter(([_, value]) => value !== "")
+      Object.entries(formData).filter(([_, value]) => value !== undefined)
     );
 
-    updateMusic(filteredFormData, Number(music_id))
+    updateMusic(filteredFormData, Number(music_id));
   };
-  
+
   return (
     <GlobalContainer>
       <p>Atualizar informações da Música:</p>
@@ -86,6 +96,7 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
           label="Nível"
           icon={MdOutlineNumbers}
           name="level"
+          type="number"
           register={registerUpdateMusic}
           error={updateMusicErrors.level?.message}
         />

@@ -3,25 +3,16 @@ import api from "../../services/api";
 import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
-import { IPlayer } from "../../types/entity-types";
+import { IEvent } from "../../types/entity-types";
+import { IEventCreate } from "../../types/form-types";
+import { useNavigate } from "react-router-dom";
 
 export interface IEventsContext {
   events: IEvent[];
-  createEvent: (formData: IEventsCreate) => void;
+  createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
   joinEvent: (event_id: number | undefined) => void;
-}
-
-export interface IEventsCreate {
-  name: string;
-  status: boolean;
-}
-
-export interface IEvent {
-  event_id: string;
-  name: string;
-  status: boolean;
-  players: IPlayer[];
+  deleteEvent: (event_id: number) => void
 }
 
 const EventsContext = createContext<IEventsContext>({} as IEventsContext);
@@ -29,27 +20,40 @@ const EventsContext = createContext<IEventsContext>({} as IEventsContext);
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+
+  const navigate = useNavigate()
+
   // Player States
-  const { accToken, hasValidSession } = usePlayer();
+  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   // Event States
   const [events, setEvents] = useState([]);
 
   // CreateEvent (admin only)
-  const createEvent = (formData: IEventsCreate) => {
-    hasValidSession();
+  const createEvent = (formData: IEventCreate) => {
+    hasAdminRights();
 
     api
-      .post("/events", formData, {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      })
-      .then(() => {
-        toast.success("Evento criado com sucesso");
+      .post(
+        "/events",
+        { ...formData, status: true },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        }
+      )
+      .then((res) => {
+        if (res.status === 201) {
+          toast.success("Evento criado com sucesso");
+          navigate('/admin/events')
+          
+        } 
       })
       .catch((err) => {
         toast.error("Algo deu errado");
+        navigate('/admin/events')
+
         console.log(err);
       });
   };
@@ -90,9 +94,36 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       .catch((err: any) => {
         console.log(err);
 
-        if (err.response.data.message === "Player already assigned to this event") {
+        if (
+          err.response.data.message === "Player already assigned to this event"
+        ) {
           toast.error("Você já faz parte deste evento");
         }
+      });
+  };
+
+  const deleteEvent = (event_id: number) => {
+    hasAdminRights();
+
+    api
+      .delete(`/events/${event_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      })
+      .then((res) => {
+        if (res.status === 200) {
+          toast.success("Evento deletado com sucesso");
+          navigate("/admin/events");
+        }
+      })
+      .catch((err: any) => {
+        console.log(err);
+        if (err.response.data.message === "Internal server error") {
+          toast.error("Algo deu errado");
+          navigate("/admin/events");
+        }
+        navigate("/admin/events");
       });
   };
 
@@ -107,6 +138,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
         createEvent,
         getEvents,
         joinEvent,
+        deleteEvent,
       }}
     >
       {children}

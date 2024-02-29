@@ -1,8 +1,3 @@
-export interface IEventCreate {
-  name: string;
-  status: boolean;
-}
-
 export interface ILogin {
   nickname: string;
   password: string;
@@ -18,6 +13,10 @@ export interface IProfilePicFormData {
   file: FileList;
 }
 
+export interface IEventCreate {
+  name: string;
+}
+
 export interface IUpdateEventFormData {
   name: string;
 }
@@ -27,6 +26,13 @@ export interface ICategoryCreate {
   level_min: number;
   level_max: number;
   number_of_phases: number;
+}
+
+export interface ICategoryUpdate {
+  name?: string;
+  level_min?: number;
+  level_max?: number;
+  number_of_phases?: number;
 }
 
 export interface IPhaseFormCreate {
@@ -45,25 +51,53 @@ export interface IPhaseRealCreate {
 }
 
 export interface IPhaseFormUpdate {
-  music_number?: number
-  modes_available?: string 
-  passing_players?: number 
+  music_number?: number;
+  modes_available?: string;
+  passing_players?: number;
 }
 
 export interface IPhaseRealUpdate {
-  music_number?: number 
-  modes_available?: string[] 
-  passing_players?: number 
+  music_number?: number;
+  modes_available?: string[] | string;
+  passing_players?: number;
 }
 
 export interface IMusicCreate {
-  name: string,
-  level: number,
-  mode: string
+  name: string;
+  level: number;
+  mode: string;
 }
 
 export interface IMusicUpdate {
-  name?: string,
-  level?: number,
-  mode?: string
+  name?: string;
+  level?: number;
+  mode?: string;
+}
+
+export interface IScoreFormCreate {
+  value: number;
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  grade: string;
+  plate: string;
+}
+
+export interface IScoreCreate {
+  value: number;
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  grade: string;
+  plate: string;
+  event_id: number;
+  category_id: number;
+  phase_id: number;
+  music_id: number;
 }

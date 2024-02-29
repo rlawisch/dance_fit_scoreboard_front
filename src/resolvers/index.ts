@@ -3,7 +3,7 @@ import { Resolver } from "react-hook-form";
 import * as yup from "yup";
 
 export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
-  values,
+  values
 ) => {
   try {
     // Define your Yup schema for validation
@@ -22,7 +22,7 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
               !value ||
               (value[0] && ["image/jpeg", "image/png"].includes(value[0].type))
             );
-          },
+          }
         ),
     });
 
@@ -60,3 +60,4 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
     };
   }
 };
+

@@ -1,8 +1,6 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { GlobalContainer, MusicLevelMiniature } from "../../styles/global";
+import { GlobalContainer, MusicLevelMiniature, MusicWrapper, Table } from "../../styles/global";
 import { useMusics } from "../../providers/Musics";
-import { Table } from "../AdminDashboard_Event/styles";
-import { MusicWrapper } from "./styles";
 import Button from "../../components/Button";
 import useModal from "../../providers/Modal";
 import Modal from "../../components/Modal";
@@ -98,10 +96,11 @@ const AdminDashboardMusics: FunctionComponent<
                         <FaEdit />
                       </UpdateButton>
                       <Modal
+                        key={music.music_id}
                         isOpen={isMusicUpdateModalOpen(music.music_id)}
                         onClose={() => closeMusicUpdateModal(music.music_id)}
                       >
-                        <MusicUpdateForm music={music} />
+                        <MusicUpdateForm key={music.music_id} music={music} />
                       </Modal>
 
                       <DeleteButton

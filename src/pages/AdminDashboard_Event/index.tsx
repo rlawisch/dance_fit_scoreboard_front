@@ -1,25 +1,28 @@
 import { FunctionComponent, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
 import {
   GlobalContainer,
+  PlayerInfoWrapper,
   PlayerMiniature,
-} from "../../styles/global";
-import {
-  AdminDashboardEventContainer,
-  CategoryTable,
-  TableHeaderWrapper,
-  EventTitle,
   Table,
   TableDataWrapper,
-} from "./styles";
+  TableHeader,
+  TableHeaderWrapper,
+  Title,
+} from "../../styles/global";
 import Button from "../../components/Button";
 import Modal from "../../components/Modal";
 import UpdateButton from "../../components/Button_Update";
 import useModal from "../../providers/Modal";
 import EventUpdateForm from "../../components/Forms/EventUpdate";
 import CategoryCreateForm from "../../components/Forms/CategoryCreate";
+import DeleteButton from "../../components/Button_Delete";
+import useDynamicModal from "../../providers/DynamicModal";
+import CategoryDeleteForm from "../../components/Forms/CategoryDelete";
+import { FaRegTrashCan } from "react-icons/fa6";
+import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface AdminDashboardEventProps {}
 
@@ -48,83 +51,117 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
     closeModal: closeCategoryCreateModal,
   } = useModal();
 
+  const {
+    isModalOpen: isCategoryDeleteModalOpen,
+    openModal: openCategoryDeleteModal,
+    closeModal: closeCategoryDeleteModal,
+  } = useDynamicModal();
+
   return (
     <GlobalContainer>
-      <AdminDashboardEventContainer>
-        <Link to={"/admin/events"}>
-          <Button vanilla={true}>Voltar</Button>
-        </Link>
+      <Button onClick={() => navigate("/admin/events")}>Voltar</Button>
 
-        <EventTitle>{!!eventData && eventData.name}</EventTitle>
+      <Title>{!!eventData && eventData.name}</Title>
 
-        <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
-          Participar
-        </Button>
-        <UpdateButton onClick={openEventUpdateModal}>
-          Editar Evento
-        </UpdateButton>
+      <Button vanilla={true} onClick={() => joinEvent(Number(event_id))}>
+        Participar
+      </Button>
+      <UpdateButton onClick={openEventUpdateModal}>Editar Evento</UpdateButton>
 
-        <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
-          <EventUpdateForm event={eventData}/>
-        </Modal>
+      <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
+        <EventUpdateForm event={eventData} />
+      </Modal>
 
-        <Modal isOpen={isOpenCategoryCreate} onClose={closeCategoryCreateModal}>
-          <CategoryCreateForm event={eventData}/>
-        </Modal>
+      <Modal isOpen={isOpenCategoryCreate} onClose={closeCategoryCreateModal}>
+        <CategoryCreateForm event={eventData} />
+      </Modal>
 
-        <Table>
-          <thead>
-            <tr>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>
               <TableHeaderWrapper>
                 <h4>Participantes</h4>
-                <UpdateButton>+</UpdateButton>
+                <div>
+                  <UpdateButton>+</UpdateButton>
+                </div>
               </TableHeaderWrapper>
-            </tr>
-          </thead>
-          <tbody>
-            {!!eventData &&
-              eventData.players?.map((p) => (
-                <tr key={p.player_id}>
-                  <td>
-                    <TableDataWrapper>
-                      <PlayerMiniature
-                        src={
-                          p.profilePicture
-                            ? p.profilePicture
-                            : "/img/default_player.png"
-                        }
-                        alt="Mini Profile Picture"
-                      />
-                      {p.nickname}
-                    </TableDataWrapper>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-        </Table>
+            </TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {!!eventData &&
+            eventData.players?.map((p) => (
+              <tr key={p.player_id}>
+                <td>
+                  <PlayerInfoWrapper>
+                    <PlayerMiniature
+                      src={
+                        p.profilePicture
+                          ? p.profilePicture
+                          : "/img/default_player.png"
+                      }
+                      alt="Mini Profile Picture"
+                    />
+                    {p.nickname}
+                  </PlayerInfoWrapper>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
 
-        <CategoryTable>
-          <thead>
-            <tr>
+      <Table>
+        <thead>
+          <tr>
+            <TableHeader>
               <TableHeaderWrapper>
                 <h4>Categorias</h4>
                 <UpdateButton onClick={openCategoryCreateModal}>+</UpdateButton>
               </TableHeaderWrapper>
-            </tr>
-          </thead>
-          <tbody>
-            {!!eventData &&
-              eventData.categories?.map((c) => (
-                <tr
-                  key={c.category_id}
-                  onClick={() => navigate(`categories/${c.category_id}`)}
-                >
-                  <td>{c.name}</td>
-                </tr>
-              ))}
-          </tbody>
-        </CategoryTable>
-      </AdminDashboardEventContainer>
+            </TableHeader>
+          </tr>
+        </thead>
+        <tbody>
+          {!!eventData &&
+            eventData.categories?.map((category) => (
+              <tr key={category.category_id}>
+                <td>
+                  <TableDataWrapper>
+                    {category.name}
+
+                    <div>
+                      <Button
+                        onClick={() =>
+                          navigate(
+                            `/admin/events/${event_id}/categories/${category.category_id}`
+                          )
+                        }
+                      >
+                        <AiOutlineArrowRight />
+                      </Button>
+                      <DeleteButton
+                        onClick={() =>
+                          openCategoryDeleteModal(category.category_id)
+                        }
+                      >
+                        <FaRegTrashCan />
+                      </DeleteButton>
+                      <Modal
+                        isOpen={isCategoryDeleteModalOpen(category.category_id)}
+                        onClose={() =>
+                          closeCategoryDeleteModal(category.category_id)
+                        }
+                      >
+                        <CategoryDeleteForm category={category} />
+                      </Modal>
+                    </div>
+                  </TableDataWrapper>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </Table>
     </GlobalContainer>
   );
 };
