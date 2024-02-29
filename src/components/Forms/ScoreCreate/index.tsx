@@ -43,7 +43,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     stage_pass: yup
       .boolean()
       .required()
-      .transform((value, originalValue) =>
+      .transform((_, originalValue) =>
         originalValue === "true" ? true : false
       ),
     grade: yup.string().required(),
@@ -60,7 +60,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
 
   const stagePassOptions = [
     { label: "Pass", value: "true" },
-    { label: "Break", value: "false" },
+    { label: "Break", value: "" },
   ];
 
   const gradeOptions = [
