@@ -83,12 +83,12 @@ export default function Routing() {
           }
         />
 
-<Route
+        <Route
           path="/dashboard/events/:event_id/categories/:category_id"
           element={
-              <PrivateRoute>
-                <DashboardCategory/>
-              </PrivateRoute>
+            <PrivateRoute>
+              <DashboardCategory />
+            </PrivateRoute>
           }
         />
 

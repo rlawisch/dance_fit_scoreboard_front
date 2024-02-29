@@ -24,49 +24,41 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [eventData, setEventData] = useState<IEvent>();
 
-  const getEventData = (event_id: number) => {
-    hasValidSession();
-
-    api
-      .get(`/events/${event_id}`, {
+  const getEventData = async (event_id: number) => {
+    try {
+      hasValidSession();
+      const res = await api.get(`/events/${event_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        setEventData(res.data);
-      })
-      .catch((err: any) => {
-        console.log(err);
       });
+      setEventData(res.data);
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
-  const updateEventData = (
+  const updateEventData = async (
     event_id: number,
     formData: IUpdateEventFormData
   ) => {
-    hasAdminRights();
-
-    api
-      .patch(`/events/${event_id}`, formData, {
+    try {
+      hasAdminRights();
+      const res = await api.patch(`/events/${event_id}`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success("Informações do evento atualizadas com sucesso");
-          navigate(`/admin/events/${event_id}`);
-        }
-      })
-      .catch((err: any) => {
-        toast.error("Algo deu errado");
-        navigate(`/admin/events/${event_id}`);
-        console.log(err);
       });
+      if (res.status === 200) {
+        toast.success("Informações do evento atualizadas com sucesso");
+        navigate(`/admin/events/${event_id}`);
+      }
+    } catch (err: any) {
+      toast.error("Algo deu errado");
+      navigate(`/admin/events/${event_id}`);
+      console.log(err);
+    }
   };
-
-
 
   return (
     <EventContext.Provider

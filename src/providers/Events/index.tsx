@@ -11,8 +11,8 @@ export interface IEventsContext {
   events: IEvent[];
   createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
-  joinEvent: (event_id: number | undefined) => void;
-  deleteEvent: (event_id: number) => void
+  joinEvent: (event_id: number) => void;
+  deleteEvent: (event_id: number) => void;
 }
 
 const EventsContext = createContext<IEventsContext>({} as IEventsContext);
@@ -20,21 +20,20 @@ const EventsContext = createContext<IEventsContext>({} as IEventsContext);
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // Player States
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken, decodedPlayerInfo, hasValidSession, hasAdminRights } =
+    usePlayer();
 
   // Event States
   const [events, setEvents] = useState([]);
 
   // CreateEvent (admin only)
-  const createEvent = (formData: IEventCreate) => {
-    hasAdminRights();
-
-    api
-      .post(
+  const createEvent = async (formData: IEventCreate) => {
+    try {
+      hasAdminRights();
+      const res = await api.post(
         "/events",
         { ...formData, status: true },
         {
@@ -42,89 +41,90 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
             Authorization: `Bearer ${accToken}`,
           },
         }
-      )
-      .then((res) => {
-        if (res.status === 201) {
-          toast.success("Evento criado com sucesso");
-          navigate('/admin/events')
-          
-        } 
-      })
-      .catch((err) => {
-        toast.error("Algo deu errado");
-        navigate('/admin/events')
+      );
 
-        console.log(err);
-      });
+      if (res.status === 201) {
+        toast.success("Evento criado com sucesso");
+        navigate("/admin/events");
+      }
+    } catch (err) {
+      toast.error("Algo deu errado");
+      navigate("/admin/events");
+      console.log(err);
+    }
   };
 
   // Find All Events (logged in player)
-  const getEvents = () => {
-    hasValidSession();
-
-    api
-      .get("/events", {
+  const getEvents = async () => {
+    try {
+      hasValidSession();
+      const res = await api.get("/events", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        setEvents(res.data);
-      })
-      .catch((err) => {
-        toast.error("Erro ao carregar Eventos");
-        console.log(err);
       });
+      setEvents(res.data);
+    } catch (err) {
+      toast.error("Erro ao carregar Eventos");
+      console.log(err);
+    }
   };
 
   // Join Event (logged in player)
-  const joinEvent = (event_id: number | undefined) => {
-    hasValidSession();
-
-    api
-      .patch(`/events/${event_id}/join`, null, {
+  const joinEvent = async (event_id: number) => {
+    try {
+      hasValidSession();
+      const res = await api.patch(`/events/${event_id}/join`, null, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        console.log(res.data);
-        toast.success("Voce agora faz parte do Evento:");
-      })
-      .catch((err: any) => {
-        console.log(err);
-
-        if (
-          err.response.data.message === "Player already assigned to this event"
-        ) {
-          toast.error("Você já faz parte deste evento");
-        }
       });
+
+      if (res.status === 200) {
+        toast.success("Você agora faz parte do Evento:");
+
+        if (decodedPlayerInfo.role === "admin") {
+          navigate(`/admin/events/${event_id}`);
+        } else {
+          navigate(`/dashboard/events/${event_id}`);
+        }
+      }
+    } catch (err: any) {
+      console.log(err);
+
+      if (
+        err.response.data.message === "Player already assigned to this event"
+      ) {
+        toast.error("Você já faz parte deste evento");
+        if (decodedPlayerInfo.role === "admin") {
+          navigate(`/admin/events/${event_id}`);
+        } else {
+          navigate(`/dashboard/events/${event_id}`);
+        }
+      }
+    }
   };
 
-  const deleteEvent = (event_id: number) => {
-    hasAdminRights();
-
-    api
-      .delete(`/events/${event_id}`, {
+  const deleteEvent = async (event_id: number) => {
+    try {
+      hasAdminRights();
+      const res = await api.delete(`/events/${event_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success("Evento deletado com sucesso");
-          navigate("/admin/events");
-        }
-      })
-      .catch((err: any) => {
-        console.log(err);
-        if (err.response.data.message === "Internal server error") {
-          toast.error("Algo deu errado");
-          navigate("/admin/events");
-        }
-        navigate("/admin/events");
       });
+
+      if (res.status === 200) {
+        toast.success("Evento deletado com sucesso");
+        navigate("/admin/events");
+      }
+    } catch (err: any) {
+      console.log(err);
+      if (err.response?.data?.message === "Internal server error") {
+        toast.error("Algo deu errado");
+      }
+      navigate("/admin/events");
+    }
   };
 
   // Update Events (admin only)
