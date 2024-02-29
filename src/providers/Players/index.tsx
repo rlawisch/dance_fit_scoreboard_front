@@ -15,7 +15,7 @@ export interface IPlayerContext {
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   hasAdminRights: () => void;
-  hasValidSession: () => boolean;
+  hasValidSession: () => Promise<boolean>;
   getPlayerData: () => void;
   uploadProfilePicture: (formData: FormData) => void;
   isUploading: boolean;
@@ -26,208 +26,154 @@ const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
 export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const navigate = useNavigate();
+
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || "",
+    localStorage.getItem("@DFS/PlayerToken") || ""
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
+
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer),
+    JSON.parse(currentPlayer)
   );
 
   const [playerData, setPlayerData] = useState<IPlayer>();
 
-  const navigate = useNavigate();
-
-  const playerLogin = (formData: ILogin) => {
-    api
-      .post("/auth/login", formData)
-      .then((res) => {
-        const access_token: string = res.data.access_token;
-        setAccToken(access_token);
-
-        const jwtPayload = jwtDecode(access_token);
-        setDecodedPlayerInfo(jwtPayload);
-
-        localStorage.setItem("@DFS/PlayerToken", access_token);
-        localStorage.setItem("@DFS/Player", JSON.stringify(jwtPayload));
-
-        toast("Sentimos sua falta!");
-
-        if (jwtPayload.role === "admin") {
-          navigate("/admin/home");
-        } else {
-          navigate("/dashboard/home");
-        }
-      })
-      .catch((err) => {
-        if (err) {
-          toast.error("Usuário ou senha incorretos");
-        }
-      });
-  };
-
-  const playerSignup = (formData: ISignup) => {
-    api
-      .post("/players", formData)
-      .then(() => {
-        toast("Conta criada com sucesso, agora você pode fazer o Login!");
-        navigate("/login");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const playerLogout = () => {
-    hasValidSession();
-
-    api
-      .delete("/auth/logout", {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      })
-      .then(() => {
-        setAccToken("");
-        setPlayerData({} as IPlayer);
-        setDecodedPlayerInfo({
-          nickname: "",
-          player_id: "",
-          role: "",
-          iat: -1,
-          exp: -1,
-        });
-        navigate("/login");
-        localStorage.removeItem("@DFS/PlayerToken");
-        localStorage.removeItem("@DFS/Player");
-        toast("Até a próxima!");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const getPlayerData = () => {
-    hasValidSession();
-
-    api
-      .get(`/players/${decodedPlayerInfo.player_id}`, {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      })
-      .then((res) => {
-        setPlayerData(res.data);
-      })
-      .catch((err: any) => {
-        console.log(err);
-      });
-  };
-
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  const uploadProfilePicture = async (formData: FormData) => {
-    hasValidSession();
+  const playerLogin = async (formData: ILogin) => {
+    try {
+      const res = await api.post("/auth/login", formData);
+      const access_token: string = res.data.access_token;
+      setAccToken(access_token);
 
-    setIsUploading(true);
+      const jwtPayload = jwtDecode(access_token);
+      setDecodedPlayerInfo(jwtPayload);
 
-    api
-      .post("/players/profile-picture", formData, {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      })
-      .then((res: any) => {
-        if (res.status === 201) {
-          setIsUploading(false);
-          toast.success(
-            "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude",
-          );
-        } else {
-          toast.error("Algo deu errado");
-        }
-        console.log(res.data);
-      })
-      .catch((err: any) => {
-        toast.error("Algo deu errado");
-        console.log(err);
-      });
+      localStorage.setItem("@DFS/PlayerToken", access_token);
+      localStorage.setItem("@DFS/Player", JSON.stringify(jwtPayload));
+
+      toast("Sentimos sua falta!");
+
+      if (jwtPayload.role === "admin") {
+        navigate("/admin/home");
+      } else {
+        navigate("/dashboard/home");
+      }
+    } catch (err: any) {
+      toast.error("Usuário ou senha incorretos");
+    }
   };
 
-  const hasValidSession = () => {
-    api
-      .get("/auth/session", {
+  const playerSignup = async (formData: ISignup) => {
+    try {
+      await api.post("/players", formData);
+      toast("Conta criada com sucesso, agora você pode fazer o Login!");
+      navigate("/login");
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  const playerLogout = async () => {
+    try {
+      await api.delete("/auth/logout", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.data === true) {
-          return true;
-        }
-      })
-      .catch((err: any) => {
-        if (err.response.data.message === "Invalid token") {
-          setAccToken("");
-          setDecodedPlayerInfo({
-            nickname: "",
-            player_id: "",
-            role: "",
-            iat: -1,
-            exp: -1,
-          });
-          navigate("/login");
-          localStorage.removeItem("@DFS/PlayerToken");
-          localStorage.removeItem("@DFS/Player");
-          toast(
-            "Parece que você fez login em outro dispositivo, para acessar a apliacação no dispositivo atual, faça login novamente",
-          );
-          return false;
-        }
-
-        if (err.response.data.message === "Session expired") {
-          setAccToken("");
-          setDecodedPlayerInfo({
-            nickname: "",
-            player_id: "",
-            role: "",
-            iat: -1,
-            exp: -1,
-          });
-          navigate("/login");
-          localStorage.removeItem("@DFS/PlayerToken");
-          localStorage.removeItem("@DFS/Player");
-          toast(
-            "Parece que sua sessão expirou, por favor, faça o login novamente",
-          );
-          return false;
-        }
-
-        return false;
       });
+      setAccToken("");
+      setPlayerData({} as IPlayer);
+      setDecodedPlayerInfo({
+        nickname: "",
+        player_id: "",
+        role: "",
+        iat: -1,
+        exp: -1,
+      });
+      navigate("/login");
+      localStorage.removeItem("@DFS/PlayerToken");
+      localStorage.removeItem("@DFS/Player");
+      toast("Até a próxima!");
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  const getPlayerData = async () => {
+    try {
+      const res = await api.get(`/players/${decodedPlayerInfo.player_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+      setPlayerData(res.data);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  const uploadProfilePicture = async (formData: FormData) => {
+    try {
+      setIsUploading(true);
+      const res = await api.post("/players/profile-picture", formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+      if (res.status === 201) {
+        setIsUploading(false);
+        toast.success(
+          "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude"
+        );
+      } else {
+        toast.error("Algo deu errado");
+      }
+      console.log(res.data);
+    } catch (err: any) {
+      toast.error("Algo deu errado");
+      console.log(err);
+    }
+  };
+
+  const hasValidSession = async () => {
+    try {
+      const res = await api.get("/auth/session", {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+      if (res.data === true) {
+        return true;
+      }
+    } catch (err: any) {
+      if (err.response.data.message === "Invalid token") {
+        // Handle invalid token
+        return false
+      } else if (err.response.data.message === "Session expired") {
+        return false
+      }
+      return false;
+    }
     return false;
   };
 
-  const hasAdminRights = () => {
-    hasValidSession();
-
-    api
-      .get("/auth/admin", {
+  const hasAdminRights = async () => {
+    try {
+      const res = await api.get("/auth/admin", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.data === true) {
-          navigate("/admin/home");
-        } else {
-          toast.error("Você não tem permissão para acessar este recurso!");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
       });
+      if (res.data === true) {
+        navigate("/admin/home");
+      } else {
+        toast.error("Você não tem permissão para acessar este recurso!");
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
   return (
