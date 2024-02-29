@@ -13,7 +13,7 @@ export interface ICategoryContext {
   createCategory: (formData: ICategoryCreate, event_id: number) => void;
   updateCategory: (formData: ICategoryUpdate, category: ICategory) => void;
   deleteCategory: (category_id: number, event_id: number) => void;
-  joinCategory: (category_id: number) => void;
+  joinCategory: (event_id: number, category_id: number) => void;
 }
 
 const CategoryContext = createContext<ICategoryContext>({} as ICategoryContext);
@@ -22,7 +22,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   // Player States
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken, decodedPlayerInfo, hasValidSession, hasAdminRights } =
+    usePlayer();
 
   const [categoryData, setCategoryData] = useState<ICategory>();
 
@@ -70,7 +71,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         if (res.status === 201) {
           toast.success("Categoria criada com sucesso");
           navigate(`/admin/events/${event_id}/categories/${category_id}`);
-        } 
+        }
+        navigate(`/admin/events/${event_id}/categories/${category_id}`);
       })
       .catch((err: any) => {
         console.log(err);
@@ -80,7 +82,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   // player join category
-  const joinCategory = (category_id: number) => {
+  const joinCategory = (event_id: number, category_id: number) => {
     hasValidSession();
 
     api
@@ -93,6 +95,12 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         console.log(res.data.response);
         if (res.status === 200) {
           toast.success("Adicionado na categoria com sucesso!");
+
+          if (decodedPlayerInfo.role === "admin") {
+            navigate(`/admin/events/${event_id}/categories/${category_id}`);
+          } else {
+            navigate(`/dashboard/events/${event_id}/categories/${category_id}`);
+          }
         }
       })
       .catch((err: any) => {
@@ -102,8 +110,18 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           "Player already assigned to this Category"
         ) {
           toast.error("Jogador já cadastrado na categoria");
+          if (decodedPlayerInfo.role === "admin") {
+            navigate(`/admin/events/${event_id}/categories/${category_id}`);
+          } else {
+            navigate(`/dashboard/events/${event_id}/categories/${category_id}`);
+          }
         } else {
           toast.error("Algo deu errado");
+          if (decodedPlayerInfo.role === "admin") {
+            navigate(`/admin/events/${event_id}/categories/${category_id}`);
+          } else {
+            navigate(`/dashboard/events/${event_id}/categories/${category_id}`);
+          }
         }
       });
   };
@@ -156,14 +174,14 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       .then((res) => {
         console.log(res);
         if (res.status === 200) {
-          toast.success('Categoria deletada com sucesso')
-          navigate(`/admin/events/${event_id}`)
+          toast.success("Categoria deletada com sucesso");
+          navigate(`/admin/events/${event_id}`);
         }
+        navigate(`/admin/events/${event_id}`);
       })
       .catch((err: any) => {
         console.log(err);
-        navigate(`/admin/events/${event_id}`)
-
+        navigate(`/admin/events/${event_id}`);
       });
   };
 
