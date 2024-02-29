@@ -5,7 +5,6 @@ import { usePlayer } from "../Players";
 import { IEvent } from "../../types/entity-types";
 import { IUpdateEventFormData } from "../../types/form-types";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 export interface IEventContext {
   getEventData: (event_id: number) => void;
@@ -18,7 +17,6 @@ const EventContext = createContext<IEventContext>({} as IEventContext);
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const navigate = useNavigate();
 
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
@@ -51,11 +49,9 @@ export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações do evento atualizadas com sucesso");
-        navigate(`/admin/events/${event_id}`);
       }
     } catch (err: any) {
       toast.error("Algo deu errado");
-      navigate(`/admin/events/${event_id}`);
       console.log(err);
     }
   };

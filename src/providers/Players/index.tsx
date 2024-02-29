@@ -77,6 +77,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = async () => {
+    hasValidSession()
+
     try {
       await api.delete("/auth/logout", {
         headers: {
@@ -102,6 +104,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getPlayerData = async () => {
+    hasValidSession()
+
     try {
       const res = await api.get(`/players/${decodedPlayerInfo.player_id}`, {
         headers: {
@@ -149,10 +153,33 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     } catch (err: any) {
       if (err.response.data.message === "Invalid token") {
-        // Handle invalid token
-        return false
+        setAccToken("");
+        setPlayerData({} as IPlayer);
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
+        });
+        navigate("/login");
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+        toast("Token inválido por favor faça o Login novamente");
       } else if (err.response.data.message === "Session expired") {
-        return false
+        setAccToken("");
+        setPlayerData({} as IPlayer);
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
+        });
+        navigate("/login");
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+        toast("Sua sessão expirou, por favor faça o Login novamente");
       }
       return false;
     }
@@ -167,12 +194,42 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
       if (res.data === true) {
-        navigate("/admin/home");
+        return true;
       } else {
         toast.error("Você não tem permissão para acessar este recurso!");
+        return false;
       }
     } catch (err: any) {
-      console.log(err);
+      if (err.response.data.message === "Invalid token") {
+        setAccToken("");
+        setPlayerData({} as IPlayer);
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
+        });
+        navigate("/login");
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+        toast("Token inválido por favor faça o Login novamente");
+      } else if (err.response.data.message === "Session expired") {
+        setAccToken("");
+        setPlayerData({} as IPlayer);
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
+        });
+        navigate("/login");
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+        toast("Sua sessão expirou, por favor faça o Login novamente");
+      }
+      return false;
     }
   };
 

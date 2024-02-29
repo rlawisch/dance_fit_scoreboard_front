@@ -4,18 +4,13 @@ import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
 import { IPhaseRealCreate, IPhaseRealUpdate } from "../../types/form-types";
-import { useNavigate } from "react-router-dom";
-import { ICategory, IPhase } from "../../types/entity-types";
+import { IPhase } from "../../types/entity-types";
 
 export interface IPhasesContext {
-  createPhase: (formData: IPhaseRealCreate, category: ICategory) => void;
-  updatePhase: (
-    formData: IPhaseRealUpdate,
-    phase_id: number,
-    category: ICategory
-  ) => void;
-  addMusic: (category: ICategory, phase: IPhase, music_id: number) => void;
-  removeMusic: (category: ICategory, phase: IPhase, music_id: number) => void;
+  createPhase: (formData: IPhaseRealCreate) => void;
+  updatePhase: (formData: IPhaseRealUpdate, phase_id: number) => void;
+  addMusic: (phase: IPhase, music_id: number) => void;
+  removeMusic: (phase: IPhase, music_id: number) => void;
 }
 
 const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
@@ -23,17 +18,9 @@ const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
 export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const navigate = useNavigate();
-
-  // Player States
   const { accToken, hasAdminRights } = usePlayer();
 
-  // API Consuming
-
-  const createPhase = async (
-    formData: IPhaseRealCreate,
-    category: ICategory
-  ) => {
+  const createPhase = async (formData: IPhaseRealCreate) => {
     hasAdminRights();
 
     try {
@@ -46,9 +33,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Fase criada com sucesso");
-        navigate(
-          `/admin/events/${category.event.event_id}/categories/${category.category_id}`
-        );
       } else {
         toast.error("Algo deu errado");
       }
@@ -68,18 +52,10 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       } else if (err.response.data.message === "Internal server error") {
         toast.error("Algo deu errado");
       }
-
-      navigate(
-        `/admin/events/${category.event.event_id}/categories/${category.category_id}`
-      );
     }
   };
 
-  const updatePhase = async (
-    formData: IPhaseRealUpdate,
-    phase_id: number,
-    category: ICategory
-  ) => {
+  const updatePhase = async (formData: IPhaseRealUpdate, phase_id: number) => {
     hasAdminRights();
 
     try {
@@ -109,15 +85,10 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       } else if (err.response.data.message === "Internal server error") {
         toast.error("Algo deu errado");
       }
-
-      navigate(
-        `/admin/events/${category.event.event_id}/categories/${category.category_id}`
-      );
     }
   };
 
   const addMusic = async (
-    category: ICategory,
     phase: IPhase,
     music_id: number
   ) => {
@@ -166,15 +137,10 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       } else if (err.response.data.message === "Internal server error") {
         toast.error("Algo deu errado");
       }
-
-      navigate(
-        `/admin/events/${category.event.event_id}/categories/${category.category_id}`
-      );
     }
   };
 
   const removeMusic = async (
-    category: ICategory,
     phase: IPhase,
     music_id: number
   ) => {
@@ -200,10 +166,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       if (err.response.data.message === "Internal server error") {
         toast.error("Algo deu errado");
       }
-
-      navigate(
-        `/admin/events/${category.event.event_id}/categories/${category.category_id}`
-      );
     }
   };
 

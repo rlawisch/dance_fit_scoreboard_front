@@ -3,7 +3,6 @@ import api from "../../services/api";
 import * as React from "react";
 import { usePlayer } from "../Players";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { IMusic } from "../../types/entity-types";
 import { IMusicCreate, IMusicUpdate } from "../../types/form-types";
 
@@ -20,7 +19,6 @@ const MusicsContext = createContext<IMusicsContext>({} as IMusicsContext);
 export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const navigate = useNavigate();
 
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
@@ -50,7 +48,6 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 201) {
         toast.success("Música criada com sucesso");
-        navigate("/admin/musics");
       }
     } catch (err: any) {
       if (
@@ -60,7 +57,6 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
         toast.error("Música com os mesmos dados já existe no sistema");
       }
       console.log(err);
-      navigate("/admin/musics");
     }
   };
 
@@ -74,14 +70,12 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações da música atualizadas");
-        navigate("/admin/musics");
       }
     } catch (err: any) {
       console.log(err);
       if (err.response.data.message === "Internal server error") {
         toast.error("Algo deu errado");
       }
-      navigate("/admin/musics");
     }
   };
 
@@ -95,11 +89,9 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Música deletada com sucesso");
-        navigate("/admin/musics");
       }
     } catch (err: any) {
       console.log(err);
-      navigate("/admin/musics");
     }
   };
 
