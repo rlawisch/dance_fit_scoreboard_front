@@ -46,9 +46,11 @@ const ScoreCard: FunctionComponent<ScoreCardProps> = ({ score }) => {
           <ScoreGrade src={getGradeImageFileName(score)} />
         </div>
         <div>
-          <ScorePlate
-            src={`/static/musics/plating/${score.plate.toLowerCase()}.png`}
-          />
+          {score.plate && (
+            <ScorePlate
+              src={`/static/musics/plating/${score.plate.toLowerCase()}.png`}
+            />
+          )}
         </div>
       </ScoreGradeAndPlating>
 

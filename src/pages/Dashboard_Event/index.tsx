@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect } from "react";
 import {
   GlobalContainer,
+  PlayerInfoWrapper,
   PlayerMiniature,
   Table,
   TableDataWrapper,
@@ -51,7 +52,7 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
             eventData.players?.map((p) => (
               <tr key={p.player_id}>
                 <td>
-                  <TableDataWrapper>
+                  <PlayerInfoWrapper>
                     <PlayerMiniature
                       src={
                         p.profilePicture
@@ -61,7 +62,7 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
                       alt="Mini Profile Picture"
                     />
                     {p.nickname}
-                  </TableDataWrapper>
+                  </PlayerInfoWrapper>
                 </td>
               </tr>
             ))}

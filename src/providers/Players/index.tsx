@@ -76,7 +76,9 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       toast("Conta criada com sucesso, agora você pode fazer o Login!");
       navigate("/login");
     } catch (err: any) {
-      console.log(err);
+      if (err.response.data.message = "Nickname already in use") {
+        toast.error("Nickname não disponível, por favor escolha outro")
+      }
     }
   };
 
