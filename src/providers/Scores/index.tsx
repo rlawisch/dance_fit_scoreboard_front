@@ -1,12 +1,13 @@
 import { createContext, useContext } from "react";
 import * as React from "react";
-import { IScoreCreate } from "../../types/form-types";
+import { IScoreCreate, IScoreCreateByAdmin } from "../../types/form-types";
 import { usePlayer } from "../Players";
 import api from "../../services/api";
 import { toast } from "react-toastify";
 
 export interface IScoreContext {
   createScore: (formData: IScoreCreate) => void;
+  adminCreateScore: (formData: IScoreCreateByAdmin) => void;
   deleteScore: (score_id: number) => void;
 }
 
@@ -22,6 +23,45 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
       await hasValidSession();
 
       const res = await api.post(`/scores`, formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+
+      console.log(res);
+
+      if (res.status === 201) {
+        toast.success("Score criado com sucesso");
+      }
+    } catch (err: any) {
+      console.log(err);
+
+      if (
+        err.response.data.message ===
+        "Player is not a participant of selected Event"
+      ) {
+        toast.error("Jogador não é participante do evento");
+      } else if (
+        err.response.data.message ===
+        "Player is not assigned to this Category in this Event"
+      ) {
+        toast.error("Jogador não é participante da categoria");
+      } else if (
+        err.response.data.message ===
+        "There can be only one instance of a Score created by a Player to a Music, inside a Category Phase of an Event"
+      ) {
+        toast.error(
+          "Já foi cadastrado com os mesmos dados (evento/categoria/fase)"
+        );
+      }
+    }
+  };
+
+  const adminCreateScore = async (formData: IScoreCreateByAdmin) => {
+    try {
+      await hasAdminRights();
+
+      const res = await api.post(`/scores/admin`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
@@ -77,7 +117,9 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   return (
-    <ScoreContext.Provider value={{ createScore, deleteScore }}>
+    <ScoreContext.Provider
+      value={{ createScore, adminCreateScore, deleteScore }}
+    >
       {children}
     </ScoreContext.Provider>
   );

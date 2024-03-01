@@ -11,6 +11,7 @@ export interface IPhasesContext {
   updatePhase: (formData: IPhaseRealUpdate, phase_id: number) => void;
   addMusic: (phase: IPhase, music_id: number) => void;
   removeMusic: (phase: IPhase, music_id: number) => void;
+  deletePhase: (phase_id: number) => void
 }
 
 const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
@@ -88,10 +89,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const addMusic = async (
-    phase: IPhase,
-    music_id: number
-  ) => {
+  const addMusic = async (phase: IPhase, music_id: number) => {
     hasAdminRights();
 
     try {
@@ -140,10 +138,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const removeMusic = async (
-    phase: IPhase,
-    music_id: number
-  ) => {
+  const removeMusic = async (phase: IPhase, music_id: number) => {
     hasAdminRights();
 
     try {
@@ -169,9 +164,30 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const deletePhase = async (phase_id: number) => {
+    try {
+      const res = await api.delete(`/phases/${phase_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+
+      console.log(res);
+
+      if (res.status === 200) {
+        toast.success("Fase deletada com sucesso");
+      }
+    } catch (err: any) {
+      console.log(err);
+      if (err.response.data.message === "Internal server error") {
+        toast.error("Algo deu errado");
+      }
+    }
+  };
+
   return (
     <PhasesContext.Provider
-      value={{ createPhase, updatePhase, addMusic, removeMusic }}
+      value={{ createPhase, updatePhase, addMusic, removeMusic, deletePhase }}
     >
       {children}
     </PhasesContext.Provider>

@@ -52,7 +52,7 @@ const PhaseCreateForm: FunctionComponent<PhaseCreateFormProps> = ({
       category_id: Number(category.category_id),
     };
 
-    createPhase(realFormData, category);
+    createPhase(realFormData);
   };
 
   return (

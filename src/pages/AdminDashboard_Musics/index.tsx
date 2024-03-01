@@ -1,5 +1,11 @@
 import React, { FunctionComponent, useEffect } from "react";
-import { GlobalContainer, MusicLevelMiniature, MusicWrapper, Table } from "../../styles/global";
+import {
+  GlobalContainer,
+  MusicLevelMiniature,
+  MusicWrapper,
+  Table,
+  TableHeaderWrapper,
+} from "../../styles/global";
 import { useMusics } from "../../providers/Musics";
 import Button from "../../components/Button";
 import useModal from "../../providers/Modal";
@@ -59,8 +65,6 @@ const AdminDashboardMusics: FunctionComponent<
 
   return (
     <GlobalContainer>
-      <h2>Músicas</h2>
-
       <Button onClick={openMusicCreateModal}>Criar Música</Button>
       <Modal isOpen={isOpenMusicCreate} onClose={closeMusicCreateModal}>
         <MusicCreateForm />
@@ -83,38 +87,42 @@ const AdminDashboardMusics: FunctionComponent<
               {groupedMusics[mode].map((music) => (
                 <tr key={music.music_id}>
                   <td>
-                    <MusicWrapper>
-                      {music.name}
-                      <MusicLevelMiniature
-                        src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
-                          .toString()
-                          .padStart(2, "0")}.png`}
-                      />
-                      <UpdateButton
-                        onClick={() => openMusicUpdateModal(music.music_id)}
-                      >
-                        <FaEdit />
-                      </UpdateButton>
-                      <Modal
-                        key={music.music_id}
-                        isOpen={isMusicUpdateModalOpen(music.music_id)}
-                        onClose={() => closeMusicUpdateModal(music.music_id)}
-                      >
-                        <MusicUpdateForm key={music.music_id} music={music} />
-                      </Modal>
+                    <TableHeaderWrapper>
+                      <MusicWrapper>
+                        {music.name}
+                        <MusicLevelMiniature
+                          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
+                            .toString()
+                            .padStart(2, "0")}.png`}
+                        />
+                      </MusicWrapper>
+                      <div>
+                        <UpdateButton
+                          onClick={() => openMusicUpdateModal(music.music_id)}
+                        >
+                          <FaEdit />
+                        </UpdateButton>
+                        <Modal
+                          key={music.music_id}
+                          isOpen={isMusicUpdateModalOpen(music.music_id)}
+                          onClose={() => closeMusicUpdateModal(music.music_id)}
+                        >
+                          <MusicUpdateForm key={music.music_id} music={music} />
+                        </Modal>
 
-                      <DeleteButton
-                        onClick={() => openMusicDeleteModal(music.music_id)}
-                      >
-                        <TbMusicMinus />
-                      </DeleteButton>
-                      <Modal
-                        isOpen={isMusicDeleteModalOpen(music.music_id)}
-                        onClose={() => closeMusicDeleteModal(music.music_id)}
-                      >
-                        <MusicDeleteForm music={music} />
-                      </Modal>
-                    </MusicWrapper>
+                        <DeleteButton
+                          onClick={() => openMusicDeleteModal(music.music_id)}
+                        >
+                          <TbMusicMinus />
+                        </DeleteButton>
+                        <Modal
+                          isOpen={isMusicDeleteModalOpen(music.music_id)}
+                          onClose={() => closeMusicDeleteModal(music.music_id)}
+                        >
+                          <MusicDeleteForm music={music} />
+                        </Modal>
+                      </div>
+                    </TableHeaderWrapper>
                   </td>
                 </tr>
               ))}

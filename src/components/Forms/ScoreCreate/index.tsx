@@ -206,7 +206,6 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
         </Button>
       </FormWrapper>
 
-      <FormWrapper></FormWrapper>
     </GlobalContainer>
   );
 };

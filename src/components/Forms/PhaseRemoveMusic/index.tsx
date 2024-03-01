@@ -40,7 +40,7 @@ const PhaseRemoveMusicForm: FunctionComponent<PhaseRemoveMusicFormProps> = ({
 
       <DeleteButton
         vanilla={false}
-        onClick={() => removeMusic(category, phase, Number(music.music_id))}
+        onClick={() => removeMusic(phase, Number(music.music_id))}
       >
         Remover
       </DeleteButton>

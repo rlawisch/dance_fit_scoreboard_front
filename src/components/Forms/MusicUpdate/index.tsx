@@ -72,18 +72,18 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
   return (
     <GlobalContainer>
       <p>Atualizar informações da Música:</p>
-      <MusicWrapper>
-        {music.name}
-        <MusicLevelMiniature
-          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-        />
-      </MusicWrapper>
       <FormWrapper
         id="music_update_form"
         onSubmit={handleSubmitUpdateMusic((formData) =>
           onUpdateMusicFormSubmit(formData, music)
         )}
       >
+      <MusicWrapper>
+        {music.name}
+        <MusicLevelMiniature
+          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+        />
+      </MusicWrapper>
         <Input
           label="Nome"
           icon={TbFileMusic}
