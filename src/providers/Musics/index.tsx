@@ -3,7 +3,6 @@ import api from "../../services/api";
 import * as React from "react";
 import { usePlayer } from "../Players";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import { IMusic } from "../../types/entity-types";
 import { IMusicCreate, IMusicUpdate } from "../../types/form-types";
 
@@ -20,108 +19,80 @@ const MusicsContext = createContext<IMusicsContext>({} as IMusicsContext);
 export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const navigate = useNavigate();
 
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   const [musicsData, setMusicsData] = useState<IMusic[]>();
 
-  const getMusicsData = () => {
-    hasValidSession();
-
-    api
-      .get("/musics", {
+  const getMusicsData = async () => {
+    try {
+      hasValidSession();
+      const res = await api.get("/musics", {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-
-      .then((res) => {
-        setMusicsData(res.data);
-      })
-      .catch((err: any) => {
-        console.log(err);
       });
+      setMusicsData(res.data);
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
-  // create music
-  const createMusic = (formData: IMusicCreate) => {
-    hasAdminRights();
-
-    api
-      .post("/musics", formData, {
+  const createMusic = async (formData: IMusicCreate) => {
+    try {
+      hasAdminRights();
+      const res = await api.post("/musics", formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.status === 201) {
-          toast.success("Música criada com sucesso");
-          navigate("/admin/musics");
-        }
-        navigate("/admin/musics");
-      })
-      .catch((err: any) => {
-        if (
-          err.response.data.message ===
-          "Music with exact same data already exists"
-        ) {
-          toast.error("Música com os mesmos dados já existe no sistema");
-          navigate("/admin/musics");
-        }
-        console.log(err);
-        navigate("/admin/musics");
       });
+      if (res.status === 201) {
+        toast.success("Música criada com sucesso");
+      }
+    } catch (err: any) {
+      if (
+        err.response.data.message ===
+        "Music with exact same data already exists"
+      ) {
+        toast.error("Música com os mesmos dados já existe no sistema");
+      }
+      console.log(err);
+    }
   };
 
-  // update music
-  const updateMusic = (formData: IMusicUpdate, music_id: number) => {
-    hasAdminRights();
-
-    api
-      .patch(`/musics/${music_id}`, formData, {
+  const updateMusic = async (formData: IMusicUpdate, music_id: number) => {
+    try {
+      hasAdminRights();
+      const res = await api.patch(`/musics/${music_id}`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success("Informações da música atualzadas");
-          navigate("/admin/musics");
-        }
-        console.log(res);
-      })
-      .catch((err: any) => {
-        console.log(err);
-        if (err.response.data.message === "Internal server error") {
-          toast.error("Algo deu errado");
-          navigate("/admin/musics");
-        }
-        navigate("/admin/musics");
       });
+      if (res.status === 200) {
+        toast.success("Informações da música atualizadas");
+      }
+    } catch (err: any) {
+      console.log(err);
+      if (err.response.data.message === "Internal server error") {
+        toast.error("Algo deu errado");
+      }
+    }
   };
 
-  // delete music
-  const deleteMusic = (music_id: number) => {
-    hasAdminRights();
-
-    api
-      .delete(`musics/${music_id}`, {
+  const deleteMusic = async (music_id: number) => {
+    try {
+      hasAdminRights();
+      const res = await api.delete(`musics/${music_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success("Música deletada com sucesso");
-          navigate("/admin/musics");
-        }
-      })
-      .catch((err: any) => {
-        console.log(err);
-        navigate("/admin/musics");
-
       });
+      if (res.status === 200) {
+        toast.success("Música deletada com sucesso");
+      }
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
   return (

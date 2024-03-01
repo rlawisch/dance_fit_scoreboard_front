@@ -124,7 +124,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
         </thead>
         <tbody>
           {!!eventData &&
-            eventData.categories?.map((category) => (
+            eventData.categories?.sort((a, b) => a.name.localeCompare(b.name)).map((category) => (
               <tr key={category.category_id}>
                 <td>
                   <TableDataWrapper>

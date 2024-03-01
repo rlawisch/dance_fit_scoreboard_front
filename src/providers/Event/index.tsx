@@ -5,7 +5,6 @@ import { usePlayer } from "../Players";
 import { IEvent } from "../../types/entity-types";
 import { IUpdateEventFormData } from "../../types/form-types";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 export interface IEventContext {
   getEventData: (event_id: number) => void;
@@ -18,55 +17,44 @@ const EventContext = createContext<IEventContext>({} as IEventContext);
 export const EventProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const navigate = useNavigate();
 
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   const [eventData, setEventData] = useState<IEvent>();
 
-  const getEventData = (event_id: number) => {
-    hasValidSession();
-
-    api
-      .get(`/events/${event_id}`, {
+  const getEventData = async (event_id: number) => {
+    try {
+      hasValidSession();
+      const res = await api.get(`/events/${event_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        setEventData(res.data);
-      })
-      .catch((err: any) => {
-        console.log(err);
       });
+      setEventData(res.data);
+    } catch (err: any) {
+      console.log(err);
+    }
   };
 
-  const updateEventData = (
+  const updateEventData = async (
     event_id: number,
     formData: IUpdateEventFormData
   ) => {
-    hasAdminRights();
-
-    api
-      .patch(`/events/${event_id}`, formData, {
+    try {
+      hasAdminRights();
+      const res = await api.patch(`/events/${event_id}`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
         },
-      })
-      .then((res) => {
-        if (res.status === 200) {
-          toast.success("Informações do evento atualizadas com sucesso");
-          navigate(`/admin/events/${event_id}`);
-        }
-      })
-      .catch((err: any) => {
-        toast.error("Algo deu errado");
-        navigate(`/admin/events/${event_id}`);
-        console.log(err);
       });
+      if (res.status === 200) {
+        toast.success("Informações do evento atualizadas com sucesso");
+      }
+    } catch (err: any) {
+      toast.error("Algo deu errado");
+      console.log(err);
+    }
   };
-
-
 
   return (
     <EventContext.Provider

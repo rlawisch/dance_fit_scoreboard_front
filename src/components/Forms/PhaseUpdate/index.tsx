@@ -19,7 +19,6 @@ interface PhaseUpdateFormProps {
 
 const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
   phase,
-  category,
 }) => {
   const { updatePhase } = usePhases();
 
@@ -79,7 +78,7 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
 
     console.log("real:", realFormData);
 
-    updatePhase(realFormData, Number(phase_id), category);
+    updatePhase(realFormData, Number(phase_id));
   };
 
   return (

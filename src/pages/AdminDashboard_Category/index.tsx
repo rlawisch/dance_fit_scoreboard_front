@@ -37,6 +37,8 @@ import PhaseRemoveMusicForm from "../../components/Forms/PhaseRemoveMusic";
 import { TiUploadOutline } from "react-icons/ti";
 import ScoreCreateForm from "../../components/Forms/ScoreCreate";
 import ScoreCard from "../../components/ScoreCard";
+import ScoreCreateByAdmForm from "../../components/Forms/ScoreCreateByAdmin";
+import PhaseDeleteForm from "../../components/Forms/PhaseDelete";
 
 interface AdminDashboardCategoryProps {}
 
@@ -88,9 +90,21 @@ const AdminDashboardCategory: FunctionComponent<
   } = useDynamicModal();
 
   const {
+    isModalOpen: isPhaseDeleteModalOpen,
+    openModal: openPhaseDeleteModal,
+    closeModal: closePhaseDeleteModal,
+  } = useDynamicModal();
+
+  const {
     isModalOpen: isScoreCreateModalOpen,
     openModal: openScoreCreateModal,
     closeModal: closeScoreCreateModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isAdmScoreCreateModalOpen,
+    openModal: openAdmScoreCreateModal,
+    closeModal: closeAdmScoreCreateModal,
   } = useDynamicModal();
 
   return (
@@ -101,7 +115,7 @@ const AdminDashboardCategory: FunctionComponent<
 
       <Title>{categoryData?.name}</Title>
 
-      <Button onClick={() => joinCategory(Number(event_id), Number(categoryData?.category_id))}>
+      <Button onClick={() => joinCategory(Number(categoryData?.category_id))}>
         Participar
       </Button>
 
@@ -237,129 +251,185 @@ const AdminDashboardCategory: FunctionComponent<
                               category={categoryData}
                             />
                           </Modal>
-                          {/* TODO: Phase DELETE Feat */}
-                          <DeleteButton>
+                          <DeleteButton
+                            onClick={() => openPhaseDeleteModal(phase.phase_number)}>
                             <FaRegTrashCan />
                           </DeleteButton>
+                          <Modal
+                            isOpen={isPhaseDeleteModalOpen(phase.phase_number)}
+                            onClose={() => closePhaseDeleteModal(phase.phase_number)}
+                          >
+                            <PhaseDeleteForm phase={phase} />
+                          </Modal>
                         </div>
                       </TableHeaderWrapper>
                     </TableHeader>
                   </tr>
                 </thead>
               </Table>
-              {categoryData?.players?.map((player) => (
-                <Table
-                  key={`phase-${phase.phase_number}-player-${player.player_id}`}
-                >
-                  <tbody>
-                    <TableRow>
-                      <TableData colSpan={2}>
-                        <PlayerInfoWrapper>
-                          <PlayerMiniature
-                            src={
-                              player.profilePicture || "/img/default_player.png"
-                            }
-                            alt={player.nickname}
-                          />
-                          {player.nickname}
-                        </PlayerInfoWrapper>
-                      </TableData>
-                    </TableRow>
-                    {phase.musics
-                      ?.sort((a, b) => a.level - b.level)
-                      .map((music) => {
-                        const score: IScore | undefined = phase.scores?.find(
-                          (s: IScore) =>
-                            s.player.player_id === player.player_id &&
-                            s.music.music_id === music.music_id
-                        );
-                        return (
-                          <TableRow
-                            key={`player-${player.player_id}-music-${music.music_id}`}
-                          >
-                            <TableData>
-                              <TableDataWrapper>
-                                <MusicWrapper>
-                                  {music.name}
-                                  <MusicLevelMiniature
-                                    src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-                                  />
-                                </MusicWrapper>
+              {categoryData?.players
+                ?.sort((a, b) => {
+                  // Calculate total scores for each player in the current phase
+                  const totalScoreA = phase.scores
+                    ?.filter((score) => score.player.player_id === a.player_id)
+                    .reduce((acc, curr) => acc + curr.value, 0);
 
-                                <TableDataButtonWrapper>
-                                  <Button
-                                    vanilla={false}
-                                    onClick={() =>
-                                      openScoreCreateModal(music.music_id)
-                                    }
-                                  >
-                                    <TiUploadOutline />
-                                  </Button>
-                                  <Modal
-                                    isOpen={isScoreCreateModalOpen(
-                                      music.music_id
-                                    )}
-                                    onClose={() =>
-                                      closeScoreCreateModal(music.music_id)
-                                    }
-                                  >
-                                    <ScoreCreateForm
-                                      category={categoryData}
-                                      phase={phase}
-                                      music={music}
+                  const totalScoreB = phase.scores
+                    ?.filter((score) => score.player.player_id === b.player_id)
+                    .reduce((acc, curr) => acc + curr.value, 0);
+
+                  // Sort players based on total score value
+                  if (!totalScoreA && !totalScoreB) {
+                    return a.nickname.localeCompare(b.nickname); // Sort alphabetically
+                  } else if (!totalScoreA) {
+                    return 1; // Move player without scores to the end
+                  } else if (!totalScoreB) {
+                    return -1; // Move player without scores to the end
+                  } else {
+                    return totalScoreB - totalScoreA; // Sort by score descending
+                  }
+                })
+                .map((player) => (
+                  <Table
+                    key={`phase-${phase.phase_number}-player-${player.player_id}`}
+                  >
+                    <tbody>
+                      <TableRow>
+                        <TableData colSpan={2}>
+                          <PlayerInfoWrapper>
+                            <PlayerMiniature
+                              src={
+                                player.profilePicture ||
+                                "/img/default_player.png"
+                              }
+                              alt={player.nickname}
+                            />
+                            {player.nickname}
+                          </PlayerInfoWrapper>
+                        </TableData>
+                      </TableRow>
+                      {phase.musics
+                        ?.sort((a, b) => a.level - b.level)
+                        .map((music) => {
+                          const score: IScore | undefined = phase.scores?.find(
+                            (s: IScore) =>
+                              s.player.player_id === player.player_id &&
+                              s.music.music_id === music.music_id
+                          );
+                          return (
+                            <TableRow
+                              key={`player-${player.player_id}-music-${music.music_id}`}
+                            >
+                              <TableData>
+                                <TableDataWrapper>
+                                  <MusicWrapper>
+                                    {music.name}
+                                    <MusicLevelMiniature
+                                      src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                                     />
-                                  </Modal>
-                                  <DeleteButton
-                                    vanilla={false}
-                                    onClick={() =>
-                                      openPhaseRemoveMusicModal(music.music_id)
-                                    }
-                                  >
-                                    <TbMusicMinus />
-                                  </DeleteButton>
-                                  <Modal
-                                    isOpen={isPhaseRemoveMusicModalOpen(
-                                      music.music_id
-                                    )}
-                                    onClose={() =>
-                                      closePhaseRemoveMusicModal(music.music_id)
-                                    }
-                                  >
-                                    <PhaseRemoveMusicForm
-                                      category={categoryData}
-                                      phase={phase}
-                                      music={music}
-                                    />
-                                  </Modal>
-                                </TableDataButtonWrapper>
-                              </TableDataWrapper>
-                            </TableData>
-                            <TableData>
-                              <TableDataWrapper>
-                                {score ? <ScoreCard score={score} /> : "-"}
-                              </TableDataWrapper>
-                            </TableData>
-                          </TableRow>
-                        );
-                      })}
-                    <TableRow>
-                      <TableData>
-                        <TableDataWrapper>Total</TableDataWrapper>
-                      </TableData>
-                      <TableData>
-                        <TableDataWrapper>
-                          {phase.scores
-                            ?.filter(
-                              (score: IScore) =>
-                                score.player.player_id === player.player_id
-                            )
-                            .reduce((acc, curr) => acc + curr.value, 0) || "-"}
-                        </TableDataWrapper>
-                      </TableData>
-                    </TableRow>
-                  </tbody>
-                </Table>
-              ))}
+                                  </MusicWrapper>
+
+                                  <TableDataButtonWrapper>
+                                    <Button
+                                      vanilla={false}
+                                      onClick={() =>
+                                        openScoreCreateModal(music.music_id)
+                                      }
+                                    >
+                                      <TiUploadOutline />
+                                    </Button>
+                                    <Modal
+                                      isOpen={isScoreCreateModalOpen(
+                                        music.music_id
+                                      )}
+                                      onClose={() =>
+                                        closeScoreCreateModal(music.music_id)
+                                      }
+                                    >
+                                      <ScoreCreateForm
+                                        category={categoryData}
+                                        phase={phase}
+                                        music={music}
+                                      />
+                                    </Modal>
+                                    <UpdateButton
+                                      vanilla={false}
+                                      onClick={() =>
+                                        openAdmScoreCreateModal(music.music_id)
+                                      }
+                                    >
+                                      <TiUploadOutline />
+                                    </UpdateButton>
+                                    <Modal
+                                      isOpen={isAdmScoreCreateModalOpen(
+                                        music.music_id
+                                      )}
+                                      onClose={() =>
+                                        closeAdmScoreCreateModal(music.music_id)
+                                      }
+                                    >
+                                      <ScoreCreateByAdmForm
+                                        category={categoryData}
+                                        phase={phase}
+                                        music={music}
+                                      />
+                                    </Modal>
+                                    <DeleteButton
+                                      vanilla={false}
+                                      onClick={() =>
+                                        openPhaseRemoveMusicModal(
+                                          music.music_id
+                                        )
+                                      }
+                                    >
+                                      <TbMusicMinus />
+                                    </DeleteButton>
+                                    <Modal
+                                      isOpen={isPhaseRemoveMusicModalOpen(
+                                        music.music_id
+                                      )}
+                                      onClose={() =>
+                                        closePhaseRemoveMusicModal(
+                                          music.music_id
+                                        )
+                                      }
+                                    >
+                                      <PhaseRemoveMusicForm
+                                        category={categoryData}
+                                        phase={phase}
+                                        music={music}
+                                      />
+                                    </Modal>
+                                  </TableDataButtonWrapper>
+                                </TableDataWrapper>
+                              </TableData>
+                              <TableData>
+                                <TableDataWrapper>
+                                  {score ? <ScoreCard score={score} /> : "-"}
+                                </TableDataWrapper>
+                              </TableData>
+                            </TableRow>
+                          );
+                        })}
+                      <TableRow>
+                        <TableData>
+                          <TableDataWrapper>Total</TableDataWrapper>
+                        </TableData>
+                        <TableData>
+                          <TableDataWrapper>
+                            {phase.scores
+                              ?.filter(
+                                (score: IScore) =>
+                                  score.player.player_id === player.player_id
+                              )
+                              .reduce((acc, curr) => acc + curr.value, 0) ||
+                              "-"}
+                          </TableDataWrapper>
+                        </TableData>
+                      </TableRow>
+                    </tbody>
+                  </Table>
+                ))}
             </TableWrapper>
           ))}
       </SmallScreenTableDisplay>
@@ -417,9 +487,16 @@ const AdminDashboardCategory: FunctionComponent<
                             />
                           </Modal>
                           {/* TODO: Phase DELETE Feat */}
-                          <DeleteButton>
+                          <DeleteButton
+                            onClick={() => openPhaseDeleteModal(phase.phase_number)}>
                             <FaRegTrashCan />
                           </DeleteButton>
+                          <Modal
+                            isOpen={isPhaseDeleteModalOpen(phase.phase_number)}
+                            onClose={() => closePhaseDeleteModal(phase.phase_number)}
+                          >
+                            <PhaseDeleteForm phase={phase} />
+                          </Modal>
                         </div>
                       </TableHeaderWrapper>
                     </TableHeader>
@@ -460,6 +537,26 @@ const AdminDashboardCategory: FunctionComponent<
                                 music={music}
                               />
                             </Modal>
+                            <UpdateButton
+                              vanilla={false}
+                              onClick={() =>
+                                openAdmScoreCreateModal(music.music_id)
+                              }
+                            >
+                              <TiUploadOutline />
+                            </UpdateButton>
+                            <Modal
+                              isOpen={isAdmScoreCreateModalOpen(music.music_id)}
+                              onClose={() =>
+                                closeAdmScoreCreateModal(music.music_id)
+                              }
+                            >
+                              <ScoreCreateByAdmForm
+                                category={categoryData}
+                                phase={phase}
+                                music={music}
+                              />
+                            </Modal>
                             <DeleteButton
                               vanilla={false}
                               onClick={() =>
@@ -490,46 +587,74 @@ const AdminDashboardCategory: FunctionComponent<
                   </TableRow>
                 </thead>
                 <tbody>
-                  {categoryData?.players?.map((player) => (
-                    <TableRow key={`player-${player.player_id}`}>
-                      <TableData>
-                        <PlayerInfoWrapper>
-                          <PlayerMiniature
-                            src={
-                              player.profilePicture || "/img/default_player.png"
-                            }
-                            alt={player.nickname}
-                          />
-                          {player.nickname}
-                        </PlayerInfoWrapper>
-                      </TableData>
-                      {phase.musics
-                        ?.sort((a, b) => a.level - b.level)
-                        .map((music) => {
-                          const score: IScore | undefined = phase.scores?.find(
-                            (s: IScore) =>
-                              s.player.player_id === player.player_id &&
-                              s.music.music_id === music.music_id
-                          );
-                          return (
-                            <TableData
-                              key={`score-${player.player_id}-${music.music_id}`}
-                            >
-                              {score ? <ScoreCard score={score} /> : "-"}
-                            </TableData>
-                          );
-                        })}
-                      <TableData>
-                        {/* Calculate total score for this phase */}
-                        {phase.scores
-                          ?.filter(
-                            (score: IScore) =>
-                              score.player.player_id === player.player_id
-                          )
-                          .reduce((acc, curr) => acc + curr.value, 0) || "-"}
-                      </TableData>
-                    </TableRow>
-                  ))}
+                  {categoryData?.players
+                    ?.sort((a, b) => {
+                      // Calculate total scores for each player in the current phase
+                      const totalScoreA = phase.scores
+                        ?.filter(
+                          (score) => score.player.player_id === a.player_id
+                        )
+                        .reduce((acc, curr) => acc + curr.value, 0);
+
+                      const totalScoreB = phase.scores
+                        ?.filter(
+                          (score) => score.player.player_id === b.player_id
+                        )
+                        .reduce((acc, curr) => acc + curr.value, 0);
+
+                      // Sort players based on total score value
+                      if (!totalScoreA && !totalScoreB) {
+                        return a.nickname.localeCompare(b.nickname); // Sort alphabetically
+                      } else if (!totalScoreA) {
+                        return 1; // Move player without scores to the end
+                      } else if (!totalScoreB) {
+                        return -1; // Move player without scores to the end
+                      } else {
+                        return totalScoreB - totalScoreA; // Sort by score descending
+                      }
+                    })
+                    .map((player) => (
+                      <TableRow key={`player-${player.player_id}`}>
+                        <TableData>
+                          <PlayerInfoWrapper>
+                            <PlayerMiniature
+                              src={
+                                player.profilePicture ||
+                                "/img/default_player.png"
+                              }
+                              alt={player.nickname}
+                            />
+                            {player.nickname}
+                          </PlayerInfoWrapper>
+                        </TableData>
+                        {phase.musics
+                          ?.sort((a, b) => a.level - b.level)
+                          .map((music) => {
+                            const score: IScore | undefined =
+                              phase.scores?.find(
+                                (s: IScore) =>
+                                  s.player.player_id === player.player_id &&
+                                  s.music.music_id === music.music_id
+                              );
+                            return (
+                              <TableData
+                                key={`score-${player.player_id}-${music.music_id}`}
+                              >
+                                {score ? <ScoreCard score={score} /> : "-"}
+                              </TableData>
+                            );
+                          })}
+                        <TableData>
+                          {/* Calculate total score for this phase */}
+                          {phase.scores
+                            ?.filter(
+                              (score: IScore) =>
+                                score.player.player_id === player.player_id
+                            )
+                            .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                        </TableData>
+                      </TableRow>
+                    ))}
                 </tbody>
               </Table>
             </TableWrapper>

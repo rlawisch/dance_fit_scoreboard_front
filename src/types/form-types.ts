@@ -101,3 +101,20 @@ export interface IScoreCreate {
   phase_id: number;
   music_id: number;
 }
+
+export interface IScoreCreateByAdmin {
+  value: number;
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  grade: string;
+  plate: string;
+  event_id: number;
+  category_id: number;
+  phase_id: number;
+  music_id: number;
+  player_id: number;
+}

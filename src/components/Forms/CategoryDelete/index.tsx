@@ -3,7 +3,6 @@ import { useCategory } from "../../../providers/Category";
 import { DeleteWarning, GlobalContainer } from "../../../styles/global";
 import { ICategory } from "../../../types/entity-types";
 import DeleteButton from "../../Button_Delete";
-import { useParams } from "react-router-dom";
 
 interface CategoryDeleteFormProps {
     category: ICategory
@@ -12,8 +11,6 @@ interface CategoryDeleteFormProps {
 const CategoryDeleteForm: FunctionComponent<CategoryDeleteFormProps> = ({category}) => {
   
     const { deleteCategory } = useCategory();
-
-    const { event_id } = useParams()
 
   return (
     <GlobalContainer>
@@ -25,7 +22,7 @@ const CategoryDeleteForm: FunctionComponent<CategoryDeleteFormProps> = ({categor
 
       <DeleteButton
         vanilla={false}
-        onClick={() => deleteCategory(Number(category.category_id), Number(event_id))}
+        onClick={() => deleteCategory(Number(category.category_id))}
       >
         Deletar
       </DeleteButton>

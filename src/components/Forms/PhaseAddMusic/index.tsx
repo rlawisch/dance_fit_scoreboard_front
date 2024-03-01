@@ -14,8 +14,7 @@ interface PhaseAddMusicFormProps {
 }
 
 const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
-  phase,
-  category,
+  phase
 }) => {
   const { addMusic } = usePhases();
 
@@ -51,13 +50,12 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
   };
 
   const handleAddMusic = (
-    category: ICategory,
     phase: IPhase,
     selectedMusic: IMusic
   ) => {
     const { music_id } = selectedMusic;
 
-    addMusic(category, phase, Number(music_id));
+    addMusic(phase, Number(music_id));
   };
 
   return (
@@ -100,7 +98,7 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
       {!!selectedMusic && (
         <Button
           vanilla={false}
-          onClick={() => handleAddMusic(category, phase, selectedMusic)}
+          onClick={() => handleAddMusic(phase, selectedMusic)}
         >
           Adicionar
         </Button>
