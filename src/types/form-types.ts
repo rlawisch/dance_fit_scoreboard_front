@@ -1,4 +1,3 @@
-import { IScore } from './entity-types';
 export interface ILogin {
   nickname: string;
   password: string;
