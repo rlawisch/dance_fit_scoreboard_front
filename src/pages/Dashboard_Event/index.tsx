@@ -10,7 +10,6 @@ import {
 } from "../../styles/global";
 import Button from "../../components/Button";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
 import { AiOutlineArrowRight } from "react-icons/ai";
 
@@ -19,11 +18,9 @@ interface DashboardEventProps {}
 const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
   const { event_id } = useParams();
 
-  const { eventData, getEventData } = useEvent();
-
   const navigate = useNavigate();
 
-  const { joinEvent } = useEvents();
+  const { joinEvent, eventData, getEventData } = useEvents();
 
   useEffect(() => {
     getEventData(Number(event_id));

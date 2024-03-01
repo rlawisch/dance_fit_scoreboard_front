@@ -11,12 +11,14 @@ export interface IPlayerContext {
   accToken: string;
   decodedPlayerInfo: JwtPayload;
   playerData: IPlayer | undefined;
+  players: IPlayer[] | undefined;
+  getPlayers: () => void;
+  getPlayerData: () => void;
   playerLogin: (formData: ILogin) => void;
   playerSignup: (formData: ISignup) => void;
   playerLogout: () => void;
   hasAdminRights: () => void;
   hasValidSession: () => Promise<boolean>;
-  getPlayerData: () => void;
   uploadProfilePicture: (formData: FormData) => void;
   isUploading: boolean;
 }
@@ -37,6 +39,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
     JSON.parse(currentPlayer)
   );
+
+  const [players, setPlayers] = useState<IPlayer[]>();
 
   const [playerData, setPlayerData] = useState<IPlayer>();
 
@@ -77,7 +81,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const playerLogout = async () => {
-    hasValidSession()
+    hasValidSession();
 
     try {
       await api.delete("/auth/logout", {
@@ -103,8 +107,24 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getPlayers = async () => {
+    hasAdminRights();
+
+    try {
+      const res = await api.get(`/players`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+
+      setPlayers(res.data);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
   const getPlayerData = async () => {
-    hasValidSession()
+    hasValidSession();
 
     try {
       const res = await api.get(`/players/${decodedPlayerInfo.player_id}`, {
@@ -238,13 +258,15 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         accToken,
         decodedPlayerInfo,
+        players,
         playerData,
+        getPlayers,
+        getPlayerData,
         playerLogin,
         playerSignup,
         playerLogout,
         hasAdminRights,
         hasValidSession,
-        getPlayerData,
         uploadProfilePicture,
         isUploading,
       }}

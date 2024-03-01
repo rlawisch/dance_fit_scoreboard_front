@@ -118,3 +118,15 @@ export interface IScoreCreateByAdmin {
   music_id: number;
   player_id: number;
 }
+
+export interface IScoreUpdate {
+  value?: number;
+  perfect?: number;
+  great?: number;
+  good?: number;
+  bad?: number;
+  miss?: number;
+  max_combo?: number;
+  grade?: string;
+  plate?: string;
+}

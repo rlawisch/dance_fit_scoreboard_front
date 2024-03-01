@@ -1,6 +1,5 @@
 import { FunctionComponent, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
 import {
   GlobalContainer,
@@ -21,8 +20,9 @@ import CategoryCreateForm from "../../components/Forms/CategoryCreate";
 import DeleteButton from "../../components/Button_Delete";
 import useDynamicModal from "../../providers/DynamicModal";
 import CategoryDeleteForm from "../../components/Forms/CategoryDelete";
-import { FaRegTrashCan } from "react-icons/fa6";
+import { FaRegTrashCan, FaUserPlus } from "react-icons/fa6";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import EventAdmAddPlayerForm from "../../components/Forms/EventAdmAddPlayer";
 
 interface AdminDashboardEventProps {}
 
@@ -31,18 +31,27 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
 
   const navigate = useNavigate();
 
-  const { eventData, getEventData } = useEvent();
-
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
-  const { joinEvent } = useEvents();
+  const {
+    eventData,
+    getEventData,
+    joinEvent,
+    leaveEvent,
+  } = useEvents();
 
   const {
     isOpen: isOpenEventUpdate,
     openModal: openEventUpdateModal,
     closeModal: closeEventUpdateModal,
+  } = useModal();
+
+  const {
+    isOpen: isOpenAdmAddPlayer,
+    openModal: openAdmAddPlayerModal,
+    closeModal: closeAdmAddPlayerModal,
   } = useModal();
 
   const {
@@ -68,6 +77,10 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
       </Button>
       <UpdateButton onClick={openEventUpdateModal}>Editar Evento</UpdateButton>
 
+      <DeleteButton onClick={() => leaveEvent(Number(event_id))}>
+        Deixar Evento
+      </DeleteButton>
+
       <Modal isOpen={isOpenEventUpdate} onClose={closeEventUpdateModal}>
         <EventUpdateForm event={eventData} />
       </Modal>
@@ -82,9 +95,19 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
             <TableHeader>
               <TableHeaderWrapper>
                 <h4>Participantes</h4>
-                <div>
-                  <UpdateButton>+</UpdateButton>
-                </div>
+                {!!eventData && (
+                  <div>
+                    <UpdateButton onClick={openAdmAddPlayerModal}>
+                      <FaUserPlus />
+                    </UpdateButton>
+                    <Modal
+                      isOpen={isOpenAdmAddPlayer}
+                      onClose={closeAdmAddPlayerModal}
+                    >
+                      <EventAdmAddPlayerForm event_id={Number(eventData.event_id)} />
+                    </Modal>
+                  </div>
+                )}
               </TableHeaderWrapper>
             </TableHeader>
           </tr>
@@ -124,42 +147,46 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
         </thead>
         <tbody>
           {!!eventData &&
-            eventData.categories?.sort((a, b) => a.name.localeCompare(b.name)).map((category) => (
-              <tr key={category.category_id}>
-                <td>
-                  <TableDataWrapper>
-                    {category.name}
+            eventData.categories
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <tr key={category.category_id}>
+                  <td>
+                    <TableDataWrapper>
+                      {category.name}
 
-                    <div>
-                      <Button
-                        onClick={() =>
-                          navigate(
-                            `/admin/events/${event_id}/categories/${category.category_id}`
-                          )
-                        }
-                      >
-                        <AiOutlineArrowRight />
-                      </Button>
-                      <DeleteButton
-                        onClick={() =>
-                          openCategoryDeleteModal(category.category_id)
-                        }
-                      >
-                        <FaRegTrashCan />
-                      </DeleteButton>
-                      <Modal
-                        isOpen={isCategoryDeleteModalOpen(category.category_id)}
-                        onClose={() =>
-                          closeCategoryDeleteModal(category.category_id)
-                        }
-                      >
-                        <CategoryDeleteForm category={category} />
-                      </Modal>
-                    </div>
-                  </TableDataWrapper>
-                </td>
-              </tr>
-            ))}
+                      <div>
+                        <Button
+                          onClick={() =>
+                            navigate(
+                              `/admin/events/${event_id}/categories/${category.category_id}`
+                            )
+                          }
+                        >
+                          <AiOutlineArrowRight />
+                        </Button>
+                        <DeleteButton
+                          onClick={() =>
+                            openCategoryDeleteModal(category.category_id)
+                          }
+                        >
+                          <FaRegTrashCan />
+                        </DeleteButton>
+                        <Modal
+                          isOpen={isCategoryDeleteModalOpen(
+                            category.category_id
+                          )}
+                          onClose={() =>
+                            closeCategoryDeleteModal(category.category_id)
+                          }
+                        >
+                          <CategoryDeleteForm category={category} />
+                        </Modal>
+                      </div>
+                    </TableDataWrapper>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </Table>
     </GlobalContainer>

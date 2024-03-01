@@ -9,7 +9,9 @@ import {
   FormWrapper,
   GlobalContainer,
   PlayerInfoWrapper,
+  PlayerLi,
   PlayerMiniature,
+  SelectedPlayerWrapper,
 } from "../../../styles/global";
 import { useScore } from "../../../providers/Scores";
 import * as yup from "yup";
@@ -33,7 +35,6 @@ import {
 import Select from "../../Select";
 import Button from "../../Button";
 import { toast } from "react-toastify";
-import { PlayerLi, SelectedPlayerWrapper } from "./styles";
 
 interface ScoreCreateByAdmFormProps {
   category: ICategory;
@@ -194,6 +195,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
           )}
         </SelectedPlayerWrapper>
       )}
+      
       <ul>
         {filteredPlayers.map((player) => (
           <PlayerLi

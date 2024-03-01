@@ -13,6 +13,9 @@ export interface ICategoryContext {
   updateCategory: (formData: ICategoryUpdate, category: ICategory) => void;
   deleteCategory: (category_id: number) => void;
   joinCategory: (category_id: number) => void;
+  leaveCategory: (category_id: number) => void;
+  adminAddPlayer: (category_id: number, player_id: number) => void;
+  adminRemovePlayer: (category_id: number, player_id: number) => void;
 }
 
 const CategoryContext = createContext<ICategoryContext>({} as ICategoryContext);
@@ -20,9 +23,7 @@ const CategoryContext = createContext<ICategoryContext>({} as ICategoryContext);
 export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
-  const { accToken, decodedPlayerInfo, hasValidSession, hasAdminRights } =
-    usePlayer();
+  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   const [categoryData, setCategoryData] = useState<ICategory>();
 
@@ -48,7 +49,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
     hasAdminRights();
 
     try {
-
       const res = await api.post(
         "/categories",
         {
@@ -61,11 +61,10 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         }
       );
-      console.log(res)
+      console.log(res);
 
       if (res.status === 201) {
         toast.success("Categoria criada com sucesso");
-
       }
     } catch (err: any) {
       console.log(err);
@@ -85,10 +84,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(res.data.response);
       if (res.status === 200) {
         toast.success("Adicionado na categoria com sucesso!");
-
-        if (decodedPlayerInfo.role === "admin") {
-        } else {
-        }
       }
     } catch (err: any) {
       console.log(err);
@@ -96,14 +91,90 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         err.response.data.message === "Player already assigned to this Category"
       ) {
         toast.error("Jogador já cadastrado na categoria");
-        if (decodedPlayerInfo.role === "admin") {
-        } else {
-        }
       } else {
         toast.error("Algo deu errado");
-        if (decodedPlayerInfo.role === "admin") {
-        } else {
+      }
+    }
+  };
+
+  const leaveCategory = async (category_id: number) => {
+    hasValidSession();
+
+    try {
+      const res = await api.patch(`/categories/${category_id}/leave`, null, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+
+      if (res.status === 200) {
+        toast.success("Você saiu da categoria com sucesso");
+      }
+    } catch (err: any) {
+      if (
+        err.response.data.message === "Player is not assigned to this Category"
+      ) {
+        toast.error("Você não está cadastrado nesta categoria");
+      } else {
+        toast.error("Algo deu errado");
+      }
+    }
+  };
+
+  const adminAddPlayer = async (category_id: number, player_id: number) => {
+    try {
+      hasAdminRights();
+
+      const res = await api.patch(
+        `/categories/${category_id}/admin/add_player`,
+        {
+          player_id: player_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
         }
+      );
+
+      if (res.status === 200) {
+        toast.success("Jogador adicionado a categoria com sucesso");
+      }
+    } catch (err: any) {
+      if (
+        err.response.data.message === "Player already assigned to this category"
+      ) {
+        toast.error("Jogador já faz parte desta categoria");
+      } else {
+        toast.error("Algo deu errado");
+      }
+    }
+  };
+
+  const adminRemovePlayer = async (category_id: number, player_id: number) => {
+    try {
+      hasAdminRights();
+
+      const res = await api.patch(
+        `/categories/${category_id}/admin/remove_player`,
+        {
+          player_id: player_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success("Jogador removido da categoria com sucesso");
+      }
+    } catch (err: any) {
+      if (
+        err.response.data.message === "Player not assigned to this category"
+      ) {
+        toast.error("Jogador não faz parte desta categoria");
       }
     }
   };
@@ -163,6 +234,9 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
         updateCategory,
         deleteCategory,
         joinCategory,
+        leaveCategory,
+        adminAddPlayer,
+        adminRemovePlayer,
       }}
     >
       {children}

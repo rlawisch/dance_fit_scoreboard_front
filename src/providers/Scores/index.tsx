@@ -1,6 +1,10 @@
 import { createContext, useContext } from "react";
 import * as React from "react";
-import { IScoreCreate, IScoreCreateByAdmin } from "../../types/form-types";
+import {
+  IScoreCreate,
+  IScoreCreateByAdmin,
+  IScoreUpdate,
+} from "../../types/form-types";
 import { usePlayer } from "../Players";
 import api from "../../services/api";
 import { toast } from "react-toastify";
@@ -8,6 +12,7 @@ import { toast } from "react-toastify";
 export interface IScoreContext {
   createScore: (formData: IScoreCreate) => void;
   adminCreateScore: (formData: IScoreCreateByAdmin) => void;
+  updateScore: (formData: IScoreUpdate, score_id: number) => void;
   deleteScore: (score_id: number) => void;
 }
 
@@ -96,6 +101,28 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const updateScore = async (formData: IScoreUpdate, score_id: number) => {
+    try {
+      hasAdminRights();
+
+      const res = await api.patch(`/scores/${score_id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+
+      if (res.status === 200) {
+        toast.success("Score atualizado com sucesso");
+      }
+    } catch (err: any) {
+      if (err.response.data.message === "Failed to update score") {
+        toast.error("Algo deu errado");
+      } else {
+        toast.error("Algo deu errado");
+      }
+    }
+  };
+
   const deleteScore = async (score_id: number) => {
     try {
       await hasAdminRights();
@@ -118,7 +145,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <ScoreContext.Provider
-      value={{ createScore, adminCreateScore, deleteScore }}
+      value={{ createScore, adminCreateScore, updateScore, deleteScore }}
     >
       {children}
     </ScoreContext.Provider>
