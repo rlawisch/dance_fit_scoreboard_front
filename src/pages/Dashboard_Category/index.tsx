@@ -8,6 +8,7 @@ import {
   MusicWrapper,
   PlayerInfoWrapper,
   PlayerMiniature,
+  SmallScreenTableDataWrapper,
   SmallScreenTableDisplay,
   Table,
   TableData,
@@ -19,11 +20,11 @@ import {
 import Button from "../../components/Button";
 import { IPhase, IScore } from "../../types/entity-types";
 import { TableHeader, TableRow, TableWrapper } from "../../styles/global";
-import { TiUploadOutline } from "react-icons/ti";
-import Modal from "../../components/Modal";
-import ScoreCreateForm from "../../components/Forms/ScoreCreate";
+// import { TiUploadOutline } from "react-icons/ti";
+// import Modal from "../../components/Modal";
+// import ScoreCreateForm from "../../components/Forms/ScoreCreate";
 import ScoreCard from "../../components/ScoreCard";
-import useDynamicModal from "../../providers/DynamicModal";
+// import useDynamicModal from "../../providers/DynamicModal";
 
 interface DashboardCategoryProps {}
 
@@ -42,11 +43,11 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
     (a, b) => a.phase_number - b.phase_number
   );
 
-  const {
-    isModalOpen: isScoreCreateModalOpen,
-    openModal: openScoreCreateModal,
-    closeModal: closeScoreCreateModal,
-  } = useDynamicModal();
+  // const {
+  //   isModalOpen: isScoreCreateModalOpen,
+  //   openModal: openScoreCreateModal,
+  //   closeModal: closeScoreCreateModal,
+  // } = useDynamicModal();
 
   return (
     <GlobalContainer>
@@ -97,17 +98,19 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
               categoryData.players.map((p) => (
                 <tr key={p.player_id}>
                   <td>
-                    <PlayerInfoWrapper>
-                      <PlayerMiniature
-                        src={
-                          p.profilePicture
-                            ? p.profilePicture
-                            : "/img/default_player.png"
-                        }
-                        alt="Mini Profile Picture"
-                      />
-                      {p.nickname}
-                    </PlayerInfoWrapper>
+                    <TableDataWrapper>
+                      <PlayerInfoWrapper>
+                        <PlayerMiniature
+                          src={
+                            p.profilePicture
+                              ? p.profilePicture
+                              : "/img/default_player.png"
+                          }
+                          alt="Mini Profile Picture"
+                        />
+                        {p.nickname}
+                      </PlayerInfoWrapper>
+                    </TableDataWrapper>
                   </td>
                 </tr>
               ))}
@@ -187,7 +190,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                               key={`player-${player.player_id}-music-${music.music_id}`}
                             >
                               <TableData>
-                                <TableDataWrapper>
+                                <SmallScreenTableDataWrapper>
                                   <MusicWrapper>
                                     {music.name}
                                     <MusicLevelMiniature
@@ -196,7 +199,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                                   </MusicWrapper>
 
                                   <TableDataButtonWrapper>
-                                    <Button
+                                    {/* <Button
                                       vanilla={false}
                                       onClick={() =>
                                         openScoreCreateModal(music.music_id)
@@ -217,24 +220,26 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                                         phase={phase}
                                         music={music}
                                       />
-                                    </Modal>
+                                    </Modal> */}
                                   </TableDataButtonWrapper>
-                                </TableDataWrapper>
+                                </SmallScreenTableDataWrapper>
                               </TableData>
                               <TableData>
-                                <TableDataWrapper>
+                                <SmallScreenTableDataWrapper>
                                   {score ? <ScoreCard score={score} /> : "-"}
-                                </TableDataWrapper>
+                                </SmallScreenTableDataWrapper>
                               </TableData>
                             </TableRow>
                           );
                         })}
                       <TableRow>
                         <TableData>
-                          <TableDataWrapper>Total</TableDataWrapper>
+                          <SmallScreenTableDataWrapper>
+                            Total
+                          </SmallScreenTableDataWrapper>
                         </TableData>
                         <TableData>
-                          <TableDataWrapper>
+                          <SmallScreenTableDataWrapper>
                             {phase.scores
                               ?.filter(
                                 (score: IScore) =>
@@ -242,7 +247,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                               )
                               .reduce((acc, curr) => acc + curr.value, 0) ||
                               "-"}
-                          </TableDataWrapper>
+                          </SmallScreenTableDataWrapper>
                         </TableData>
                       </TableRow>
                     </tbody>
@@ -284,7 +289,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                             />
                           </MusicWrapper>
                           <div>
-                            <Button
+                            {/* <Button
                               vanilla={false}
                               onClick={() =>
                                 openScoreCreateModal(music.music_id)
@@ -303,7 +308,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                                 phase={phase}
                                 music={music}
                               />
-                            </Modal>
+                            </Modal> */}
                           </div>
                         </TableHeaderWrapper>
                       </TableHeader>

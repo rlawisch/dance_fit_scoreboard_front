@@ -83,7 +83,7 @@ export interface IScoreFormCreate {
   miss: number;
   max_combo: number;
   grade: string;
-  plate: string;
+  plate?: string | null 
 }
 
 export interface IScoreCreate {
@@ -95,7 +95,7 @@ export interface IScoreCreate {
   miss: number;
   max_combo: number;
   grade: string;
-  plate: string;
+  plate?: string | null 
   event_id: number;
   category_id: number;
   phase_id: number;
@@ -111,7 +111,7 @@ export interface IScoreCreateByAdmin {
   miss: number;
   max_combo: number;
   grade: string;
-  plate: string;
+  plate?: string | null 
   event_id: number;
   category_id: number;
   phase_id: number;
@@ -128,5 +128,5 @@ export interface IScoreUpdate {
   miss?: number;
   max_combo?: number;
   grade?: string;
-  plate?: string;
+  plate?: string | null 
 }

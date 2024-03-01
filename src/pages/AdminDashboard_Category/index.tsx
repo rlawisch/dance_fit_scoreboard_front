@@ -36,7 +36,7 @@ import CategoryUpdateForm from "../../components/Forms/CategoryUpdate";
 import PhaseAddMusicForm from "../../components/Forms/PhaseAddMusic";
 import PhaseRemoveMusicForm from "../../components/Forms/PhaseRemoveMusic";
 import { TiUploadOutline } from "react-icons/ti";
-import ScoreCreateForm from "../../components/Forms/ScoreCreate";
+// import ScoreCreateForm from "../../components/Forms/ScoreCreate";
 import ScoreCard from "../../components/ScoreCard";
 import ScoreCreateByAdmForm from "../../components/Forms/ScoreCreateByAdmin";
 import PhaseDeleteForm from "../../components/Forms/PhaseDelete";
@@ -116,11 +116,11 @@ const AdminDashboardCategory: FunctionComponent<
     closeModal: closePhaseDeleteModal,
   } = useDynamicModal();
 
-  const {
-    isModalOpen: isScoreCreateModalOpen,
-    openModal: openScoreCreateModal,
-    closeModal: closeScoreCreateModal,
-  } = useDynamicModal();
+  // const {
+  //   isModalOpen: isScoreCreateModalOpen,
+  //   openModal: openScoreCreateModal,
+  //   closeModal: closeScoreCreateModal,
+  // } = useDynamicModal();
 
   const {
     isModalOpen: isAdmScoreCreateModalOpen,
@@ -397,7 +397,7 @@ const AdminDashboardCategory: FunctionComponent<
                                   </MusicWrapper>
 
                                   <TableDataButtonWrapper>
-                                    <Button
+                                    {/* <Button
                                       vanilla={false}
                                       onClick={() =>
                                         openScoreCreateModal(music.music_id)
@@ -418,7 +418,7 @@ const AdminDashboardCategory: FunctionComponent<
                                         phase={phase}
                                         music={music}
                                       />
-                                    </Modal>
+                                    </Modal> */}
                                     <UpdateButton
                                       vanilla={false}
                                       onClick={() =>
@@ -494,6 +494,23 @@ const AdminDashboardCategory: FunctionComponent<
                                           score_id={Number(score.score_id)}
                                         />
                                       </Modal>
+                                      <DeleteButton
+                                      onClick={() =>
+                                        openScoreDeleteModal(score.score_id)
+                                      }
+                                    >
+                                      <FaRegTrashCan />
+                                    </DeleteButton>
+                                    <Modal
+                                      isOpen={isScoreDeleteModalOpen(
+                                        score.score_id
+                                      )}
+                                      onClose={() =>
+                                        closeScoreDeleteModal(score.score_id)
+                                      }
+                                    >
+                                      <ScoreDeleteForm score={score} />
+                                    </Modal>
                                     </>
                                   ) : (
                                     "-"
@@ -616,7 +633,7 @@ const AdminDashboardCategory: FunctionComponent<
                             />
                           </MusicWrapper>
                           <div>
-                            <Button
+                            {/* <Button
                               vanilla={false}
                               onClick={() =>
                                 openScoreCreateModal(music.music_id)
@@ -635,7 +652,7 @@ const AdminDashboardCategory: FunctionComponent<
                                 phase={phase}
                                 music={music}
                               />
-                            </Modal>
+                            </Modal> */}
                             <UpdateButton
                               vanilla={false}
                               onClick={() =>
@@ -761,12 +778,23 @@ const AdminDashboardCategory: FunctionComponent<
                                         score_id={Number(score.score_id)}
                                       />
                                     </Modal>
-                                      <DeleteButton onClick={() => openScoreDeleteModal(score.score_id)}>
-                                        <FaRegTrashCan />
-                                      </DeleteButton>
-                                      <Modal isOpen={isScoreDeleteModalOpen(score.score_id)} onClose={() => closeScoreDeleteModal(score.score_id)}>
-                                        <ScoreDeleteForm score={score}/>
-                                      </Modal>
+                                    <DeleteButton
+                                      onClick={() =>
+                                        openScoreDeleteModal(score.score_id)
+                                      }
+                                    >
+                                      <FaRegTrashCan />
+                                    </DeleteButton>
+                                    <Modal
+                                      isOpen={isScoreDeleteModalOpen(
+                                        score.score_id
+                                      )}
+                                      onClose={() =>
+                                        closeScoreDeleteModal(score.score_id)
+                                      }
+                                    >
+                                      <ScoreDeleteForm score={score} />
+                                    </Modal>
                                   </>
                                 ) : (
                                   "-"

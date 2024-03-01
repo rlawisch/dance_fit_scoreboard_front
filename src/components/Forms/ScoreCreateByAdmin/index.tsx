@@ -64,7 +64,11 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
         originalValue === "true" ? true : false
       ),
     grade: yup.string().required(),
-    plate: yup.string().required(),
+    plate: yup
+      .string()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ).nullable(),
   });
 
   const {
@@ -100,6 +104,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
   ];
 
   const platingOptions = [
+    { label: "Nenhum", value: "" },
     { label: "Perfect Game", value: "PG" },
     { label: "Ultimate Game", value: "UG" },
     { label: "Extreme Game", value: "EG" },
@@ -195,7 +200,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
           )}
         </SelectedPlayerWrapper>
       )}
-      
+
       <ul>
         {filteredPlayers.map((player) => (
           <PlayerLi
