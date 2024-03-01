@@ -4,14 +4,20 @@ import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
 import { IEvent } from "../../types/entity-types";
-import { IEventCreate } from "../../types/form-types";
+import { IEventCreate, IUpdateEventFormData } from "../../types/form-types";
 
 export interface IEventsContext {
   events: IEvent[];
+  eventData: IEvent | undefined;
   createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
-  joinEvent: (event_id: number) => void;
+  getEventData: (event_id: number) => void;
+  updateEventData: (event_id: number, formData: IUpdateEventFormData) => void;
   deleteEvent: (event_id: number) => void;
+  joinEvent: (event_id: number) => void;
+  leaveEvent: (event_id: number) => void;
+  adminAddPlayer: (event_id: number, player_id: number) => void;
+  adminRemovePlayer: (event_id: number, player_id: number) => void;
 }
 
 const EventsContext = createContext<IEventsContext>({} as IEventsContext);
@@ -19,11 +25,45 @@ const EventsContext = createContext<IEventsContext>({} as IEventsContext);
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
-  const { accToken, hasValidSession, hasAdminRights } =
-    usePlayer();
+  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   const [events, setEvents] = useState([]);
+
+  const [eventData, setEventData] = useState<IEvent>();
+
+  const getEventData = async (event_id: number) => {
+    try {
+      hasValidSession();
+      const res = await api.get(`/events/${event_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+      setEventData(res.data);
+    } catch (err: any) {
+      console.log(err);
+    }
+  };
+
+  const updateEventData = async (
+    event_id: number,
+    formData: IUpdateEventFormData
+  ) => {
+    try {
+      hasAdminRights();
+      const res = await api.patch(`/events/${event_id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+      if (res.status === 200) {
+        toast.success("Informações do evento atualizadas com sucesso");
+      }
+    } catch (err: any) {
+      toast.error("Algo deu errado");
+      console.log(err);
+    }
+  };
 
   const createEvent = async (formData: IEventCreate) => {
     try {
@@ -85,6 +125,79 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const leaveEvent = async (event_id: number) => {
+    try {
+      hasValidSession();
+      const res = await api.patch(`/events/${event_id}/leave`, null, {
+        headers: {
+          Authorization: `Bearer ${accToken}`,
+        },
+      });
+
+      if (res.status === 200) {
+        toast.success("Você deixou o evento com sucesso");
+      }
+    } catch (err: any) {
+      if (err.response.data.message === "Player not assigned to this event") {
+        toast.error("Você não faz parte deste evento");
+      }
+    }
+  };
+
+  const adminAddPlayer = async (event_id: number, player_id: number) => {
+    try {
+      hasAdminRights();
+
+      const res = await api.patch(
+        `/events/${event_id}/admin/add_player`,
+        {
+          player_id: player_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success("Jogador adicionado ao evento com sucesso");
+      }
+    } catch (err: any) {
+      if (
+        err.response.data.message === "Player already assigned to this event"
+      ) {
+        toast.error("Jogador já faz parte deste evento");
+      }
+    }
+  };
+
+  const adminRemovePlayer = async (event_id: number, player_id: number) => {
+    try {
+      hasAdminRights();
+
+      const res = await api.patch(
+        `/events/${event_id}/admin/remove_player`,
+        {
+          player_id: player_id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accToken}`,
+          },
+        }
+      );
+
+      if (res.status === 200) {
+        toast.success("Jogador removido do evento com sucesso");
+      }
+    } catch (err: any) {
+      if (err.response.data.message === "Player not assigned to this event") {
+        toast.error("Jogador não faz parte deste evento");
+      }
+    }
+  };
+
   const deleteEvent = async (event_id: number) => {
     try {
       hasAdminRights();
@@ -109,10 +222,16 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     <EventsContext.Provider
       value={{
         events,
+        eventData,
         createEvent,
         getEvents,
-        joinEvent,
+        getEventData,
+        updateEventData,
         deleteEvent,
+        joinEvent,
+        leaveEvent,
+        adminAddPlayer,
+        adminRemovePlayer,
       }}
     >
       {children}

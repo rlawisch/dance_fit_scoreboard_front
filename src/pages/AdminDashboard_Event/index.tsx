@@ -1,6 +1,5 @@
 import { FunctionComponent, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEvent } from "../../providers/Event";
 import { useEvents } from "../../providers/Events";
 import {
   GlobalContainer,
@@ -31,13 +30,11 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
 
   const navigate = useNavigate();
 
-  const { eventData, getEventData } = useEvent();
-
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
-  const { joinEvent } = useEvents();
+  const { joinEvent, eventData, getEventData } = useEvents();
 
   const {
     isOpen: isOpenEventUpdate,

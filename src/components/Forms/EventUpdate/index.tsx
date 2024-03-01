@@ -3,12 +3,12 @@ import { FunctionComponent } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { IUpdateEventFormData } from "../../../types/form-types";
-import { useEvent } from "../../../providers/Event";
 import { FormWrapper, GlobalContainer } from "../../../styles/global";
 import Input from "../../Input";
 import UpdateButton from "../../Button_Update";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { IEvent } from "../../../types/entity-types";
+import { useEvents } from "../../../providers/Events";
 
 interface EventUpdateFormProps {
   event: IEvent | undefined;
@@ -17,7 +17,7 @@ interface EventUpdateFormProps {
 const EventUpdateForm: FunctionComponent<EventUpdateFormProps> = ({
   event,
 }) => {
-  const { updateEventData } = useEvent();
+  const { updateEventData } = useEvents();
 
   const updateEventFormSchema = yup.object().shape({
     name: yup.string().required("Preencha este campo"),
