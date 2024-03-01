@@ -116,7 +116,7 @@ export const TableData = styled.td``;
 
 export const TableDataWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
@@ -128,15 +128,23 @@ export const TableDataWrapper = styled.div`
   }
 `;
 
-export const TableDataButtonWrapper = styled.div`
-display: flex;
-flex-direction: column;
-align-items: center;
-
-@media screen and (min-width: 576px) {
-  flex-direction: row;
-}
+export const SmallScreenTableDataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 `
+
+export const TableDataButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (min-width: 576px) {
+    flex-direction: row;
+  }
+`;
 
 export const TableRow = styled.tr``;
 
@@ -171,6 +179,27 @@ export const PlayerInfoWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   gap: 0.6rem;
+`;
+
+export const PlayerLi = styled.li`
+  list-style: none;
+  padding: 0.6rem;
+  font-weight: normal;
+
+  &:hover {
+    background-color: ${(props) => shade(0.3, props.theme.colors.background)};
+    cursor: pointer;
+  }
+`;
+
+export const SelectedPlayerWrapper = styled.div`
+  padding: 1rem;
+  color: ${(props) => props.theme.colors.primary};
+  font-weight: bold;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const MusicLevelMiniature = styled.img`

@@ -6,6 +6,7 @@ import {
   MusicWrapper,
   PlayerInfoWrapper,
   PlayerMiniature,
+  SmallScreenTableDataWrapper,
   SmallScreenTableDisplay,
   Table,
   TableData,
@@ -23,7 +24,7 @@ import { useCategory } from "../../providers/Category";
 import { IPhase, IScore } from "../../types/entity-types";
 import UpdateButton from "../../components/Button_Update";
 import { FaEdit } from "react-icons/fa";
-import { FaRegTrashCan, FaUserPlus } from "react-icons/fa6";
+import { FaRegTrashCan, FaUserMinus, FaUserPlus } from "react-icons/fa6";
 import { TbMusicMinus, TbMusicPlus } from "react-icons/tb";
 import DeleteButton from "../../components/Button_Delete";
 import useModal from "../../providers/Modal";
@@ -39,6 +40,11 @@ import ScoreCreateForm from "../../components/Forms/ScoreCreate";
 import ScoreCard from "../../components/ScoreCard";
 import ScoreCreateByAdmForm from "../../components/Forms/ScoreCreateByAdmin";
 import PhaseDeleteForm from "../../components/Forms/PhaseDelete";
+import CategoryAdmAddPlayerForm from "../../components/Forms/CategoryAdmAddPlayer";
+import { useEvents } from "../../providers/Events";
+import CategoryAdmRemovePlayerForm from "../../components/Forms/CategoryAdmRemovePlayer";
+import ScoreUpdateForm from "../../components/Forms/ScoreUpdate";
+import ScoreDeleteForm from "../../components/Forms/ScoreDelete";
 
 interface AdminDashboardCategoryProps {}
 
@@ -51,8 +57,11 @@ const AdminDashboardCategory: FunctionComponent<
 
   const { categoryData, getCategoryData, joinCategory } = useCategory();
 
+  const { eventData, getEventData } = useEvents();
+
   useEffect(() => {
     getCategoryData(Number(category_id));
+    getEventData(Number(event_id));
   }, []);
 
   const sortedPhases = categoryData?.phases?.sort(
@@ -64,6 +73,18 @@ const AdminDashboardCategory: FunctionComponent<
     openModal: openCategoryUpdateModal,
     closeModal: closeCategoryUpdateModal,
   } = useModal();
+
+  const {
+    isOpen: isOpenCategoryAdmAddPlayer,
+    openModal: openCategoryAdmAddPlayerModal,
+    closeModal: closeCategoryAdmAddPlayerModal,
+  } = useModal();
+
+  const {
+    isModalOpen: isCategoryAdmRemovePlayerModalOpen,
+    openModal: openCategoryAdmRemovePlayerModal,
+    closeModal: closeCategoryAdmRemovePlayerModal,
+  } = useDynamicModal();
 
   const {
     isOpen: isOpenPhaseCreate,
@@ -105,6 +126,18 @@ const AdminDashboardCategory: FunctionComponent<
     isModalOpen: isAdmScoreCreateModalOpen,
     openModal: openAdmScoreCreateModal,
     closeModal: closeAdmScoreCreateModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isScoreUpdateModalOpen,
+    openModal: openScoreUpdateModal,
+    closeModal: closeScoreUpdateModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isScoreDeleteModalOpen,
+    openModal: openScoreDeleteModal,
+    closeModal: closeScoreDeleteModal,
   } = useDynamicModal();
 
   return (
@@ -162,16 +195,25 @@ const AdminDashboardCategory: FunctionComponent<
         </Table>
       )}
 
-      {categoryData?.players && (
+      {!!eventData && !!categoryData && categoryData?.players && (
         <Table>
           <thead>
             <tr>
               <TableHeader>
                 <TableHeaderWrapper>
                   Participantes
-                  <UpdateButton>
+                  <UpdateButton onClick={openCategoryAdmAddPlayerModal}>
                     <FaUserPlus />
                   </UpdateButton>
+                  <Modal
+                    isOpen={isOpenCategoryAdmAddPlayer}
+                    onClose={closeCategoryAdmAddPlayerModal}
+                  >
+                    <CategoryAdmAddPlayerForm
+                      category={categoryData}
+                      eventPlayers={eventData.players}
+                    />
+                  </Modal>
                 </TableHeaderWrapper>
               </TableHeader>
             </tr>
@@ -181,17 +223,37 @@ const AdminDashboardCategory: FunctionComponent<
               categoryData.players.map((p) => (
                 <tr key={p.player_id}>
                   <td>
-                    <PlayerInfoWrapper>
-                      <PlayerMiniature
-                        src={
-                          p.profilePicture
-                            ? p.profilePicture
-                            : "/img/default_player.png"
+                    <TableDataWrapper>
+                      <PlayerInfoWrapper>
+                        <PlayerMiniature
+                          src={
+                            p.profilePicture
+                              ? p.profilePicture
+                              : "/img/default_player.png"
+                          }
+                          alt="Mini Profile Picture"
+                        />
+                        {p.nickname}
+                      </PlayerInfoWrapper>
+                      <DeleteButton
+                        onClick={() =>
+                          openCategoryAdmRemovePlayerModal(p.player_id)
                         }
-                        alt="Mini Profile Picture"
-                      />
-                      {p.nickname}
-                    </PlayerInfoWrapper>
+                      >
+                        <FaUserMinus />
+                      </DeleteButton>
+                      <Modal
+                        isOpen={isCategoryAdmRemovePlayerModalOpen(p.player_id)}
+                        onClose={() =>
+                          closeCategoryAdmRemovePlayerModal(p.player_id)
+                        }
+                      >
+                        <CategoryAdmRemovePlayerForm
+                          player={p}
+                          category={categoryData}
+                        />
+                      </Modal>
+                    </TableDataWrapper>
                   </td>
                 </tr>
               ))}
@@ -252,12 +314,17 @@ const AdminDashboardCategory: FunctionComponent<
                             />
                           </Modal>
                           <DeleteButton
-                            onClick={() => openPhaseDeleteModal(phase.phase_number)}>
+                            onClick={() =>
+                              openPhaseDeleteModal(phase.phase_number)
+                            }
+                          >
                             <FaRegTrashCan />
                           </DeleteButton>
                           <Modal
                             isOpen={isPhaseDeleteModalOpen(phase.phase_number)}
-                            onClose={() => closePhaseDeleteModal(phase.phase_number)}
+                            onClose={() =>
+                              closePhaseDeleteModal(phase.phase_number)
+                            }
                           >
                             <PhaseDeleteForm phase={phase} />
                           </Modal>
@@ -321,7 +388,7 @@ const AdminDashboardCategory: FunctionComponent<
                               key={`player-${player.player_id}-music-${music.music_id}`}
                             >
                               <TableData>
-                                <TableDataWrapper>
+                                <SmallScreenTableDataWrapper>
                                   <MusicWrapper>
                                     {music.name}
                                     <MusicLevelMiniature
@@ -401,22 +468,49 @@ const AdminDashboardCategory: FunctionComponent<
                                       />
                                     </Modal>
                                   </TableDataButtonWrapper>
-                                </TableDataWrapper>
+                                </SmallScreenTableDataWrapper>
                               </TableData>
                               <TableData>
-                                <TableDataWrapper>
-                                  {score ? <ScoreCard score={score} /> : "-"}
-                                </TableDataWrapper>
+                                <SmallScreenTableDataWrapper>
+                                  {score ? (
+                                    <>
+                                      <ScoreCard score={score} />
+                                      <UpdateButton
+                                        onClick={() => {
+                                          openScoreUpdateModal(score.score_id);
+                                        }}
+                                      >
+                                        <FaEdit />
+                                      </UpdateButton>
+                                      <Modal
+                                        isOpen={isScoreUpdateModalOpen(
+                                          score.score_id
+                                        )}
+                                        onClose={() =>
+                                          closeScoreUpdateModal(score.score_id)
+                                        }
+                                      >
+                                        <ScoreUpdateForm
+                                          score_id={Number(score.score_id)}
+                                        />
+                                      </Modal>
+                                    </>
+                                  ) : (
+                                    "-"
+                                  )}
+                                </SmallScreenTableDataWrapper>
                               </TableData>
                             </TableRow>
                           );
                         })}
                       <TableRow>
                         <TableData>
-                          <TableDataWrapper>Total</TableDataWrapper>
+                          <SmallScreenTableDataWrapper>
+                            Total
+                          </SmallScreenTableDataWrapper>
                         </TableData>
                         <TableData>
-                          <TableDataWrapper>
+                          <SmallScreenTableDataWrapper>
                             {phase.scores
                               ?.filter(
                                 (score: IScore) =>
@@ -424,7 +518,7 @@ const AdminDashboardCategory: FunctionComponent<
                               )
                               .reduce((acc, curr) => acc + curr.value, 0) ||
                               "-"}
-                          </TableDataWrapper>
+                          </SmallScreenTableDataWrapper>
                         </TableData>
                       </TableRow>
                     </tbody>
@@ -488,12 +582,17 @@ const AdminDashboardCategory: FunctionComponent<
                           </Modal>
                           {/* TODO: Phase DELETE Feat */}
                           <DeleteButton
-                            onClick={() => openPhaseDeleteModal(phase.phase_number)}>
+                            onClick={() =>
+                              openPhaseDeleteModal(phase.phase_number)
+                            }
+                          >
                             <FaRegTrashCan />
                           </DeleteButton>
                           <Modal
                             isOpen={isPhaseDeleteModalOpen(phase.phase_number)}
-                            onClose={() => closePhaseDeleteModal(phase.phase_number)}
+                            onClose={() =>
+                              closePhaseDeleteModal(phase.phase_number)
+                            }
                           >
                             <PhaseDeleteForm phase={phase} />
                           </Modal>
@@ -640,7 +739,38 @@ const AdminDashboardCategory: FunctionComponent<
                               <TableData
                                 key={`score-${player.player_id}-${music.music_id}`}
                               >
-                                {score ? <ScoreCard score={score} /> : "-"}
+                                {score ? (
+                                  <>
+                                    <ScoreCard score={score} />
+                                    <UpdateButton
+                                      onClick={() => {
+                                        openScoreUpdateModal(score.score_id);
+                                      }}
+                                    >
+                                      <FaEdit />
+                                    </UpdateButton>
+                                    <Modal
+                                      isOpen={isScoreUpdateModalOpen(
+                                        score.score_id
+                                      )}
+                                      onClose={() =>
+                                        closeScoreUpdateModal(score.score_id)
+                                      }
+                                    >
+                                      <ScoreUpdateForm
+                                        score_id={Number(score.score_id)}
+                                      />
+                                    </Modal>
+                                      <DeleteButton onClick={() => openScoreDeleteModal(score.score_id)}>
+                                        <FaRegTrashCan />
+                                      </DeleteButton>
+                                      <Modal isOpen={isScoreDeleteModalOpen(score.score_id)} onClose={() => closeScoreDeleteModal(score.score_id)}>
+                                        <ScoreDeleteForm score={score}/>
+                                      </Modal>
+                                  </>
+                                ) : (
+                                  "-"
+                                )}
                               </TableData>
                             );
                           })}

@@ -1,3 +1,4 @@
+import { IScore } from './entity-types';
 export interface ILogin {
   nickname: string;
   password: string;
@@ -117,4 +118,16 @@ export interface IScoreCreateByAdmin {
   phase_id: number;
   music_id: number;
   player_id: number;
+}
+
+export interface IScoreUpdate {
+  value?: number;
+  perfect?: number;
+  great?: number;
+  good?: number;
+  bad?: number;
+  miss?: number;
+  max_combo?: number;
+  grade?: string;
+  plate?: string;
 }
