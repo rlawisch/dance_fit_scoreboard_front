@@ -134,7 +134,7 @@ export const SmallScreenTableDataWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-`
+`;
 
 export const TableDataButtonWrapper = styled.div`
   display: flex;
@@ -189,6 +189,48 @@ export const PlayerLi = styled.li`
   &:hover {
     background-color: ${(props) => shade(0.3, props.theme.colors.background)};
     cursor: pointer;
+  }
+`;
+
+export const PhaseTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+
+  @media screen and (min-width: 576px) {
+    flex-direction: row;
+  }
+`;
+
+export const PhaseHeaderPassSpan = styled.span`
+  font-size: 14px;
+  position: relative;
+
+  @media screen and (min-width: 576px) {
+    bottom: 5px;
+  }
+`;
+
+export const PhasePassSpan = styled.span`
+  font-size: 14px;
+  position: relative;
+  color: green;
+
+  @media screen and (min-width: 576px) {
+    bottom: 5px;
+    right: 5px;
+  }
+`;
+
+export const PhaseBreakSpan = styled.span`
+  font-size: 8px;
+  position: relative;
+  color: red;
+
+  @media screen and (min-width: 576px) {
+    bottom: 5px;
+    right: 5px;
   }
 `;
 

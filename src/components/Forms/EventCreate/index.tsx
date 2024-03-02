@@ -32,10 +32,8 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
 
   return (
     <GlobalContainer>
-    <p>Criar novo Evento:</p>
-      <FormWrapper
-        onSubmit={handleSubmitCreateEvent(onCreateEventFormSubmit)}
-      >
+      <p>Criar novo Evento:</p>
+      <FormWrapper onSubmit={handleSubmitCreateEvent(onCreateEventFormSubmit)}>
         <Input
           label="Nome"
           icon={MdDriveFileRenameOutline}
@@ -43,11 +41,10 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
           register={registerCreateEvent}
           error={createEventErrors.name?.message}
         />
+        <Button vanilla={false} type="submit">
+          Criar
+        </Button>
       </FormWrapper>
-
-      <Button vanilla={false} type="submit">
-        Criar
-      </Button>
     </GlobalContainer>
   );
 };

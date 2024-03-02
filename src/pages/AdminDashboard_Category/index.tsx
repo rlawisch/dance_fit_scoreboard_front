@@ -4,6 +4,10 @@ import {
   LargeScreenTableDisplay,
   MusicLevelMiniature,
   MusicWrapper,
+  PhaseBreakSpan,
+  PhaseHeaderPassSpan,
+  PhasePassSpan,
+  PhaseTitleWrapper,
   PlayerInfoWrapper,
   PlayerMiniature,
   SmallScreenTableDataWrapper,
@@ -24,7 +28,12 @@ import { useCategory } from "../../providers/Category";
 import { IPhase, IScore } from "../../types/entity-types";
 import UpdateButton from "../../components/Button_Update";
 import { FaEdit } from "react-icons/fa";
-import { FaRegTrashCan, FaUserMinus, FaUserPlus } from "react-icons/fa6";
+import {
+  FaCheck,
+  FaRegTrashCan,
+  FaUserMinus,
+  FaUserPlus,
+} from "react-icons/fa6";
 import { TbMusicMinus, TbMusicPlus } from "react-icons/tb";
 import DeleteButton from "../../components/Button_Delete";
 import useModal from "../../providers/Modal";
@@ -45,6 +54,7 @@ import { useEvents } from "../../providers/Events";
 import CategoryAdmRemovePlayerForm from "../../components/Forms/CategoryAdmRemovePlayer";
 import ScoreUpdateForm from "../../components/Forms/ScoreUpdate";
 import ScoreDeleteForm from "../../components/Forms/ScoreDelete";
+import { ImCross } from "react-icons/im";
 
 interface AdminDashboardCategoryProps {}
 
@@ -275,10 +285,15 @@ const AdminDashboardCategory: FunctionComponent<
                   <tr>
                     <TableHeader>
                       <TableHeaderWrapper>
-                        Fase{" "}
-                        {phase.phase_number === categoryData.number_of_phases
-                          ? "Final"
-                          : phase.phase_number}
+                        <PhaseTitleWrapper>
+                          Fase{" "}
+                          {phase.phase_number === categoryData.number_of_phases
+                            ? "Final"
+                            : phase.phase_number}
+                          <PhaseHeaderPassSpan>
+                          {"passam " + phase.passing_players}
+                          </PhaseHeaderPassSpan>
+                        </PhaseTitleWrapper>
                         <div>
                           <UpdateButton
                             onClick={() =>
@@ -361,13 +376,25 @@ const AdminDashboardCategory: FunctionComponent<
                     return totalScoreB - totalScoreA; // Sort by score descending
                   }
                 })
-                .map((player) => (
+                .map((player, index) => (
                   <Table
                     key={`phase-${phase.phase_number}-player-${player.player_id}`}
                   >
                     <tbody>
-                      <TableRow>
-                        <TableData colSpan={2}>
+                      <TableRow key={player.player_id}>
+                        <TableData
+                          key={player.player_id}
+                          colSpan={2}
+                          style={
+                            index + 1 > phase.passing_players
+                              ? {
+                                  background: `linear-gradient(90deg, rgba(31,31,31,0.3085609243697479) 40%, rgba(211, 32, 32, 0.519) 100%)`,
+                                }
+                              : {
+                                  background: `linear-gradient(90deg, rgba(31,31,31,0.3085609243697479) 40%, rgba(51,213,34,0.5186449579831933) 100%)`,
+                                }
+                          }
+                        >
                           <PlayerInfoWrapper>
                             <PlayerMiniature
                               src={
@@ -376,7 +403,17 @@ const AdminDashboardCategory: FunctionComponent<
                               }
                               alt={player.nickname}
                             />
+                            {"#" + (index + 1) + " "}
                             {player.nickname}
+                            {index + 1 > phase.passing_players ? (
+                              <PhaseBreakSpan>
+                                <ImCross />
+                              </PhaseBreakSpan>
+                            ) : (
+                              <PhasePassSpan>
+                                <FaCheck />
+                              </PhasePassSpan>
+                            )}
                           </PlayerInfoWrapper>
                         </TableData>
                       </TableRow>
@@ -395,7 +432,9 @@ const AdminDashboardCategory: FunctionComponent<
                               <TableData>
                                 <SmallScreenTableDataWrapper>
                                   <MusicWrapper>
-                                    {music.name}
+                                    {music.name.length > 10
+                                      ? `${music.name.substring(0, 10)}...`
+                                      : music.name}
                                     <MusicLevelMiniature
                                       src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                                     />
@@ -559,10 +598,15 @@ const AdminDashboardCategory: FunctionComponent<
                   <tr>
                     <TableHeader>
                       <TableHeaderWrapper>
-                        Fase{" "}
-                        {phase.phase_number === categoryData.number_of_phases
-                          ? "Final"
-                          : phase.phase_number}
+                        <PhaseTitleWrapper>
+                          Fase{" "}
+                          {phase.phase_number === categoryData.number_of_phases
+                            ? "Final"
+                            : phase.phase_number}
+                          <PhaseHeaderPassSpan>
+                          {"passam " + phase.passing_players}
+                          </PhaseHeaderPassSpan>
+                        </PhaseTitleWrapper>
                         <div>
                           <UpdateButton
                             onClick={() =>
@@ -632,7 +676,9 @@ const AdminDashboardCategory: FunctionComponent<
                       <TableHeader key={`music-${music.music_id}`}>
                         <TableHeaderWrapper>
                           <MusicWrapper>
-                            {music.name}
+                            {music.name.length > 30
+                              ? `${music.name.substring(0, 30)}...`
+                              : music.name}
                             <MusicLevelMiniature
                               src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                             />
@@ -734,9 +780,19 @@ const AdminDashboardCategory: FunctionComponent<
                         return totalScoreB - totalScoreA; // Sort by score descending
                       }
                     })
-                    .map((player) => (
+                    .map((player, index) => (
                       <TableRow key={`player-${player.player_id}`}>
-                        <TableData>
+                        <TableData
+                          style={
+                            index + 1 > phase.passing_players
+                              ? {
+                                  background: `linear-gradient(90deg, rgba(31,31,31,0.3085609243697479) 20%, rgba(211, 32, 32, 0.519) 100%)`,
+                                }
+                              : {
+                                  background: `linear-gradient(90deg, rgba(31,31,31,0.3085609243697479) 20%, rgba(51,213,34,0.5186449579831933) 100%)`,
+                                }
+                          }
+                        >
                           <PlayerInfoWrapper>
                             <PlayerMiniature
                               src={
@@ -745,7 +801,17 @@ const AdminDashboardCategory: FunctionComponent<
                               }
                               alt={player.nickname}
                             />
+                            {"#" + (index + 1) + " "}
                             {player.nickname}
+                            {index + 1 > phase.passing_players ? (
+                              <PhaseBreakSpan>
+                                <ImCross />
+                              </PhaseBreakSpan>
+                            ) : (
+                              <PhasePassSpan>
+                                <FaCheck />
+                              </PhasePassSpan>
+                            )}
                           </PlayerInfoWrapper>
                         </TableData>
                         {phase.musics
@@ -762,7 +828,7 @@ const AdminDashboardCategory: FunctionComponent<
                                 key={`score-${player.player_id}-${music.music_id}`}
                               >
                                 {score ? (
-                                  <>
+                                  <div>
                                     <ScoreCard score={score} />
                                     <UpdateButton
                                       onClick={() => {
@@ -800,7 +866,7 @@ const AdminDashboardCategory: FunctionComponent<
                                     >
                                       <ScoreDeleteForm score={score} />
                                     </Modal>
-                                  </>
+                                  </div>
                                 ) : (
                                   "-"
                                 )}
