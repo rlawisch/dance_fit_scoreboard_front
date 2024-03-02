@@ -39,7 +39,6 @@ const EventUpdateForm: FunctionComponent<EventUpdateFormProps> = ({
     <GlobalContainer>
       <p>Alterar informações do Evento: {event?.name}</p>
       <FormWrapper
-        id="update_event_form"
         onSubmit={handleSubmitUpdateEvent(onUpdateEventFormSubmit)}
       >
         <Input
@@ -50,7 +49,7 @@ const EventUpdateForm: FunctionComponent<EventUpdateFormProps> = ({
           error={updateEventErrors.name?.message}
         />
 
-        <UpdateButton vanilla={false} type="submit" form="update_event_form">
+        <UpdateButton vanilla={false} type="submit">
           Atualizar
         </UpdateButton>
       </FormWrapper>

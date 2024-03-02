@@ -8,6 +8,8 @@ import { IMusicCreate, IMusicUpdate } from "../../types/form-types";
 
 export interface IMusicsContext {
   musicsData: IMusic[] | undefined;
+  musicRefreshTrigger: boolean;
+  setMusicRefreshTrigger: (musicRefreshTrigger: boolean) => void;
   getMusicsData: () => void;
   createMusic: (formData: IMusicCreate) => void;
   updateMusic: (formData: IMusicUpdate, music_id: number) => void;
@@ -19,10 +21,11 @@ const MusicsContext = createContext<IMusicsContext>({} as IMusicsContext);
 export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   const [musicsData, setMusicsData] = useState<IMusic[]>();
+
+  const [musicRefreshTrigger, setMusicRefreshTrigger] = useState<boolean>(true);
 
   const getMusicsData = async () => {
     try {
@@ -48,6 +51,7 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 201) {
         toast.success("Música criada com sucesso");
+        setMusicRefreshTrigger(!musicRefreshTrigger);
       }
     } catch (err: any) {
       if (
@@ -70,10 +74,15 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações da música atualizadas");
+        setMusicRefreshTrigger(!musicRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
-      if (err.response.data.message === "Internal server error") {
+      if (
+        err.response.data.message === "Updating would result in duplicate music"
+      ) {
+        toast.error("A atualização resultaria em músicas duplicadas");
+      } else if (err.response.data.message === "Internal server error") {
         toast.error("Algo deu errado");
       }
     }
@@ -89,6 +98,7 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Música deletada com sucesso");
+        setMusicRefreshTrigger(!musicRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -99,6 +109,8 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
     <MusicsContext.Provider
       value={{
         musicsData,
+        musicRefreshTrigger,
+        setMusicRefreshTrigger,
         getMusicsData,
         createMusic,
         updateMusic,

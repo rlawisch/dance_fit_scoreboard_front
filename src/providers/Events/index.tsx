@@ -9,6 +9,8 @@ import { IEventCreate, IUpdateEventFormData } from "../../types/form-types";
 export interface IEventsContext {
   events: IEvent[];
   eventData: IEvent | undefined;
+  eventRefreshTrigger: boolean;
+  setEventRefreshTrigger: (eventRefreshTrigger: boolean) => void
   createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
   getEventData: (event_id: number) => void;
@@ -30,6 +32,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
   const [events, setEvents] = useState([]);
 
   const [eventData, setEventData] = useState<IEvent>();
+
+  const [eventRefreshTrigger, setEventRefreshTrigger] = useState<boolean>(true);
 
   const getEventData = async (event_id: number) => {
     try {
@@ -58,6 +62,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações do evento atualizadas com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger)
       }
     } catch (err: any) {
       toast.error("Algo deu errado");
@@ -80,6 +85,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Evento criado com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger)
       }
     } catch (err) {
       toast.error("Algo deu errado");
@@ -113,6 +119,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Você agora faz parte do Evento:");
+        setEventRefreshTrigger(!eventRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -136,6 +143,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Você deixou o evento com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger)
+
       }
     } catch (err: any) {
       if (err.response.data.message === "Player not assigned to this event") {
@@ -162,6 +171,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Jogador adicionado ao evento com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger)
+
       }
     } catch (err: any) {
       if (
@@ -190,6 +201,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Jogador removido do evento com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger)
+
       }
     } catch (err: any) {
       if (err.response.data.message === "Player not assigned to this event") {
@@ -209,6 +222,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Evento deletado com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -223,6 +237,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         events,
         eventData,
+        eventRefreshTrigger,
+        setEventRefreshTrigger,
         createEvent,
         getEvents,
         getEventData,

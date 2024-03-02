@@ -43,7 +43,6 @@ const CategoryCreateForm: FunctionComponent<CategoryCreateFormProps> = ({
     <GlobalContainer>
       Criar Categoria:
       <FormWrapper
-        id="create_category_form"
         onSubmit={handleSubmitCreateCategory(onCreateCategoryFormSubmit)}
       >
         <Input
@@ -78,7 +77,7 @@ const CategoryCreateForm: FunctionComponent<CategoryCreateFormProps> = ({
           error={createCategoryErrors.number_of_phases?.message}
         />
 
-        <Button vanilla={false} type="submit" form="create_category_form">
+        <Button vanilla={false} type="submit">
           Criar
         </Button>
       </FormWrapper>

@@ -73,7 +73,6 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
     <GlobalContainer>
       <p>Atualizar informações da Música:</p>
       <FormWrapper
-        id="music_update_form"
         onSubmit={handleSubmitUpdateMusic((formData) =>
           onUpdateMusicFormSubmit(formData, music)
         )}
@@ -110,7 +109,7 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
           error={updateMusicErrors.mode?.message}
         />
 
-        <UpdateButton vanilla={false} type="submit" form="music_update_form">
+        <UpdateButton vanilla={false} type="submit">
           Atualizar
         </UpdateButton>
       </FormWrapper>

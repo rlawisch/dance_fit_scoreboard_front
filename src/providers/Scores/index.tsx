@@ -8,6 +8,7 @@ import {
 import { usePlayer } from "../Players";
 import api from "../../services/api";
 import { toast } from "react-toastify";
+import { useCategory } from "../Category";
 
 export interface IScoreContext {
   createScore: (formData: IScoreCreate) => void;
@@ -23,6 +24,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
+  const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory()
+
   const createScore = async (formData: IScoreCreate) => {
     try {
       await hasValidSession();
@@ -37,6 +40,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Score criado com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -76,6 +80,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Score criado com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+
       }
     } catch (err: any) {
       console.log(err);
@@ -113,8 +119,11 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Score atualizado com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+
       }
     } catch (err: any) {
+      console.log(err)
       if (err.response.data.message === "Failed to update score") {
         toast.error("Algo deu errado");
       } else {
@@ -135,6 +144,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Score deletado com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+
       }
     } catch (err: any) {
       if (err.response.data.message === "Internal server error") {

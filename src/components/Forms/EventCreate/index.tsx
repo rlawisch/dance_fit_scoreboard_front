@@ -34,7 +34,6 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
     <GlobalContainer>
     <p>Criar novo Evento:</p>
       <FormWrapper
-        id="create_event_form"
         onSubmit={handleSubmitCreateEvent(onCreateEventFormSubmit)}
       >
         <Input
@@ -46,7 +45,7 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
         />
       </FormWrapper>
 
-      <Button vanilla={false} type="submit" form="create_event_form">
+      <Button vanilla={false} type="submit">
         Criar
       </Button>
     </GlobalContainer>

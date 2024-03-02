@@ -15,15 +15,15 @@ export const AppProvider = ({ children }: IAppProvider) => {
   return (
     <PlayerProvider>
       <EventsProvider>
-        <ScoreProvider>
-          <CategoryProvider>
-            <PhasesProvider>
-              <MusicsProvider>
+        <CategoryProvider>
+          <PhasesProvider>
+            <MusicsProvider>
+              <ScoreProvider>
                 <DashboardProvider>{children}</DashboardProvider>
-              </MusicsProvider>
-            </PhasesProvider>
-          </CategoryProvider>
-        </ScoreProvider>
+              </ScoreProvider>
+            </MusicsProvider>
+          </PhasesProvider>
+        </CategoryProvider>
       </EventsProvider>
     </PlayerProvider>
   );

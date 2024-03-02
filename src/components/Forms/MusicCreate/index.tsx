@@ -43,7 +43,6 @@ const MusicCreateForm: FunctionComponent<MusicCreateFormProps> = () => {
   return (
     <GlobalContainer>
       <FormWrapper
-        id="music_create_form"
         onSubmit={handleSubmitCreateMusic(onCreateMusicFormSubmit)}
       >
         <Input
@@ -71,7 +70,7 @@ const MusicCreateForm: FunctionComponent<MusicCreateFormProps> = () => {
           error={createMusicErrors.mode?.message}
         />
 
-        <Button vanilla={false} type="submit" form="music_create_form">
+        <Button vanilla={false} type="submit">
           Criar
         </Button>
       </FormWrapper>

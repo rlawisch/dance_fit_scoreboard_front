@@ -17,13 +17,13 @@ interface AdminDashboardEventsProps {}
 const AdminDashboardEvents: FunctionComponent<
   AdminDashboardEventsProps
 > = () => {
-  const { events, getEvents } = useEvents();
+  const { events, getEvents, eventRefreshTrigger } = useEvents();
 
   const navigate = useNavigate();
 
   useEffect(() => {
     getEvents();
-  }, []);
+  }, [eventRefreshTrigger]);
 
   const {
     isOpen: isOpenEventCreateModal,

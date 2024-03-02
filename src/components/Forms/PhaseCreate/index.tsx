@@ -59,7 +59,6 @@ const PhaseCreateForm: FunctionComponent<PhaseCreateFormProps> = ({
     <GlobalContainer>
       <p>Criar Fase</p>
       <FormWrapper
-        id="phase_create_form"
         onSubmit={handleSubmitCreatePhase(onCreatePhaseFormSubmit)}
       >
         <Input
@@ -95,7 +94,7 @@ const PhaseCreateForm: FunctionComponent<PhaseCreateFormProps> = ({
           error={createPhaseErrors.modes_available?.message}
         />
 
-        <Button vanilla={false} type="submit" form="phase_create_form">
+        <Button vanilla={false} type="submit">
           Criar Fase
         </Button>
       </FormWrapper>

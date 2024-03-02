@@ -58,6 +58,8 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     formData: IPhaseFormUpdate,
     phase: IPhase
   ) => {
+    console.log(formData)
+
     const { phase_id } = phase;
 
     // Filter out undefined properties from formData
@@ -85,7 +87,6 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     <GlobalContainer>
       <p>Atualizar Informações da Fase {phase.phase_number}</p>
       <FormWrapper
-        id="phase_update_form"
         onSubmit={handleSubmitUpdatePhase((formData) =>
           onUpdatePhaseFormSubmit(formData, phase)
         )}
@@ -115,7 +116,7 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
           error={createUpdateErrors.modes_available?.message}
         />
 
-        <UpdateButton vanilla={false} type="submit" form="phase_update_form">
+        <UpdateButton vanilla={false} type="submit">
           Atualizar
         </UpdateButton>
       </FormWrapper>
