@@ -7,7 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
 import { FormContainer } from "./styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
 import { ILogin } from "../../types/form-types";
 
@@ -25,6 +25,8 @@ const Login = () => {
     resolver: yupResolver(formSchema),
   });
 
+  const navigate = useNavigate()
+
   const { playerLogin } = usePlayer();
 
   const onFormSubmit = (formData: ILogin) => {
@@ -33,6 +35,9 @@ const Login = () => {
 
   return (
     <GlobalContainer>
+      <Button onClick={() => navigate(`/public/events`)}>
+        Entrar como Visitante
+      </Button>
       <FormContainer>
         <h1>Login</h1>
 

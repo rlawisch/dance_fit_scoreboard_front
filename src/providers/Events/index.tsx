@@ -37,7 +37,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getEventData = async (event_id: number) => {
     try {
-      hasValidSession();
       const res = await api.get(`/events/${event_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -95,7 +94,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getEvents = async () => {
     try {
-      hasValidSession();
       const res = await api.get("/events", {
         headers: {
           Authorization: `Bearer ${accToken}`,

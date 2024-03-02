@@ -35,7 +35,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const [categoryRefreshTrigger, setCategoryRefreshTrigger] = useState<boolean>(true)
 
   const getCategoryData = async (category_id: number) => {
-    hasValidSession();
 
     try {
       const res = await api.get(`/categories/${category_id}`, {
