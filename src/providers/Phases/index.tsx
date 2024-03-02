@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
 import { IPhaseRealCreate, IPhaseRealUpdate } from "../../types/form-types";
 import { IPhase } from "../../types/entity-types";
+import { useCategory } from "../Category";
 
 export interface IPhasesContext {
   createPhase: (formData: IPhaseRealCreate) => void;
@@ -21,6 +22,8 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { accToken, hasAdminRights } = usePlayer();
 
+  const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory()
+
   const createPhase = async (formData: IPhaseRealCreate) => {
     hasAdminRights();
 
@@ -34,6 +37,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Fase criada com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       } else {
         toast.error("Algo deu errado");
       }
@@ -67,6 +71,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações da fase atualizadas");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       if (
@@ -106,6 +111,8 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       if (res.status === 200) {
         toast.success(`Música adicionada a Fase com sucesso`);
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+
       }
     } catch (err: any) {
       console.log(err);
@@ -155,6 +162,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
       );
       if (res.status === 200) {
         toast.success("Música removida da fase com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -176,6 +184,7 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Fase deletada com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);

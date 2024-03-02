@@ -5,9 +5,12 @@ import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
 import { ICategory } from "../../types/entity-types";
 import { ICategoryCreate, ICategoryUpdate } from "../../types/form-types";
+import { useEvents } from "../Events";
 
 export interface ICategoryContext {
   categoryData: ICategory | undefined;
+  categoryRefreshTrigger: boolean;
+  setCategoryRefreshTrigger: (categoryRefreshTrigger: boolean) => void
   getCategoryData: (category_id: number) => void;
   createCategory: (formData: ICategoryCreate, event_id: number) => void;
   updateCategory: (formData: ICategoryUpdate, category: ICategory) => void;
@@ -26,6 +29,10 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   const { accToken, hasValidSession, hasAdminRights } = usePlayer();
 
   const [categoryData, setCategoryData] = useState<ICategory>();
+
+  const { eventRefreshTrigger, setEventRefreshTrigger } = useEvents();
+
+  const [categoryRefreshTrigger, setCategoryRefreshTrigger] = useState<boolean>(true)
 
   const getCategoryData = async (category_id: number) => {
     hasValidSession();
@@ -65,6 +72,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Categoria criada com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -84,6 +92,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(res.data.response);
       if (res.status === 200) {
         toast.success("Adicionado na categoria com sucesso!");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -109,6 +118,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Você saiu da categoria com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       if (
@@ -139,6 +149,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Jogador adicionado a categoria com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       }
     } catch (err: any) {
       if (
@@ -169,6 +180,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Jogador removido da categoria com sucesso");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+
       }
     } catch (err: any) {
       if (
@@ -195,6 +208,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações da categoria atualizadas");
+        setCategoryRefreshTrigger(!categoryRefreshTrigger)
       } else {
         toast.error("Algo deu errado");
       }
@@ -219,6 +233,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(res);
       if (res.status === 200) {
         toast.success("Categoria deletada com sucesso");
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -229,6 +244,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
     <CategoryContext.Provider
       value={{
         categoryData,
+        categoryRefreshTrigger,
+        setCategoryRefreshTrigger,
         getCategoryData,
         createCategory,
         updateCategory,

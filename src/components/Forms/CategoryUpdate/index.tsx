@@ -66,7 +66,6 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
     <GlobalContainer>
       <p>Atualizar informações da Categoria: {category.name}</p>
       <FormWrapper
-        id="update_category_form"
         onSubmit={handleSubmitUpdateCategory(
           (formData) => onUpdateCategoryFormSubmit(formData, category) // Pass the event parameter
         )}
@@ -106,7 +105,7 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
           error={updateCategoryErrors.number_of_phases?.message}
         />
 
-        <UpdateButton vanilla={false} type="submit" form="update_category_form">
+        <UpdateButton vanilla={false} type="submit">
           Atualizar
         </UpdateButton>
       </FormWrapper>

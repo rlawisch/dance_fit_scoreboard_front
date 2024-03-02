@@ -76,8 +76,8 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
     plate: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
-      ),
+        originalValue === "" ? null : value
+      ).nullable(),
   });
 
   const {
@@ -113,6 +113,7 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
   ];
 
   const platingOptions = [
+    { label: "Nenhum", value: "" },
     { label: "Perfect Game", value: "PG" },
     { label: "Ultimate Game", value: "UG" },
     { label: "Extreme Game", value: "EG" },

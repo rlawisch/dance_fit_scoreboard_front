@@ -27,9 +27,11 @@ const AdminDashboardMusics: FunctionComponent<
 > = () => {
   const { musicsData, getMusicsData } = useMusics();
 
+  const { musicRefreshTrigger } = useMusics()
+
   useEffect(() => {
     getMusicsData();
-  }, []);
+  }, [musicRefreshTrigger]);
 
   // Group musics by mode
   const groupedMusics: { [mode: string]: IMusic[] } = {};

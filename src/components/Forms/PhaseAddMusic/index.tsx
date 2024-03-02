@@ -1,6 +1,10 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { ICategory, IMusic, IPhase } from "../../../types/entity-types";
-import { GlobalContainer, MusicLevelMiniature, MusicWrapper } from "../../../styles/global";
+import {
+  GlobalContainer,
+  MusicLevelMiniature,
+  MusicWrapper,
+} from "../../../styles/global";
 import { usePhases } from "../../../providers/Phases";
 import { useMusics } from "../../../providers/Musics";
 import { MusicLi, SelectedMusicWrapper } from "./styles";
@@ -14,7 +18,7 @@ interface PhaseAddMusicFormProps {
 }
 
 const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
-  phase
+  phase,
 }) => {
   const { addMusic } = usePhases();
 
@@ -49,10 +53,7 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
     setSelectedMusic(music);
   };
 
-  const handleAddMusic = (
-    phase: IPhase,
-    selectedMusic: IMusic
-  ) => {
+  const handleAddMusic = (phase: IPhase, selectedMusic: IMusic) => {
     const { music_id } = selectedMusic;
 
     addMusic(phase, Number(music_id));
@@ -79,6 +80,14 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
           </MusicWrapper>
         </SelectedMusicWrapper>
       )}
+      {!!selectedMusic && (
+        <Button
+          vanilla={false}
+          onClick={() => handleAddMusic(phase, selectedMusic)}
+        >
+          Adicionar
+        </Button>
+      )}
       <ul>
         {filteredMusics.map((music) => (
           <MusicLi
@@ -94,15 +103,6 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
           </MusicLi>
         ))}
       </ul>
-
-      {!!selectedMusic && (
-        <Button
-          vanilla={false}
-          onClick={() => handleAddMusic(phase, selectedMusic)}
-        >
-          Adicionar
-        </Button>
-      )}
     </GlobalContainer>
   );
 };

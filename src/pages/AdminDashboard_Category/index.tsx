@@ -55,14 +55,19 @@ const AdminDashboardCategory: FunctionComponent<
 
   const { event_id, category_id } = useParams();
 
-  const { categoryData, getCategoryData, joinCategory } = useCategory();
+  const {
+    categoryData,
+    getCategoryData,
+    joinCategory,
+    categoryRefreshTrigger,
+  } = useCategory();
 
   const { eventData, getEventData } = useEvents();
 
   useEffect(() => {
     getCategoryData(Number(category_id));
     getEventData(Number(event_id));
-  }, []);
+  }, [categoryRefreshTrigger]);
 
   const sortedPhases = categoryData?.phases?.sort(
     (a, b) => a.phase_number - b.phase_number
@@ -495,22 +500,22 @@ const AdminDashboardCategory: FunctionComponent<
                                         />
                                       </Modal>
                                       <DeleteButton
-                                      onClick={() =>
-                                        openScoreDeleteModal(score.score_id)
-                                      }
-                                    >
-                                      <FaRegTrashCan />
-                                    </DeleteButton>
-                                    <Modal
-                                      isOpen={isScoreDeleteModalOpen(
-                                        score.score_id
-                                      )}
-                                      onClose={() =>
-                                        closeScoreDeleteModal(score.score_id)
-                                      }
-                                    >
-                                      <ScoreDeleteForm score={score} />
-                                    </Modal>
+                                        onClick={() =>
+                                          openScoreDeleteModal(score.score_id)
+                                        }
+                                      >
+                                        <FaRegTrashCan />
+                                      </DeleteButton>
+                                      <Modal
+                                        isOpen={isScoreDeleteModalOpen(
+                                          score.score_id
+                                        )}
+                                        onClose={() =>
+                                          closeScoreDeleteModal(score.score_id)
+                                        }
+                                      >
+                                        <ScoreDeleteForm score={score} />
+                                      </Modal>
                                     </>
                                   ) : (
                                     "-"

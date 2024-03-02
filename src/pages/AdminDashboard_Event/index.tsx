@@ -31,16 +31,11 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
 
   const navigate = useNavigate();
 
+  const { eventData, getEventData, joinEvent, leaveEvent, eventRefreshTrigger } = useEvents();
+
   useEffect(() => {
     getEventData(Number(event_id));
-  }, []);
-
-  const {
-    eventData,
-    getEventData,
-    joinEvent,
-    leaveEvent,
-  } = useEvents();
+  }, [eventRefreshTrigger]);
 
   const {
     isOpen: isOpenEventUpdate,
@@ -104,7 +99,9 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
                       isOpen={isOpenAdmAddPlayer}
                       onClose={closeAdmAddPlayerModal}
                     >
-                      <EventAdmAddPlayerForm event_id={Number(eventData.event_id)} />
+                      <EventAdmAddPlayerForm
+                        event_id={Number(eventData.event_id)}
+                      />
                     </Modal>
                   </div>
                 )}
