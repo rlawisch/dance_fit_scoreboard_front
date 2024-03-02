@@ -19,6 +19,10 @@ import DashboardProfile from "../pages/Dashboard_Profile";
 import AdminDashboardCategory from "../pages/AdminDashboard_Category";
 import AdminDashboardMusics from "../pages/AdminDashboard_Musics";
 import DashboardCategory from "../pages/Dashboard_Category";
+import PublicDashboard from "../pages/PublicDashboard";
+import PublicDashboardEvents from "../pages/PublicDashboard_Events";
+import PublicDashboardEvent from "../pages/PublicDashboard_Event";
+import PublicDashboardCategory from "../pages/PublicDashboard_Category";
 
 export default function Routing() {
   return (
@@ -49,6 +53,20 @@ export default function Routing() {
           </RedirectIfLoggedIn>
         }
       />
+
+      <Route path="/public" element={<PublicDashboard />}>
+        <Route path="/public/events" element={<PublicDashboardEvents />} />
+
+        <Route
+          path="/public/events/:event_id"
+          element={<PublicDashboardEvent />}
+        />
+
+        <Route
+          path="/public/events/:event_id/categories/:category_id"
+          element={<PublicDashboardCategory />}
+        />
+      </Route>
 
       <Route
         path="/dashboard"
