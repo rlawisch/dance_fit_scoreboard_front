@@ -169,8 +169,8 @@ export const LargeScreenTableDisplay = styled.div`
 `;
 
 export const PlayerMiniature = styled.img`
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
 `;
 
