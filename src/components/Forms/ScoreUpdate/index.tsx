@@ -17,6 +17,7 @@ import {
 } from "react-icons/bs";
 import Select from "../../Select";
 import UpdateButton from "../../Button_Update";
+import { toast } from "react-toastify";
 
 interface ScoreUpdateFormProps {
   score_id: number;
@@ -65,8 +66,8 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
       ),
     stage_pass: yup
       .boolean()
-      .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+      .transform((_, originalValue) =>
+        originalValue === "true" ? true : originalValue === "false" ? false : originalValue === "" ? undefined : null
       ),
     grade: yup
       .string()
@@ -76,7 +77,7 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
     plate: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? null : value
+        originalValue === "null" ? null : originalValue === "" ? undefined : value
       ).nullable(),
   });
 
@@ -90,7 +91,7 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
 
   const stagePassOptions = [
     { label: "Pass", value: "true" },
-    { label: "Break", value: "" },
+    { label: "Break", value: "false" },
   ];
 
   const gradeOptions = [
@@ -113,7 +114,7 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
   ];
 
   const platingOptions = [
-    { label: "Nenhum", value: "" },
+    { label: "Nenhum", value: "null" },
     { label: "Perfect Game", value: "PG" },
     { label: "Ultimate Game", value: "UG" },
     { label: "Extreme Game", value: "EG" },
@@ -126,6 +127,11 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
 
   const onUpdateScoreFromSubmit = (formData: IScoreUpdate) => {
     console.log(formData);
+
+    if (JSON.stringify(formData) === "{}") {
+      toast.error("Nenhum campo preenchido, não é possível fazer a atualização")
+      return
+    }
 
     updateScore(formData, score_id)
   };

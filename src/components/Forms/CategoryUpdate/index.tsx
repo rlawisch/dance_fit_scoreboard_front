@@ -10,6 +10,7 @@ import Input from "../../Input";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
 import UpdateButton from "../../Button_Update";
+import { toast } from "react-toastify";
 
 interface CategoryUpdateFormProps {
   category: ICategory;
@@ -55,6 +56,13 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
     formData: ICategoryUpdate,
     category: ICategory
   ) => {
+    console.log(formData)
+
+    if (JSON.stringify(formData) === "{}") {
+      toast.error("Nenhum campo preenchido, não é possível fazer a atualização")
+      return
+    }
+
     const filteredFormData: Partial<ICategoryUpdate> = Object.fromEntries(
       Object.entries(formData).filter(([_, value]) => value !== undefined)
     );
