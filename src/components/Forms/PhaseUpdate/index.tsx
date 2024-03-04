@@ -11,6 +11,7 @@ import Input from "../../Input";
 import { FaUserCheck } from "react-icons/fa6";
 import Select from "../../Select";
 import UpdateButton from "../../Button_Update";
+import { toast } from "react-toastify";
 
 interface PhaseUpdateFormProps {
   phase: IPhase;
@@ -59,6 +60,11 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     phase: IPhase
   ) => {
     console.log(formData)
+
+    if (JSON.stringify(formData) === "{}") {
+      toast.error("Nenhum campo preenchido, não é possível fazer a atualização")
+      return
+    }
 
     const { phase_id } = phase;
 
