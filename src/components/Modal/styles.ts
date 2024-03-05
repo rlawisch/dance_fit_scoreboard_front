@@ -14,7 +14,7 @@ export const ModalWrapper = styled.div<ModalWrapperProps>`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 998;
 `;
 
 export const ModalContent = styled.div`
@@ -26,6 +26,7 @@ export const ModalContent = styled.div`
   max-height: 80%; /* Set maximum height */
   overflow-y: auto; /* Enable vertical scrolling */
   margin: auto; /* Center the modal content */
+  z-index: 999;
 
   display: flex;
   flex-direction: column;

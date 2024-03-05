@@ -1,4 +1,4 @@
-import { FunctionComponent, ReactNode } from "react";
+import { FunctionComponent, ReactNode, useEffect } from "react";
 import { ModalContent, ModalWrapper } from "./styles";
 import Button from "../Button";
 
@@ -17,9 +17,26 @@ const Modal: FunctionComponent<ModalProps> = ({
     onClose();
   };
 
+  useEffect(() => {
+    const handleEscapeKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscapeKey)
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey)
+    }
+
+  }, [isOpen])
+
   return isOpen ? (
-    <ModalWrapper isOpen={isOpen}>
-      <ModalContent>
+    <ModalWrapper isOpen={isOpen} onClick={closeModal}>
+      <ModalContent onClick={e => e.stopPropagation()}>
         {children}
         <Button vanilla={false} onClick={closeModal}>
           Fechar
