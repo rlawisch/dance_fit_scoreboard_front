@@ -51,7 +51,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({} as Area);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
-  const onCropComplete = (croppedAreaPixels: Area) => {
+  const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
@@ -190,7 +190,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                       crop={crop}
                       rotation={rotation}
                       zoom={zoom}
-                      aspect={3 / 3}
+                      aspect={1}
                       cropShape="round"
                       onCropChange={setCrop}
                       onRotationChange={setRotation}
