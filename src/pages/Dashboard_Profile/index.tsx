@@ -51,7 +51,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({} as Area);
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
-  const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
+  const onCropComplete = (croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
@@ -145,7 +145,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
           }
 
           // Call the uploadProfilePicture function with the cropped image
-          // uploadProfilePicture(formData);
+          uploadProfilePicture(formData);
         }
       }
     } catch (error) {
@@ -238,7 +238,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                   </SliderWrapper>
                 </CropperFullWrapper>
               )}
-              <Button onClick={() => showCroppedImage()}>Mostrar Prévia</Button>
+              <Button type="button" onClick={() => showCroppedImage()}>Mostrar Prévia</Button>
               {croppedImage && <ProfilePicture src={croppedImage} />}
               <UpdateButton vanilla={false} type="submit">
                 Enviar
