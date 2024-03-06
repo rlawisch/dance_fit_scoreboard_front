@@ -90,7 +90,7 @@ export const Table = styled.table`
   }
 
   th {
-    background-color: ${({ theme }) => shade(0, theme.colors.secundary)};
+    background-color: ${({ theme }) => shade(0.1, theme.colors.primary)};
     color: ${(props) => props.theme.colors.text};
   }
 

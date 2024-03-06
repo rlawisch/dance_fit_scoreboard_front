@@ -17,29 +17,29 @@ const StyledButton = styled.button<ButtonProps>`
     props.vanilla ? props.theme.colors.primary : props.theme.colors.primary};
 
   color: ${(props) =>
-    props.vanilla ? props.theme.colors.secundary : props.theme.colors.primary};
+    props.vanilla ? shade(0.7, props.theme.colors.primary) : props.theme.colors.primary};
   background-color: ${(props) =>
-    props.vanilla ? props.theme.colors.primary : props.theme.colors.background};
+    props.vanilla ? props.theme.colors.primary : shade(0.5, props.theme.colors.primary)};
 
   &:hover {
     background-color: ${(props) =>
       props.vanilla
         ? shade(0.1, props.theme.colors.primary)
-        : shade(0.1, props.theme.colors.background)};
+        : shade(0.6, props.theme.colors.primary)};
   }
 
   &:active {
     background-color: ${(props) =>
       props.vanilla
         ? shade(0.3, props.theme.colors.primary)
-        : shade(0.3, props.theme.colors.background)};
+        : shade(0.7, props.theme.colors.primary)};
   }
 
   &:disabled {
     background-color: ${(props) =>
       props.vanilla
         ? shade(-0.3, props.theme.colors.primary)
-        : shade(-0.3, props.theme.colors.background)};
+        : shade(-0.3, props.theme.colors.primary)};
   }
 `;
 
