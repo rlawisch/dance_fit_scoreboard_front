@@ -11,12 +11,12 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
       file: yup
         .mixed()
         .required("Please select an image file")
-        .test("fileSize", "File size is too large (max: 8MB)", (value: any) => {
+        .test("fileSize", "Tamanho do arquivo muito grande (máx: 8MB).", (value: any) => {
           return !value || (value[0] && value[0].size <= 8 * 1024 * 1024);
         })
         .test(
           "fileType",
-          "Invalid file format. Only JPEG or PNG are allowed.",
+          "Formato inválido, apenas arquivos .jpeg ou .png.",
           (value: any) => {
             return (
               !value ||
@@ -45,6 +45,8 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
           validationErrors[err.path] = err.message;
         }
       });
+
+      console.log(validationErrors)
 
       // Return the formatted validation errors
       return {

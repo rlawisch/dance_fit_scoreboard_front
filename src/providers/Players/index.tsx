@@ -141,6 +141,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const uploadProfilePicture = async (formData: FormData) => {
+    console.log(formData)
     try {
       setIsUploading(true);
       const res = await api.post("/players/profile-picture", formData, {
@@ -160,6 +161,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (err: any) {
       toast.error("Algo deu errado");
       console.log(err);
+      setIsUploading(false)
     }
   };
 
