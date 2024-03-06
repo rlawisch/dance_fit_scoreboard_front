@@ -7,20 +7,19 @@ import {
   ProfilePictureForm,
   ProfileWrapper,
   SliderWrapper,
-  UploadBtnWrapper,
 } from "./styles";
 import { usePlayer } from "../../providers/Players";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import UpdateButton from "../../components/Button_Update";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { FaFileAlt } from "react-icons/fa";
 import { IProfilePicFormData } from "../../types/form-types";
 import { profilePictureResolver } from "../../resolvers";
 import { BallTriangle } from "react-loader-spinner";
 import { ThemeContext } from "styled-components";
 import useModal from "../../providers/Modal";
-import Cropper, { Area, Point } from "react-easy-crop";
+import Cropper, { Area } from "react-easy-crop";
 import { readFile } from "../../utils/readFile";
 import { getCroppedImg, getRotatedImage } from "../../utils/canvasUtils";
 import { Orientation, getOrientation } from "get-orientation/browser";
@@ -49,9 +48,9 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({} as Area);
-  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
-  const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
+
+  const onCropComplete = (croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
@@ -193,7 +192,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                       max={3}
                       step={0.1}
                       aria-labelledby="Zoom"
-                      onChange={(e, zoom) =>
+                      onChange={(_, zoom) =>
                         setZoom(typeof zoom === "number" ? zoom : zoom[0])
                       }
                     />
@@ -211,7 +210,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                       max={360}
                       step={1}
                       aria-labelledby="Rotation"
-                      onChange={(e, rotation) =>
+                      onChange={(_, rotation) =>
                         setRotation(
                           typeof rotation === "number" ? rotation : rotation[0]
                         )
