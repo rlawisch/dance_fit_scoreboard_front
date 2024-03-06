@@ -26,6 +26,7 @@ import { Orientation, getOrientation } from "get-orientation/browser";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Button from "../../components/Button";
 
 interface DashboardProfileProps {}
 
@@ -48,9 +49,9 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({} as Area);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
-
-  const onCropComplete = (croppedAreaPixels: Area) => {
+  const onCropComplete = (croppedArea: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
@@ -70,6 +71,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         } else if (fileData instanceof ArrayBuffer) {
           const decoder = new TextDecoder();
           imageDataUrl = decoder.decode(fileData);
+          console.log(imageDataUrl);
         }
 
         if (typeof imageDataUrl === "string" && rotation) {
@@ -80,6 +82,22 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
       }
 
       setImageSrc(imageDataUrl);
+    }
+  };
+
+  const showCroppedImage = async () => {
+    try {
+      if (imageSrc) {
+        const croppedImage = await getCroppedImg(
+          imageSrc,
+          croppedAreaPixels,
+          rotation
+        );
+
+        setCroppedImage(croppedImage);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -111,6 +129,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         );
 
         if (croppedImage !== null) {
+          console.log(croppedImage);
           const response = await fetch(croppedImage);
           const blob = await response.blob();
           const file = new File([blob], "profile_picture.jpg", {
@@ -126,7 +145,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
           }
 
           // Call the uploadProfilePicture function with the cropped image
-          uploadProfilePicture(formData);
+          // uploadProfilePicture(formData);
         }
       }
     } catch (error) {
@@ -219,7 +238,8 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                   </SliderWrapper>
                 </CropperFullWrapper>
               )}
-
+              <Button onClick={() => showCroppedImage()}>Mostrar Prévia</Button>
+              {croppedImage && <ProfilePicture src={croppedImage} />}
               <UpdateButton vanilla={false} type="submit">
                 Enviar
               </UpdateButton>
