@@ -1,6 +1,10 @@
 import { FunctionComponent } from "react";
 import { ICategory, IMusic, IPhase } from "../../../types/entity-types";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -116,96 +120,99 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Criar Score:</p>
-      <FormWrapper onSubmit={handleSubmitCreateScore(onCreateScoreFormSubmit)}>
-        <Input
-          label="Pontuação"
-          icon={MdOutlineNumbers}
-          name="value"
-          register={registerCreateScore}
-          error={createScoreErrors.value?.message}
-        />
+      <ContentWrapper>
+        <p>Criar Score:</p>
+        <FormWrapper
+          onSubmit={handleSubmitCreateScore(onCreateScoreFormSubmit)}
+        >
+          <Input
+            label="Pontuação"
+            icon={MdOutlineNumbers}
+            name="value"
+            register={registerCreateScore}
+            error={createScoreErrors.value?.message}
+          />
 
-        <Input
-          label="Perfects"
-          icon={BsEmojiSunglasses}
-          name="perfect"
-          register={registerCreateScore}
-          error={createScoreErrors.perfect?.message}
-        />
+          <Input
+            label="Perfects"
+            icon={BsEmojiSunglasses}
+            name="perfect"
+            register={registerCreateScore}
+            error={createScoreErrors.perfect?.message}
+          />
 
-        <Input
-          label="Greats"
-          icon={BsEmojiSmile}
-          name="great"
-          register={registerCreateScore}
-          error={createScoreErrors.great?.message}
-        />
+          <Input
+            label="Greats"
+            icon={BsEmojiSmile}
+            name="great"
+            register={registerCreateScore}
+            error={createScoreErrors.great?.message}
+          />
 
-        <Input
-          label="Goods"
-          icon={BsEmojiNeutral}
-          name="good"
-          register={registerCreateScore}
-          error={createScoreErrors.good?.message}
-        />
+          <Input
+            label="Goods"
+            icon={BsEmojiNeutral}
+            name="good"
+            register={registerCreateScore}
+            error={createScoreErrors.good?.message}
+          />
 
-        <Input
-          label="Bads"
-          icon={BsEmojiFrown}
-          name="bad"
-          register={registerCreateScore}
-          error={createScoreErrors.bad?.message}
-        />
+          <Input
+            label="Bads"
+            icon={BsEmojiFrown}
+            name="bad"
+            register={registerCreateScore}
+            error={createScoreErrors.bad?.message}
+          />
 
-        <Input
-          label="Miss"
-          icon={BsEmojiDizzy}
-          name="miss"
-          register={registerCreateScore}
-          error={createScoreErrors.miss?.message}
-        />
+          <Input
+            label="Miss"
+            icon={BsEmojiDizzy}
+            name="miss"
+            register={registerCreateScore}
+            error={createScoreErrors.miss?.message}
+          />
 
-        <Input
-          label="Max Combo"
-          icon={BsCapslock}
-          name="max_combo"
-          register={registerCreateScore}
-          error={createScoreErrors.max_combo?.message}
-        />
+          <Input
+            label="Max Combo"
+            icon={BsCapslock}
+            name="max_combo"
+            register={registerCreateScore}
+            error={createScoreErrors.max_combo?.message}
+          />
 
-        <Select
-          label="Stage Pass"
-          placeholder="Selecionar"
-          options={stagePassOptions}
-          name="stage_pass"
-          register={registerCreateScore}
-          error={createScoreErrors.stage_pass?.message}
-        />
+          <Select
+            label="Stage Pass"
+            placeholder="Selecionar"
+            options={stagePassOptions}
+            name="stage_pass"
+            register={registerCreateScore}
+            error={createScoreErrors.stage_pass?.message}
+          />
 
-        <Select
-          label="Grade"
-          placeholder="Selecionar"
-          options={gradeOptions}
-          name="grade"
-          register={registerCreateScore}
-          error={createScoreErrors.grade?.message}
-        />
+          <Select
+            label="Grade"
+            placeholder="Selecionar"
+            options={gradeOptions}
+            name="grade"
+            register={registerCreateScore}
+            error={createScoreErrors.grade?.message}
+          />
 
-        <Select
-          label="Plate"
-          placeholder="Selecionar"
-          options={platingOptions}
-          name="plate"
-          register={registerCreateScore}
-          error={createScoreErrors.plate?.message}
-        />
+          <Select
+            label="Plate"
+            placeholder="Selecionar"
+            options={platingOptions}
+            name="plate"
+            register={registerCreateScore}
+            error={createScoreErrors.plate?.message}
+          />
 
-        <Button vanilla={false} type="submit">
-          Criar Score
-        </Button>
-      </FormWrapper>
-
+          <Button vanilla={false} type="submit">
+            Criar Score
+          </Button>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

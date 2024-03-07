@@ -6,6 +6,7 @@ import {
   IPlayer,
 } from "../../../types/entity-types";
 import {
+  ContentWrapper,
   FormWrapper,
   GlobalContainer,
   PlayerInfoWrapper,
@@ -68,7 +69,8 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
       .string()
       .transform((value, originalValue) =>
         originalValue === "" ? undefined : value
-      ).nullable(),
+      )
+      .nullable(),
   });
 
   const {
@@ -169,149 +171,151 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Criar Score</p>
+      <ContentWrapper>
+        <p>Criar Score</p>
 
-      <p>Pesquise o jogador para qual deseja adicionar o Score:</p>
-      <Input
-        icon={FaUserPlus}
-        type="text"
-        placeholder="Pesquisar"
-        value={searchPlayerQuery}
-        onChange={handleSearchChange}
-      />
-
-      {!!selectedPlayer && (
-        <SelectedPlayerWrapper>
-          <p>Jogador Selecionado:</p>
-          {selectedPlayer ? (
-            <>
-              <PlayerMiniature
-                src={
-                  selectedPlayer.profilePicture
-                    ? selectedPlayer.profilePicture
-                    : "/img/default_player.png"
-                }
-                alt="Mini Profile Picture"
-              />
-              {selectedPlayer.nickname}
-            </>
-          ) : (
-            "Nenhum jogador selecionado"
-          )}
-        </SelectedPlayerWrapper>
-      )}
-
-      <ul>
-        {filteredPlayers.map((player) => (
-          <PlayerLi
-            key={player.player_id}
-            onClick={() => handlePlayerSelect(player)}
-          >
-            <PlayerInfoWrapper>
-              <PlayerMiniature
-                src={
-                  player.profilePicture
-                    ? player.profilePicture
-                    : "/img/default_player.png"
-                }
-                alt="Mini Profile Picture"
-              />
-              {player.nickname}
-            </PlayerInfoWrapper>
-          </PlayerLi>
-        ))}
-      </ul>
-
-      <FormWrapper
-        onSubmit={handleSubmitAdmCreateScore(onAdmCreateScoreFormSubmit)}
-      >
+        <p>Pesquise o jogador para qual deseja adicionar o Score:</p>
         <Input
-          label="Pontuação"
-          icon={MdOutlineNumbers}
-          name="value"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.value?.message}
+          icon={FaUserPlus}
+          type="text"
+          placeholder="Pesquisar"
+          value={searchPlayerQuery}
+          onChange={handleSearchChange}
         />
 
-        <Input
-          label="Perfects"
-          icon={BsEmojiSunglasses}
-          name="perfect"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.perfect?.message}
-        />
+        {!!selectedPlayer && (
+          <SelectedPlayerWrapper>
+            <p>Jogador Selecionado:</p>
+            {selectedPlayer ? (
+              <>
+                <PlayerMiniature
+                  src={
+                    selectedPlayer.profilePicture
+                      ? selectedPlayer.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {selectedPlayer.nickname}
+              </>
+            ) : (
+              "Nenhum jogador selecionado"
+            )}
+          </SelectedPlayerWrapper>
+        )}
 
-        <Input
-          label="Greats"
-          icon={BsEmojiSmile}
-          name="great"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.great?.message}
-        />
+        <ul>
+          {filteredPlayers.map((player) => (
+            <PlayerLi
+              key={player.player_id}
+              onClick={() => handlePlayerSelect(player)}
+            >
+              <PlayerInfoWrapper>
+                <PlayerMiniature
+                  src={
+                    player.profilePicture
+                      ? player.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {player.nickname}
+              </PlayerInfoWrapper>
+            </PlayerLi>
+          ))}
+        </ul>
 
-        <Input
-          label="Goods"
-          icon={BsEmojiNeutral}
-          name="good"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.good?.message}
-        />
+        <FormWrapper
+          onSubmit={handleSubmitAdmCreateScore(onAdmCreateScoreFormSubmit)}
+        >
+          <Input
+            label="Pontuação"
+            icon={MdOutlineNumbers}
+            name="value"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.value?.message}
+          />
 
-        <Input
-          label="Bads"
-          icon={BsEmojiFrown}
-          name="bad"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.bad?.message}
-        />
+          <Input
+            label="Perfects"
+            icon={BsEmojiSunglasses}
+            name="perfect"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.perfect?.message}
+          />
 
-        <Input
-          label="Miss"
-          icon={BsEmojiDizzy}
-          name="miss"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.miss?.message}
-        />
+          <Input
+            label="Greats"
+            icon={BsEmojiSmile}
+            name="great"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.great?.message}
+          />
 
-        <Input
-          label="Max Combo"
-          icon={BsCapslock}
-          name="max_combo"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.max_combo?.message}
-        />
+          <Input
+            label="Goods"
+            icon={BsEmojiNeutral}
+            name="good"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.good?.message}
+          />
 
-        <Select
-          label="Stage Pass"
-          placeholder="Selecionar"
-          options={stagePassOptions}
-          name="stage_pass"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.stage_pass?.message}
-        />
+          <Input
+            label="Bads"
+            icon={BsEmojiFrown}
+            name="bad"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.bad?.message}
+          />
 
-        <Select
-          label="Grade"
-          placeholder="Selecionar"
-          options={gradeOptions}
-          name="grade"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.grade?.message}
-        />
+          <Input
+            label="Miss"
+            icon={BsEmojiDizzy}
+            name="miss"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.miss?.message}
+          />
 
-        <Select
-          label="Plate"
-          placeholder="Selecionar"
-          options={platingOptions}
-          name="plate"
-          register={registerAdmCreateScore}
-          error={createAdmScoreErrors.plate?.message}
-        />
+          <Input
+            label="Max Combo"
+            icon={BsCapslock}
+            name="max_combo"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.max_combo?.message}
+          />
 
-        <Button vanilla={false} type="submit">
-          Criar Score
-        </Button>
-      </FormWrapper>
+          <Select
+            label="Stage Pass"
+            placeholder="Selecionar"
+            options={stagePassOptions}
+            name="stage_pass"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.stage_pass?.message}
+          />
+
+          <Select
+            label="Grade"
+            placeholder="Selecionar"
+            options={gradeOptions}
+            name="grade"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.grade?.message}
+          />
+
+          <Select
+            label="Plate"
+            placeholder="Selecionar"
+            options={platingOptions}
+            name="plate"
+            register={registerAdmCreateScore}
+            error={createAdmScoreErrors.plate?.message}
+          />
+
+          <Button vanilla={false} type="submit">
+            Criar Score
+          </Button>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

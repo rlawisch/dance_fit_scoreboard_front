@@ -5,7 +5,11 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ICategoryCreate } from "../../../types/form-types";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import Input from "../../Input";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { FaArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
@@ -41,46 +45,48 @@ const CategoryCreateForm: FunctionComponent<CategoryCreateFormProps> = ({
 
   return (
     <GlobalContainer>
-      Criar Categoria:
-      <FormWrapper
-        onSubmit={handleSubmitCreateCategory(onCreateCategoryFormSubmit)}
-      >
-        <Input
-          label="Nome"
-          icon={MdDriveFileRenameOutline}
-          name="name"
-          register={registerCreateCategory}
-          error={createCategoryErrors.name?.message}
-        />
+      <ContentWrapper>
+        Criar Categoria:
+        <FormWrapper
+          onSubmit={handleSubmitCreateCategory(onCreateCategoryFormSubmit)}
+        >
+          <Input
+            label="Nome"
+            icon={MdDriveFileRenameOutline}
+            name="name"
+            register={registerCreateCategory}
+            error={createCategoryErrors.name?.message}
+          />
 
-        <Input
-          label="Nivel mínimo"
-          icon={FaArrowAltCircleDown}
-          name="level_min"
-          register={registerCreateCategory}
-          error={createCategoryErrors.level_min?.message}
-        />
+          <Input
+            label="Nivel mínimo"
+            icon={FaArrowAltCircleDown}
+            name="level_min"
+            register={registerCreateCategory}
+            error={createCategoryErrors.level_min?.message}
+          />
 
-        <Input
-          label="Nível máximo"
-          icon={FaArrowAltCircleUp}
-          name="level_max"
-          register={registerCreateCategory}
-          error={createCategoryErrors.level_max?.message}
-        />
+          <Input
+            label="Nível máximo"
+            icon={FaArrowAltCircleUp}
+            name="level_max"
+            register={registerCreateCategory}
+            error={createCategoryErrors.level_max?.message}
+          />
 
-        <Input
-          label="Número de Fases"
-          icon={MdDriveFileRenameOutline}
-          name="number_of_phases"
-          register={registerCreateCategory}
-          error={createCategoryErrors.number_of_phases?.message}
-        />
+          <Input
+            label="Número de Fases"
+            icon={MdDriveFileRenameOutline}
+            name="number_of_phases"
+            register={registerCreateCategory}
+            error={createCategoryErrors.number_of_phases?.message}
+          />
 
-        <Button vanilla={false} type="submit">
-          Criar
-        </Button>
-      </FormWrapper>
+          <Button vanilla={false} type="submit">
+            Criar
+          </Button>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

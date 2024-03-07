@@ -1,6 +1,10 @@
 import { FunctionComponent } from "react";
 import { ICategory } from "../../../types/entity-types";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import { useCategory } from "../../../providers/Category";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -56,11 +60,13 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
     formData: ICategoryUpdate,
     category: ICategory
   ) => {
-    console.log(formData)
+    console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
-      toast.error("Nenhum campo preenchido, não é possível fazer a atualização")
-      return
+      toast.error(
+        "Nenhum campo preenchido, não é possível fazer a atualização"
+      );
+      return;
     }
 
     const filteredFormData: Partial<ICategoryUpdate> = Object.fromEntries(
@@ -72,51 +78,53 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Atualizar informações da Categoria: {category.name}</p>
-      <FormWrapper
-        onSubmit={handleSubmitUpdateCategory(
-          (formData) => onUpdateCategoryFormSubmit(formData, category) // Pass the event parameter
-        )}
-      >
-        <Input
-          label="Nome"
-          icon={MdDriveFileRenameOutline}
-          name="name"
-          register={registerUpdateCategory}
-          error={updateCategoryErrors.name?.message}
-        />
+      <ContentWrapper>
+        <p>Atualizar informações da Categoria: {category.name}</p>
+        <FormWrapper
+          onSubmit={handleSubmitUpdateCategory(
+            (formData) => onUpdateCategoryFormSubmit(formData, category) // Pass the event parameter
+          )}
+        >
+          <Input
+            label="Nome"
+            icon={MdDriveFileRenameOutline}
+            name="name"
+            register={registerUpdateCategory}
+            error={updateCategoryErrors.name?.message}
+          />
 
-        <Input
-          label="Nivel mínimo"
-          icon={FaArrowAltCircleDown}
-          name="level_min"
-          type="number"
-          register={registerUpdateCategory}
-          error={updateCategoryErrors.level_min?.message}
-        />
+          <Input
+            label="Nivel mínimo"
+            icon={FaArrowAltCircleDown}
+            name="level_min"
+            type="number"
+            register={registerUpdateCategory}
+            error={updateCategoryErrors.level_min?.message}
+          />
 
-        <Input
-          label="Nível máximo"
-          icon={FaArrowAltCircleUp}
-          name="level_max"
-          type="number"
-          register={registerUpdateCategory}
-          error={updateCategoryErrors.level_max?.message}
-        />
+          <Input
+            label="Nível máximo"
+            icon={FaArrowAltCircleUp}
+            name="level_max"
+            type="number"
+            register={registerUpdateCategory}
+            error={updateCategoryErrors.level_max?.message}
+          />
 
-        <Input
-          label="Número de Fases"
-          icon={MdDriveFileRenameOutline}
-          name="number_of_phases"
-          type="number"
-          register={registerUpdateCategory}
-          error={updateCategoryErrors.number_of_phases?.message}
-        />
+          <Input
+            label="Número de Fases"
+            icon={MdDriveFileRenameOutline}
+            name="number_of_phases"
+            type="number"
+            register={registerUpdateCategory}
+            error={updateCategoryErrors.number_of_phases?.message}
+          />
 
-        <UpdateButton vanilla={false} type="submit">
-          Atualizar
-        </UpdateButton>
-      </FormWrapper>
+          <UpdateButton vanilla={false} type="submit">
+            Atualizar
+          </UpdateButton>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

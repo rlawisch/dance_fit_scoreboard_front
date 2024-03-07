@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import { ICategory, IMusic, IPhase } from "../../../types/entity-types";
 import {
+  ContentWrapper,
   DeleteWarning,
   GlobalContainer,
   MusicLevelMiniature,
@@ -24,26 +25,30 @@ const PhaseRemoveMusicForm: FunctionComponent<PhaseRemoveMusicFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Você deseja remover a música</p>
-      <MusicWrapper>
-        {music.name}
-        <MusicLevelMiniature
-          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-        />
-      </MusicWrapper>
-      <p>da Fase {phase.phase_number} da categoria {category.name}?</p>
+      <ContentWrapper>
+        <p>Você deseja remover a música</p>
+        <MusicWrapper>
+          {music.name}
+          <MusicLevelMiniature
+            src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+          />
+        </MusicWrapper>
+        <p>
+          da Fase {phase.phase_number} da categoria {category.name}?
+        </p>
 
-      <DeleteWarning>
-        Todos os Scores desta Fase serão afetados pela remoção da Música da
-        mesma! Pense bem antes de fazer a remoção!
-      </DeleteWarning>
+        <DeleteWarning>
+          Todos os Scores desta Fase serão afetados pela remoção da Música da
+          mesma! Pense bem antes de fazer a remoção!
+        </DeleteWarning>
 
-      <DeleteButton
-        vanilla={false}
-        onClick={() => removeMusic(phase, Number(music.music_id))}
-      >
-        Remover
-      </DeleteButton>
+        <DeleteButton
+          vanilla={false}
+          onClick={() => removeMusic(phase, Number(music.music_id))}
+        >
+          Remover
+        </DeleteButton>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

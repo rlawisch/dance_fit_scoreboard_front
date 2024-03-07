@@ -1,5 +1,9 @@
 import { FunctionComponent } from "react";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -42,38 +46,40 @@ const MusicCreateForm: FunctionComponent<MusicCreateFormProps> = () => {
 
   return (
     <GlobalContainer>
-      <FormWrapper
-        onSubmit={handleSubmitCreateMusic(onCreateMusicFormSubmit)}
-      >
-        <Input
-          label="Nome"
-          icon={TbFileMusic}
-          name="name"
-          register={registerCreateMusic}
-          error={createMusicErrors.name?.message}
-        />
+      <ContentWrapper>
+        <FormWrapper
+          onSubmit={handleSubmitCreateMusic(onCreateMusicFormSubmit)}
+        >
+          <Input
+            label="Nome"
+            icon={TbFileMusic}
+            name="name"
+            register={registerCreateMusic}
+            error={createMusicErrors.name?.message}
+          />
 
-        <Input
-          label="Nível"
-          icon={MdOutlineNumbers}
-          name="level"
-          register={registerCreateMusic}
-          error={createMusicErrors.level?.message}
-        />
+          <Input
+            label="Nível"
+            icon={MdOutlineNumbers}
+            name="level"
+            register={registerCreateMusic}
+            error={createMusicErrors.level?.message}
+          />
 
-        <Select
-          label="Modo"
-          placeholder="Selecionar"
-          options={modeOptions}
-          name="mode"
-          register={registerCreateMusic}
-          error={createMusicErrors.mode?.message}
-        />
+          <Select
+            label="Modo"
+            placeholder="Selecionar"
+            options={modeOptions}
+            name="mode"
+            register={registerCreateMusic}
+            error={createMusicErrors.mode?.message}
+          />
 
-        <Button vanilla={false} type="submit">
-          Criar
-        </Button>
-      </FormWrapper>
+          <Button vanilla={false} type="submit">
+            Criar
+          </Button>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

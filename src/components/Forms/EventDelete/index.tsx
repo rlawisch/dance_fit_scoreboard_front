@@ -1,6 +1,10 @@
 import { FunctionComponent } from "react";
 import { IEvent } from "../../../types/entity-types";
-import { DeleteWarning, GlobalContainer } from "../../../styles/global";
+import {
+  DeleteWarning,
+  GlobalContainer,
+  ContentWrapper,
+} from "../../../styles/global";
 import DeleteButton from "../../Button_Delete";
 import { useEvents } from "../../../providers/Events";
 
@@ -15,20 +19,22 @@ const EventDeleteForm: FunctionComponent<EventDeleteFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Você tem certeza que deseja deletar o evento:</p>
-      <h3>{event.name}</h3>
+      <ContentWrapper>
+        <p>Você tem certeza que deseja deletar o evento:</p>
+        <h3>{event.name}</h3>
 
-      <DeleteWarning>
-        Todas as Categorias, Fases e Scores relacionadas a este evento serão
-        deletadas! Pense bem antes de fazer a deleção!
-      </DeleteWarning>
+        <DeleteWarning>
+          Todas as Categorias, Fases e Scores relacionadas a este evento serão
+          deletadas! Pense bem antes de fazer a deleção!
+        </DeleteWarning>
 
-      <DeleteButton
-        vanilla={false}
-        onClick={() => deleteEvent(Number(event.event_id))}
-      >
-        Deletar
-      </DeleteButton>
+        <DeleteButton
+          vanilla={false}
+          onClick={() => deleteEvent(Number(event.event_id))}
+        >
+          Deletar
+        </DeleteButton>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

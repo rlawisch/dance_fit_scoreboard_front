@@ -5,7 +5,11 @@ import * as yup from "yup";
 import { IPhaseFormUpdate, IPhaseRealUpdate } from "../../../types/form-types";
 import { ICategory, IPhase } from "../../../types/entity-types";
 import { usePhases } from "../../../providers/Phases";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import { TbMusicPlus } from "react-icons/tb";
 import Input from "../../Input";
 import { FaUserCheck } from "react-icons/fa6";
@@ -59,11 +63,13 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     formData: IPhaseFormUpdate,
     phase: IPhase
   ) => {
-    console.log(formData)
+    console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
-      toast.error("Nenhum campo preenchido, não é possível fazer a atualização")
-      return
+      toast.error(
+        "Nenhum campo preenchido, não é possível fazer a atualização"
+      );
+      return;
     }
 
     const { phase_id } = phase;
@@ -91,41 +97,43 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Atualizar Informações da Fase {phase.phase_number}</p>
-      <FormWrapper
-        onSubmit={handleSubmitUpdatePhase((formData) =>
-          onUpdatePhaseFormSubmit(formData, phase)
-        )}
-      >
-        <Input
-          label="Número de Músicas"
-          icon={TbMusicPlus}
-          name="music_number"
-          register={registerUpdatePhase}
-          error={createUpdateErrors.music_number?.message}
-        />
+      <ContentWrapper>
+        <p>Atualizar Informações da Fase {phase.phase_number}</p>
+        <FormWrapper
+          onSubmit={handleSubmitUpdatePhase((formData) =>
+            onUpdatePhaseFormSubmit(formData, phase)
+          )}
+        >
+          <Input
+            label="Número de Músicas"
+            icon={TbMusicPlus}
+            name="music_number"
+            register={registerUpdatePhase}
+            error={createUpdateErrors.music_number?.message}
+          />
 
-        <Input
-          label="Quantos passam de Fase?"
-          icon={FaUserCheck}
-          name="passing_players"
-          register={registerUpdatePhase}
-          error={createUpdateErrors.passing_players?.message}
-        />
+          <Input
+            label="Quantos passam de Fase?"
+            icon={FaUserCheck}
+            name="passing_players"
+            register={registerUpdatePhase}
+            error={createUpdateErrors.passing_players?.message}
+          />
 
-        <Select
-          label="Modos Jogados"
-          placeholder="Selecionar"
-          options={modeOptions}
-          name="modes_available"
-          register={registerUpdatePhase}
-          error={createUpdateErrors.modes_available?.message}
-        />
+          <Select
+            label="Modos Jogados"
+            placeholder="Selecionar"
+            options={modeOptions}
+            name="modes_available"
+            register={registerUpdatePhase}
+            error={createUpdateErrors.modes_available?.message}
+          />
 
-        <UpdateButton vanilla={false} type="submit">
-          Atualizar
-        </UpdateButton>
-      </FormWrapper>
+          <UpdateButton vanilla={false} type="submit">
+            Atualizar
+          </UpdateButton>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

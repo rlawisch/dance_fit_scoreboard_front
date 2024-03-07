@@ -3,7 +3,11 @@ import { FunctionComponent } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { IUpdateEventFormData } from "../../../types/form-types";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import Input from "../../Input";
 import UpdateButton from "../../Button_Update";
 import { MdDriveFileRenameOutline } from "react-icons/md";
@@ -37,22 +41,24 @@ const EventUpdateForm: FunctionComponent<EventUpdateFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Alterar informações do Evento: {event?.name}</p>
-      <FormWrapper
-        onSubmit={handleSubmitUpdateEvent(onUpdateEventFormSubmit)}
-      >
-        <Input
-          label="Nome"
-          icon={MdDriveFileRenameOutline}
-          name="name"
-          register={registerUpdateEvent}
-          error={updateEventErrors.name?.message}
-        />
+      <ContentWrapper>
+        <p>Alterar informações do Evento: {event?.name}</p>
+        <FormWrapper
+          onSubmit={handleSubmitUpdateEvent(onUpdateEventFormSubmit)}
+        >
+          <Input
+            label="Nome"
+            icon={MdDriveFileRenameOutline}
+            name="name"
+            register={registerUpdateEvent}
+            error={updateEventErrors.name?.message}
+          />
 
-        <UpdateButton vanilla={false} type="submit">
-          Atualizar
-        </UpdateButton>
-      </FormWrapper>
+          <UpdateButton vanilla={false} type="submit">
+            Atualizar
+          </UpdateButton>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

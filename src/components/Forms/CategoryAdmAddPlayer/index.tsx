@@ -1,15 +1,16 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import {
+  ContentWrapper,
   GlobalContainer,
   PlayerLi,
   PlayerMiniature,
   SelectedPlayerWrapper,
+  PlayerInfoWrapper
 } from "../../../styles/global";
 import { ICategory, IPlayer } from "../../../types/entity-types";
 import Input from "../../Input";
 import { FaUserPlus } from "react-icons/fa6";
 import Button from "../../Button";
-import { PlayerInfoWrapper } from "../../Sidebar/styles";
 import { useCategory } from "../../../providers/Category";
 
 interface CategoryAdmAddPlayerFormProps {
@@ -45,73 +46,80 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
 
   return (
     <GlobalContainer>
-      <p>Adicionar jogador na Categoria</p>
+      <ContentWrapper>
 
-      <p>Pesquise o jogador para qual deseja adicionar na Categoria: {category.name}</p>
+    
+        <p>Adicionar jogador</p>
 
-      <Input
-        icon={FaUserPlus}
-        type="text"
-        placeholder="Pesquisar"
-        value={searchPlayerQuery}
-        onChange={handleSearchChange}
-      />
+        <p>
+          Pesquise o jogador para qual deseja adicionar na Categoria:{" "}
+          {category.name}
+        </p>
 
-      {!!selectedPlayer && (
-        <SelectedPlayerWrapper>
-          <p>Jogador Selecionado:</p>
-          {selectedPlayer ? (
-            <>
-              <PlayerMiniature
-                src={
-                  selectedPlayer.profilePicture
-                    ? selectedPlayer.profilePicture
-                    : "/img/default_player.png"
-                }
-                alt="Mini Profile Picture"
-              />
-              {selectedPlayer.nickname}
-            </>
-          ) : (
-            "Nenhum jogador selecionado"
-          )}
-        </SelectedPlayerWrapper>
-      )}
+        <Input
+          icon={FaUserPlus}
+          type="text"
+          placeholder="Pesquisar"
+          value={searchPlayerQuery}
+          onChange={handleSearchChange}
+        />
 
-      {!!selectedPlayer && (
-        <Button
-          vanilla={false}
-          onClick={() =>
-            adminAddPlayer(
-              Number(category.category_id),
-              Number(selectedPlayer.player_id)
-            )
-          }
-        >
-          Adicionar
-        </Button>
-      )}
+        {!!selectedPlayer && (
+          <SelectedPlayerWrapper>
+            <p>Jogador Selecionado:</p>
+            {selectedPlayer ? (
+              <>
+                <PlayerMiniature
+                  src={
+                    selectedPlayer.profilePicture
+                      ? selectedPlayer.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {selectedPlayer.nickname}
+              </>
+            ) : (
+              "Nenhum jogador selecionado"
+            )}
+          </SelectedPlayerWrapper>
+        )}
 
-      <ul>
-        {filteredPlayers.map((player) => (
-          <PlayerLi
-            key={player.player_id}
-            onClick={() => handlePlayerSelect(player)}
+        {!!selectedPlayer && (
+          <Button
+            vanilla={false}
+            onClick={() =>
+              adminAddPlayer(
+                Number(category.category_id),
+                Number(selectedPlayer.player_id)
+              )
+            }
           >
-            <PlayerInfoWrapper>
-              <PlayerMiniature
-                src={
-                  player.profilePicture
-                    ? player.profilePicture
-                    : "/img/default_player.png"
-                }
-                alt="Mini Profile Picture"
-              />
-              {player.nickname}
-            </PlayerInfoWrapper>
-          </PlayerLi>
-        ))}
-      </ul>
+            Adicionar
+          </Button>
+        )}
+
+        <ul>
+          {filteredPlayers.map((player) => (
+            <PlayerLi
+              key={player.player_id}
+              onClick={() => handlePlayerSelect(player)}
+            >
+              <PlayerInfoWrapper>
+                <PlayerMiniature
+                  src={
+                    player.profilePicture
+                      ? player.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {player.nickname}
+              </PlayerInfoWrapper>
+            </PlayerLi>
+          ))}
+        </ul>
+        </ContentWrapper>
     </GlobalContainer>
   );
 };

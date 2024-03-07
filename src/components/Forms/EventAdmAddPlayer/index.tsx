@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { IPlayer } from "../../../types/entity-types";
 import {
+  ContentWrapper,
   GlobalContainer,
   PlayerInfoWrapper,
   PlayerLi,
@@ -51,70 +52,72 @@ const EventAdmAddPlayerForm: FunctionComponent<EventAdmAddPlayerFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Adicionar jogador ao Evento</p>
+      <ContentWrapper>
+        <p>Adicionar jogador ao Evento</p>
 
-      <p>Pesquise o jogador para qual deseja adicionar no Evento:</p>
+        <p>Pesquise o jogador para qual deseja adicionar no Evento:</p>
 
-      <Input
-        icon={FaUserPlus}
-        type="text"
-        placeholder="Pesquisar"
-        value={searchPlayerQuery}
-        onChange={handleSearchChange}
-      />
+        <Input
+          icon={FaUserPlus}
+          type="text"
+          placeholder="Pesquisar"
+          value={searchPlayerQuery}
+          onChange={handleSearchChange}
+        />
 
-      {!!selectedPlayer && (
-        <SelectedPlayerWrapper>
-          <p>Jogador Selecionado:</p>
-          {selectedPlayer ? (
-            <>
-              <PlayerMiniature
-                src={
-                  selectedPlayer.profilePicture
-                    ? selectedPlayer.profilePicture
-                    : "/img/default_player.png"
-                }
-                alt="Mini Profile Picture"
-              />
-              {selectedPlayer.nickname}
-            </>
-          ) : (
-            "Nenhum jogador selecionado"
-          )}
-        </SelectedPlayerWrapper>
-      )}
+        {!!selectedPlayer && (
+          <SelectedPlayerWrapper>
+            <p>Jogador Selecionado:</p>
+            {selectedPlayer ? (
+              <>
+                <PlayerMiniature
+                  src={
+                    selectedPlayer.profilePicture
+                      ? selectedPlayer.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {selectedPlayer.nickname}
+              </>
+            ) : (
+              "Nenhum jogador selecionado"
+            )}
+          </SelectedPlayerWrapper>
+        )}
 
-      {!!selectedPlayer && (
-        <Button
-          vanilla={false}
-          onClick={() =>
-            adminAddPlayer(Number(event_id), Number(selectedPlayer.player_id))
-          }
-        >
-          Adicionar
-        </Button>
-      )}
-
-      <ul>
-        {filteredPlayers.map((player) => (
-          <PlayerLi
-            key={player.player_id}
-            onClick={() => handlePlayerSelect(player)}
+        {!!selectedPlayer && (
+          <Button
+            vanilla={false}
+            onClick={() =>
+              adminAddPlayer(Number(event_id), Number(selectedPlayer.player_id))
+            }
           >
-            <PlayerInfoWrapper>
-              <PlayerMiniature
-                src={
-                  player.profilePicture
-                    ? player.profilePicture
-                    : "/img/default_player.png"
-                }
-                alt="Mini Profile Picture"
-              />
-              {player.nickname}
-            </PlayerInfoWrapper>
-          </PlayerLi>
-        ))}
-      </ul>
+            Adicionar
+          </Button>
+        )}
+
+        <ul>
+          {filteredPlayers.map((player) => (
+            <PlayerLi
+              key={player.player_id}
+              onClick={() => handlePlayerSelect(player)}
+            >
+              <PlayerInfoWrapper>
+                <PlayerMiniature
+                  src={
+                    player.profilePicture
+                      ? player.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {player.nickname}
+              </PlayerInfoWrapper>
+            </PlayerLi>
+          ))}
+        </ul>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

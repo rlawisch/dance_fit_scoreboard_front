@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import {
+  ContentWrapper,
   DeleteWarning,
   GlobalContainer,
   PlayerInfoWrapper,
@@ -21,6 +22,8 @@ const CategoryAdmRemovePlayerForm: FunctionComponent<
 
   return (
     <GlobalContainer>
+      <ContentWrapper>
+
       <p>Você tem certeza que deseja remover o jogador:</p>
 
       <PlayerInfoWrapper>
@@ -51,6 +54,8 @@ const CategoryAdmRemovePlayerForm: FunctionComponent<
       >
         Remover
       </DeleteButton>
+      </ContentWrapper>
+
     </GlobalContainer>
   );
 };
