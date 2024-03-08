@@ -81,27 +81,29 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
         </thead>
         <tbody>
           {!!eventData &&
-            eventData.categories?.map((category) => (
-              <tr key={category.category_id}>
-                <td>
-                  <TableDataWrapper>
-                    {category.name}
+            eventData.categories
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <tr key={category.category_id}>
+                  <td>
+                    <TableDataWrapper>
+                      {category.name}
 
-                    <div>
-                      <Button
-                        onClick={() =>
-                          navigate(
-                            `/dashboard/events/${event_id}/categories/${category.category_id}`
-                          )
-                        }
-                      >
-                        <AiOutlineArrowRight />
-                      </Button>
-                    </div>
-                  </TableDataWrapper>
-                </td>
-              </tr>
-            ))}
+                      <div>
+                        <Button
+                          onClick={() =>
+                            navigate(
+                              `/dashboard/events/${event_id}/categories/${category.category_id}`
+                            )
+                          }
+                        >
+                          <AiOutlineArrowRight />
+                        </Button>
+                      </div>
+                    </TableDataWrapper>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </Table>
     </GlobalContainer>

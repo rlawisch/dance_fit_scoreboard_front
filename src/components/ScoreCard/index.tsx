@@ -8,81 +8,81 @@ import {
   Misses,
   Perfects,
   ScoreCardContainer,
+  ScoreDataContainer,
   ScoreDetailDiscription,
   ScoreDetailValues,
   ScoreDetailedContainer,
   ScoreGradeAndPlating,
+  ScoreInfoContainer,
   ScorePlate,
   ScoreValue,
 } from "./styles";
 import { ScoreGrade } from "./styles";
+import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
+import { PlayerInfoWrapper, PlayerMiniature } from "../../styles/global";
 
 interface ScoreCardProps {
   score: IScore;
 }
 
-function getGradeImageFileName(score: IScore): string {
-  let fileNamePrefix = "";
-
-  // Check if stage_pass is false, if yes, prefix with "x_"
-  if (!score.stage_pass) {
-    fileNamePrefix = "x_";
-  }
-
-  // Check if grade ends with "+", if yes, suffix with "_p"
-  if (score.grade.endsWith("+")) {
-    return `/static/musics/grading/${fileNamePrefix}${score.grade.toLowerCase().slice(0, -1)}_p.png`;
-  } else {
-    return `/static/musics/grading/${fileNamePrefix}${score.grade.toLowerCase()}.png`;
-  }
-}
-
 const ScoreCard: FunctionComponent<ScoreCardProps> = ({ score }) => {
   return (
     <ScoreCardContainer>
-      <ScoreGradeAndPlating>
-        <ScoreValue>{score.value}</ScoreValue>
-        <div>
-          <ScoreGrade src={getGradeImageFileName(score)} />
-        </div>
-        <div>
-          {score.plate && (
-            <ScorePlate
-              src={`/static/musics/plating/${score.plate.toLowerCase()}.png`}
-            />
-          )}
-        </div>
-      </ScoreGradeAndPlating>
+      <ScoreInfoContainer>
+        <PlayerInfoWrapper>
+          <PlayerMiniature
+            src={score.player.profilePicture || "/img/default_player.png"}
+            alt={score.player.nickname}
+          />
+          {score.player.nickname}
+        </PlayerInfoWrapper>
+      </ScoreInfoContainer>
 
-      <ScoreDetailedContainer>
-        <ScoreDetailDiscription>
-          <Perfects>PERFECT</Perfects>
+      <ScoreDataContainer>
+        <ScoreGradeAndPlating>
+          <ScoreValue>{score.value.toLocaleString()}</ScoreValue>
+          <div>
+            <ScoreGrade src={getGradeImageFileName(score)} />
+          </div>
+          <div>
+            {score.plate && (
+              <ScorePlate
+                src={`/static/musics/plating/${score.plate.toLowerCase()}.png`}
+              />
+            )}
+          </div>
+        </ScoreGradeAndPlating>
 
-          <Greats>GREAT</Greats>
+        <ScoreDetailedContainer>
+          <ScoreDetailDiscription>
+            <Perfects>PERFECT</Perfects>
 
-          <Goods>GOOD</Goods>
+            <Greats>GREAT</Greats>
 
-          <Bads>BAD</Bads>
+            <Goods>GOOD</Goods>
 
-          <Misses>MISS</Misses>
+            <Bads>BAD</Bads>
 
-          <MaxCombo>MAX COMBO</MaxCombo>
-        </ScoreDetailDiscription>
+            <Misses>MISS</Misses>
 
-        <ScoreDetailValues>
-          <Perfects>{score.perfect}</Perfects>
+            <MaxCombo>MAX COMBO</MaxCombo>
+          </ScoreDetailDiscription>
 
-          <Greats>{score.great}</Greats>
+          <ScoreDetailValues>
+            <Perfects>{score.perfect}</Perfects>
 
-          <Goods>{score.good}</Goods>
+            <Greats>{score.great}</Greats>
 
-          <Bads>{score.bad}</Bads>
+            <Goods>{score.good}</Goods>
 
-          <Misses>{score.miss}</Misses>
+            <Bads>{score.bad}</Bads>
 
-          <MaxCombo>{score.max_combo}</MaxCombo>
-        </ScoreDetailValues>
-      </ScoreDetailedContainer>
+            <Misses>{score.miss}</Misses>
+
+            <MaxCombo>{score.max_combo}</MaxCombo>
+          </ScoreDetailValues>
+        </ScoreDetailedContainer>
+      </ScoreDataContainer>
     </ScoreCardContainer>
   );
 };

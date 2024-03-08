@@ -112,7 +112,8 @@ export const TableHeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const TableData = styled.td``;
+export const TableData = styled.td`
+`;
 
 export const TableDataWrapper = styled.div`
   display: flex;
@@ -167,6 +168,28 @@ export const LargeScreenTableDisplay = styled.div`
     display: block;
   }
 `;
+
+export const TableScoreDataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 41.8px;
+  margin-bottom: 1rem;
+
+  @media screen and (min-width: 576px) {
+  flex-direction: row;
+
+  }
+`
+
+export const TableScoreValue = styled.span`
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`
 
 export const PlayerMiniature = styled.img`
   width: 48px;
@@ -275,7 +298,7 @@ export const DeleteWarning = styled.p`
 `;
 
 export const Title = styled.h1`
-  color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.text};
   margin: 2rem 0;
   text-align: center;
 `;
@@ -286,3 +309,5 @@ export const ContentWrapper = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
+
+

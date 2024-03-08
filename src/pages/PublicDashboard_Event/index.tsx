@@ -16,7 +16,9 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface PublicDashboardEventProps {}
 
-const PublicDashboardEvent: FunctionComponent<PublicDashboardEventProps> = () => {
+const PublicDashboardEvent: FunctionComponent<
+  PublicDashboardEventProps
+> = () => {
   const { event_id } = useParams();
 
   const navigate = useNavigate();
@@ -77,27 +79,29 @@ const PublicDashboardEvent: FunctionComponent<PublicDashboardEventProps> = () =>
         </thead>
         <tbody>
           {!!eventData &&
-            eventData.categories?.map((category) => (
-              <tr key={category.category_id}>
-                <td>
-                  <TableDataWrapper>
-                    {category.name}
+            eventData.categories
+              ?.sort((a, b) => a.name.localeCompare(b.name))
+              .map((category) => (
+                <tr key={category.category_id}>
+                  <td>
+                    <TableDataWrapper>
+                      {category.name}
 
-                    <div>
-                      <Button
-                        onClick={() =>
-                          navigate(
-                            `/public/events/${event_id}/categories/${category.category_id}`
-                          )
-                        }
-                      >
-                        <AiOutlineArrowRight />
-                      </Button>
-                    </div>
-                  </TableDataWrapper>
-                </td>
-              </tr>
-            ))}
+                      <div>
+                        <Button
+                          onClick={() =>
+                            navigate(
+                              `/public/events/${event_id}/categories/${category.category_id}`
+                            )
+                          }
+                        >
+                          <AiOutlineArrowRight />
+                        </Button>
+                      </div>
+                    </TableDataWrapper>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </Table>
     </GlobalContainer>

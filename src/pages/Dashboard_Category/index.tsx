@@ -19,6 +19,8 @@ import {
   TableDataButtonWrapper,
   TableDataWrapper,
   TableHeaderWrapper,
+  TableScoreDataWrapper,
+  TableScoreValue,
   Title,
 } from "../../styles/global";
 import Button from "../../components/Button";
@@ -30,6 +32,13 @@ import { TableHeader, TableRow, TableWrapper } from "../../styles/global";
 import ScoreCard from "../../components/ScoreCard";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa6";
+import {
+  ScoreGrade,
+  ScoreGradeWrapper,
+} from "../../components/ScoreCard/styles";
+import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
+import Modal from "../../components/Modal";
+import useDynamicModal from "../../providers/DynamicModal";
 // import useDynamicModal from "../../providers/DynamicModal";
 
 interface DashboardCategoryProps {}
@@ -54,6 +63,12 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
   //   openModal: openScoreCreateModal,
   //   closeModal: closeScoreCreateModal,
   // } = useDynamicModal();
+
+  const {
+    isModalOpen: isScoreDetailsModalOpen,
+    openModal: openScoreDetailsModal,
+    closeModal: closeScoreDetailsModal,
+  } = useDynamicModal();
 
   return (
     <GlobalContainer>
@@ -262,9 +277,30 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                               <TableData>
                                 <SmallScreenTableDataWrapper>
                                   {score ? (
-                                    <>
-                                      <ScoreCard score={score} />
-                                    </>
+                                    <TableScoreDataWrapper>
+                                      <ScoreGradeWrapper>
+                                        <ScoreGrade
+                                          src={getGradeImageFileName(score)}
+                                        />
+                                      </ScoreGradeWrapper>
+                                      <TableScoreValue
+                                        onClick={() =>
+                                          openScoreDetailsModal(score.score_id)
+                                        }
+                                      >
+                                        {score.value.toLocaleString()}
+                                      </TableScoreValue>
+                                      <Modal
+                                        isOpen={isScoreDetailsModalOpen(
+                                          score.score_id
+                                        )}
+                                        onClose={() =>
+                                          closeScoreDetailsModal(score.score_id)
+                                        }
+                                      >
+                                        <ScoreCard score={score} />
+                                      </Modal>
+                                    </TableScoreDataWrapper>
                                   ) : (
                                     "-"
                                   )}
@@ -286,8 +322,8 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                                 (score: IScore) =>
                                   score.player.player_id === player.player_id
                               )
-                              .reduce((acc, curr) => acc + curr.value, 0) ||
-                              "-"}
+                              .reduce((acc, curr) => acc + curr.value, 0)
+                              .toLocaleString() || "-"}
                           </SmallScreenTableDataWrapper>
                         </TableData>
                       </TableRow>
@@ -329,8 +365,8 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                       <TableHeader key={`music-${music.music_id}`}>
                         <TableHeaderWrapper>
                           <MusicWrapper>
-                            {music.name.length > 30
-                              ? `${music.name.substring(0, 30)}...`
+                            {music.name.length > 16
+                              ? `${music.name.substring(0, 16)}...`
                               : music.name}
                             <MusicLevelMiniature
                               src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
@@ -439,9 +475,30 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                                 key={`score-${player.player_id}-${music.music_id}`}
                               >
                                 {score ? (
-                                  <>
+                                  <TableScoreDataWrapper>
+                                  <ScoreGradeWrapper>
+                                    <ScoreGrade
+                                      src={getGradeImageFileName(score)}
+                                    />
+                                  </ScoreGradeWrapper>
+                                  <TableScoreValue
+                                    onClick={() =>
+                                      openScoreDetailsModal(score.score_id)
+                                    }
+                                  >
+                                    {score.value.toLocaleString()}
+                                  </TableScoreValue>
+                                  <Modal
+                                    isOpen={isScoreDetailsModalOpen(
+                                      score.score_id
+                                    )}
+                                    onClose={() =>
+                                      closeScoreDetailsModal(score.score_id)
+                                    }
+                                  >
                                     <ScoreCard score={score} />
-                                  </>
+                                  </Modal>
+                                </TableScoreDataWrapper>
                                 ) : (
                                   "-"
                                 )}
@@ -455,7 +512,8 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                               (score: IScore) =>
                                 score.player.player_id === player.player_id
                             )
-                            .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                            .reduce((acc, curr) => acc + curr.value, 0)
+                            .toLocaleString() || "-"}
                         </TableData>
                       </TableRow>
                     ))}
