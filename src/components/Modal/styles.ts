@@ -18,7 +18,7 @@ export const ModalWrapper = styled.div<ModalWrapperProps>`
 `;
 
 export const ModalContent = styled.div`
-  background: ${(props) => props.theme.colors.primary};
+  background: ${(props) => props.theme.colors.background};
   color: ${(props) => props.theme.colors.text};
   padding: 20px;
   border-radius: 0.3rem;

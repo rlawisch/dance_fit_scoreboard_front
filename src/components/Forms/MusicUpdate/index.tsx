@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import {
+  ContentWrapper,
   FormWrapper,
   GlobalContainer,
   MusicLevelMiniature,
@@ -25,7 +26,7 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
   music,
 }) => {
   const { updateMusic } = useMusics();
-  
+
   const musicCreateSchema = yup.object().shape({
     name: yup
       .string()
@@ -38,9 +39,10 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
         originalValue === "" ? undefined : value
       ),
     mode: yup
-      .string().transform((value, originalValue) =>
-      originalValue === "" ? undefined : value
-    ),
+      .string()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value
+      ),
   });
 
   const {
@@ -51,14 +53,12 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
     resolver: yupResolver(musicCreateSchema),
   });
 
-
   const modeOptions = [
     { label: "Single", value: "single" },
     { label: "Double", value: "double" },
   ];
 
   const onUpdateMusicFormSubmit = (formData: IMusicUpdate, music: IMusic) => {
-
     const { music_id } = music;
 
     // Filter out undefined properties from formData
@@ -71,48 +71,50 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Atualizar informações da Música:</p>
-      <FormWrapper
-        onSubmit={handleSubmitUpdateMusic((formData) =>
-          onUpdateMusicFormSubmit(formData, music)
-        )}
-      >
-      <MusicWrapper>
-        {music.name}
-        <MusicLevelMiniature
-          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
-        />
-      </MusicWrapper>
-        <Input
-          label="Nome"
-          icon={TbFileMusic}
-          name="name"
-          register={registerUpdateMusic}
-          error={updateMusicErrors.name?.message}
-        />
+      <ContentWrapper>
+        <p>Atualizar informações da Música:</p>
+        <FormWrapper
+          onSubmit={handleSubmitUpdateMusic((formData) =>
+            onUpdateMusicFormSubmit(formData, music)
+          )}
+        >
+          <MusicWrapper>
+            {music.name}
+            <MusicLevelMiniature
+              src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+            />
+          </MusicWrapper>
+          <Input
+            label="Nome"
+            icon={TbFileMusic}
+            name="name"
+            register={registerUpdateMusic}
+            error={updateMusicErrors.name?.message}
+          />
 
-        <Input
-          label="Nível"
-          icon={MdOutlineNumbers}
-          name="level"
-          type="number"
-          register={registerUpdateMusic}
-          error={updateMusicErrors.level?.message}
-        />
+          <Input
+            label="Nível"
+            icon={MdOutlineNumbers}
+            name="level"
+            type="number"
+            register={registerUpdateMusic}
+            error={updateMusicErrors.level?.message}
+          />
 
-        <Select
-          label="Modo"
-          placeholder="Selecionar"
-          options={modeOptions}
-          name="mode"
-          register={registerUpdateMusic}
-          error={updateMusicErrors.mode?.message}
-        />
+          <Select
+            label="Modo"
+            placeholder="Selecionar"
+            options={modeOptions}
+            name="mode"
+            register={registerUpdateMusic}
+            error={updateMusicErrors.mode?.message}
+          />
 
-        <UpdateButton vanilla={false} type="submit">
-          Atualizar
-        </UpdateButton>
-      </FormWrapper>
+          <UpdateButton vanilla={false} type="submit">
+            Atualizar
+          </UpdateButton>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

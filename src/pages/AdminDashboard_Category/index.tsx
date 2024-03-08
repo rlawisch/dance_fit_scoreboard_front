@@ -19,6 +19,8 @@ import {
   TableHeader,
   TableHeaderWrapper,
   TableRow,
+  TableScoreDataWrapper,
+  TableScoreValue,
   TableWrapper,
   Title,
 } from "../../styles/global";
@@ -55,6 +57,11 @@ import CategoryAdmRemovePlayerForm from "../../components/Forms/CategoryAdmRemov
 import ScoreUpdateForm from "../../components/Forms/ScoreUpdate";
 import ScoreDeleteForm from "../../components/Forms/ScoreDelete";
 import { ImCross } from "react-icons/im";
+import {
+  ScoreGrade,
+  ScoreGradeWrapper,
+} from "../../components/ScoreCard/styles";
+import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
 
 interface AdminDashboardCategoryProps {}
 
@@ -153,6 +160,12 @@ const AdminDashboardCategory: FunctionComponent<
     isModalOpen: isScoreDeleteModalOpen,
     openModal: openScoreDeleteModal,
     closeModal: closeScoreDeleteModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isScoreDetailsModalOpen,
+    openModal: openScoreDetailsModal,
+    closeModal: closeScoreDetailsModal,
   } = useDynamicModal();
 
   return (
@@ -291,7 +304,7 @@ const AdminDashboardCategory: FunctionComponent<
                             ? "Final"
                             : phase.phase_number}
                           <PhaseHeaderPassSpan>
-                          {"passam " + phase.passing_players}
+                            {"passam " + phase.passing_players}
                           </PhaseHeaderPassSpan>
                         </PhaseTitleWrapper>
                         <div>
@@ -515,10 +528,34 @@ const AdminDashboardCategory: FunctionComponent<
                                 </SmallScreenTableDataWrapper>
                               </TableData>
                               <TableData>
-                                <SmallScreenTableDataWrapper>
-                                  {score ? (
-                                    <>
-                                      <ScoreCard score={score} />
+                                {score ? (
+                                  <SmallScreenTableDataWrapper>
+                                    {/* <ScoreCard score={score} /> */}
+                                    <TableScoreDataWrapper>
+                                      <ScoreGradeWrapper>
+                                        <ScoreGrade
+                                          src={getGradeImageFileName(score)}
+                                        />
+                                      </ScoreGradeWrapper>
+                                      <TableScoreValue
+                                        onClick={() =>
+                                          openScoreDetailsModal(score.score_id)
+                                        }
+                                      >
+                                        {score.value.toLocaleString()}
+                                      </TableScoreValue>
+                                      <Modal
+                                        isOpen={isScoreDetailsModalOpen(
+                                          score.score_id
+                                        )}
+                                        onClose={() =>
+                                          closeScoreDetailsModal(score.score_id)
+                                        }
+                                      >
+                                        <ScoreCard score={score} />
+                                      </Modal>
+                                    </TableScoreDataWrapper>
+                                    <TableDataButtonWrapper>
                                       <UpdateButton
                                         onClick={() => {
                                           openScoreUpdateModal(score.score_id);
@@ -555,11 +592,11 @@ const AdminDashboardCategory: FunctionComponent<
                                       >
                                         <ScoreDeleteForm score={score} />
                                       </Modal>
-                                    </>
-                                  ) : (
-                                    "-"
-                                  )}
-                                </SmallScreenTableDataWrapper>
+                                    </TableDataButtonWrapper>
+                                  </SmallScreenTableDataWrapper>
+                                ) : (
+                                  "-"
+                                )}
                               </TableData>
                             </TableRow>
                           );
@@ -577,8 +614,8 @@ const AdminDashboardCategory: FunctionComponent<
                                 (score: IScore) =>
                                   score.player.player_id === player.player_id
                               )
-                              .reduce((acc, curr) => acc + curr.value, 0) ||
-                              "-"}
+                              .reduce((acc, curr) => acc + curr.value, 0)
+                              .toLocaleString() || "-"}
                           </SmallScreenTableDataWrapper>
                         </TableData>
                       </TableRow>
@@ -604,7 +641,7 @@ const AdminDashboardCategory: FunctionComponent<
                             ? "Final"
                             : phase.phase_number}
                           <PhaseHeaderPassSpan>
-                          {"passam " + phase.passing_players}
+                            {"passam " + phase.passing_players}
                           </PhaseHeaderPassSpan>
                         </PhaseTitleWrapper>
                         <div>
@@ -676,8 +713,8 @@ const AdminDashboardCategory: FunctionComponent<
                       <TableHeader key={`music-${music.music_id}`}>
                         <TableHeaderWrapper>
                           <MusicWrapper>
-                            {music.name.length > 30
-                              ? `${music.name.substring(0, 30)}...`
+                            {music.name.length > 16
+                              ? `${music.name.substring(0, 16)}...`
                               : music.name}
                             <MusicLevelMiniature
                               src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
@@ -829,7 +866,32 @@ const AdminDashboardCategory: FunctionComponent<
                               >
                                 {score ? (
                                   <div>
-                                    <ScoreCard score={score} />
+                                    {/* <ScoreCard score={score} /> */}
+                                    <TableScoreDataWrapper>
+                                      <ScoreGradeWrapper>
+                                        <ScoreGrade
+                                          src={getGradeImageFileName(score)}
+                                        />
+                                      </ScoreGradeWrapper>
+                                      <TableScoreValue
+                                        onClick={() =>
+                                          openScoreDetailsModal(score.score_id)
+                                        }
+                                      >
+                                        {score.value.toLocaleString()}
+                                      </TableScoreValue>
+                                      <Modal
+                                        isOpen={isScoreDetailsModalOpen(
+                                          score.score_id
+                                        )}
+                                        onClose={() =>
+                                          closeScoreDetailsModal(score.score_id)
+                                        }
+                                      >
+                                        <ScoreCard score={score} />
+                                      </Modal>
+                                    </TableScoreDataWrapper>
+
                                     <UpdateButton
                                       onClick={() => {
                                         openScoreUpdateModal(score.score_id);
@@ -880,7 +942,8 @@ const AdminDashboardCategory: FunctionComponent<
                               (score: IScore) =>
                                 score.player.player_id === player.player_id
                             )
-                            .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                            .reduce((acc, curr) => acc + curr.value, 0)
+                            .toLocaleString() || "-"}
                         </TableData>
                       </TableRow>
                     ))}

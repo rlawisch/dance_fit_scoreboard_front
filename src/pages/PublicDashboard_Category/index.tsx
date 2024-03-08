@@ -19,6 +19,8 @@ import {
   TableDataButtonWrapper,
   TableDataWrapper,
   TableHeaderWrapper,
+  TableScoreDataWrapper,
+  TableScoreValue,
   Title,
 } from "../../styles/global";
 import Button from "../../components/Button";
@@ -30,11 +32,20 @@ import { TableHeader, TableRow, TableWrapper } from "../../styles/global";
 import ScoreCard from "../../components/ScoreCard";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa6";
+import {
+  ScoreGrade,
+  ScoreGradeWrapper,
+} from "../../components/ScoreCard/styles";
+import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
+import useDynamicModal from "../../providers/DynamicModal";
+import Modal from "../../components/Modal";
 // import useDynamicModal from "../../providers/DynamicModal";
 
 interface PublicDashboardCategoryProps {}
 
-const PublicDashboardCategory: FunctionComponent<PublicDashboardCategoryProps> = () => {
+const PublicDashboardCategory: FunctionComponent<
+  PublicDashboardCategoryProps
+> = () => {
   const navigate = useNavigate();
 
   const { event_id, category_id } = useParams();
@@ -55,9 +66,15 @@ const PublicDashboardCategory: FunctionComponent<PublicDashboardCategoryProps> =
   //   closeModal: closeScoreCreateModal,
   // } = useDynamicModal();
 
+  const {
+    isModalOpen: isScoreDetailsModalOpen,
+    openModal: openScoreDetailsModal,
+    closeModal: closeScoreDetailsModal,
+  } = useDynamicModal();
+
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate(`/dashboard/events/${event_id}`)}>
+      <Button onClick={() => navigate(`/public/events/${event_id}`)}>
         Voltar
       </Button>
 
@@ -258,9 +275,30 @@ const PublicDashboardCategory: FunctionComponent<PublicDashboardCategoryProps> =
                               <TableData>
                                 <SmallScreenTableDataWrapper>
                                   {score ? (
-                                    <>
+                                    <TableScoreDataWrapper>
+                                    <ScoreGradeWrapper>
+                                      <ScoreGrade
+                                        src={getGradeImageFileName(score)}
+                                      />
+                                    </ScoreGradeWrapper>
+                                    <TableScoreValue
+                                      onClick={() =>
+                                        openScoreDetailsModal(score.score_id)
+                                      }
+                                    >
+                                      {score.value.toLocaleString()}
+                                    </TableScoreValue>
+                                    <Modal
+                                      isOpen={isScoreDetailsModalOpen(
+                                        score.score_id
+                                      )}
+                                      onClose={() =>
+                                        closeScoreDetailsModal(score.score_id)
+                                      }
+                                    >
                                       <ScoreCard score={score} />
-                                    </>
+                                    </Modal>
+                                  </TableScoreDataWrapper>
                                   ) : (
                                     "-"
                                   )}
@@ -325,8 +363,8 @@ const PublicDashboardCategory: FunctionComponent<PublicDashboardCategoryProps> =
                       <TableHeader key={`music-${music.music_id}`}>
                         <TableHeaderWrapper>
                           <MusicWrapper>
-                            {music.name.length > 30
-                              ? `${music.name.substring(0, 30)}...`
+                            {music.name.length > 16
+                              ? `${music.name.substring(0, 16)}...`
                               : music.name}
                             <MusicLevelMiniature
                               src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
@@ -435,9 +473,30 @@ const PublicDashboardCategory: FunctionComponent<PublicDashboardCategoryProps> =
                                 key={`score-${player.player_id}-${music.music_id}`}
                               >
                                 {score ? (
-                                  <>
+                                  <TableScoreDataWrapper>
+                                  <ScoreGradeWrapper>
+                                    <ScoreGrade
+                                      src={getGradeImageFileName(score)}
+                                    />
+                                  </ScoreGradeWrapper>
+                                  <TableScoreValue
+                                    onClick={() =>
+                                      openScoreDetailsModal(score.score_id)
+                                    }
+                                  >
+                                    {score.value.toLocaleString()}
+                                  </TableScoreValue>
+                                  <Modal
+                                    isOpen={isScoreDetailsModalOpen(
+                                      score.score_id
+                                    )}
+                                    onClose={() =>
+                                      closeScoreDetailsModal(score.score_id)
+                                    }
+                                  >
                                     <ScoreCard score={score} />
-                                  </>
+                                  </Modal>
+                                </TableScoreDataWrapper>
                                 ) : (
                                   "-"
                                 )}
@@ -451,7 +510,8 @@ const PublicDashboardCategory: FunctionComponent<PublicDashboardCategoryProps> =
                               (score: IScore) =>
                                 score.player.player_id === player.player_id
                             )
-                            .reduce((acc, curr) => acc + curr.value, 0) || "-"}
+                            .reduce((acc, curr) => acc + curr.value, 0)
+                            .toLocaleString() || "-"}
                         </TableData>
                       </TableRow>
                     ))}

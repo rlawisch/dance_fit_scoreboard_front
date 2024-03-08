@@ -1,6 +1,7 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { ICategory, IMusic, IPhase } from "../../../types/entity-types";
 import {
+  ContentWrapper,
   GlobalContainer,
   MusicLevelMiniature,
   MusicWrapper,
@@ -61,48 +62,50 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
 
   return (
     <GlobalContainer>
-      <p>Pesquise o nome da música que deseja adicionar a esta fase</p>
-      <Input
-        icon={TbMusic}
-        type="text"
-        placeholder="Pesquisar"
-        value={searchQuery}
-        onChange={handleSearchChange}
-      />
-      {!!selectedMusic && (
-        <SelectedMusicWrapper>
-          <p>Música selecionada:</p>
-          <MusicWrapper>
-            {selectedMusic.name}
-            <MusicLevelMiniature
-              src={`/static/musics/${selectedMusic.mode}/${selectedMusic.mode.charAt(0).toUpperCase()}${selectedMusic.level.toString().padStart(2, "0")}.png`}
-            />
-          </MusicWrapper>
-        </SelectedMusicWrapper>
-      )}
-      {!!selectedMusic && (
-        <Button
-          vanilla={false}
-          onClick={() => handleAddMusic(phase, selectedMusic)}
-        >
-          Adicionar
-        </Button>
-      )}
-      <ul>
-        {filteredMusics.map((music) => (
-          <MusicLi
-            key={music.music_id}
-            onClick={() => handleMusicSelect(music)}
-          >
+      <ContentWrapper>
+        <p>Pesquise o nome da música que deseja adicionar a esta fase</p>
+        <Input
+          icon={TbMusic}
+          type="text"
+          placeholder="Pesquisar"
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+        {!!selectedMusic && (
+          <SelectedMusicWrapper>
+            <p>Música selecionada:</p>
             <MusicWrapper>
-              {music.name}
+              {selectedMusic.name}
               <MusicLevelMiniature
-                src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                src={`/static/musics/${selectedMusic.mode}/${selectedMusic.mode.charAt(0).toUpperCase()}${selectedMusic.level.toString().padStart(2, "0")}.png`}
               />
             </MusicWrapper>
-          </MusicLi>
-        ))}
-      </ul>
+          </SelectedMusicWrapper>
+        )}
+        {!!selectedMusic && (
+          <Button
+            vanilla={false}
+            onClick={() => handleAddMusic(phase, selectedMusic)}
+          >
+            Adicionar
+          </Button>
+        )}
+        <ul>
+          {filteredMusics.map((music) => (
+            <MusicLi
+              key={music.music_id}
+              onClick={() => handleMusicSelect(music)}
+            >
+              <MusicWrapper>
+                {music.name}
+                <MusicLevelMiniature
+                  src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
+                />
+              </MusicWrapper>
+            </MusicLi>
+          ))}
+        </ul>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

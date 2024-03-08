@@ -22,16 +22,18 @@ export const StyledButton = styled.button<ButtonProps>`
   background-color: ${(props) =>
     props.vanilla
       ? "#ffc107"
-      : props.theme.colors
-          .background}; // Yellow background for "update" actionType, light gray otherwise
+      : shade(
+          0.5,
+          "#ffc107"
+        )}; // Yellow background for "update" actionType, light gray otherwise
 
   &:hover {
     background-color: ${(props) =>
       props.vanilla
         ? shade(0.1, "#ffc107")
         : shade(
-            0.3,
-            props.theme.colors.background,
+            0.6,
+            "#ffc107"
           )}; // Darken yellow for "update" on hover, light gray otherwise
   }
 
@@ -40,8 +42,8 @@ export const StyledButton = styled.button<ButtonProps>`
       props.vanilla
         ? shade(0.3, "#ffc107")
         : shade(
-            0.6,
-            props.theme.colors.background,
+            0.7,
+            "#ffc107"
           )}; // Darken yellow for "update" on active, light gray otherwise
   }
 
@@ -50,8 +52,8 @@ export const StyledButton = styled.button<ButtonProps>`
       props.vanilla
         ? shade(-0.3, "#ffc107")
         : shade(
-            -0.6,
-            props.theme.colors.background,
+            -0.3,
+            "#ffc107"
           )}; // Lighten yellow for "update" when disabled, light gray otherwise
   }
 `;

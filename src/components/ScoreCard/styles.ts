@@ -6,13 +6,17 @@ export const ScoreCardContainer = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media screen and (min-width: 576px) {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
 `;
+
+export const ScoreInfoContainer = styled.div`
+  
+`
+
+export const ScoreDataContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
 
 export const ScoreGradeAndPlating = styled.div`
   display: flex;
@@ -80,10 +84,21 @@ export const MaxCombo = styled.p`
   font-weight: bold;
 `;
 
+export const ScoreGradeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 41.8px;
+`
+
 export const ScoreGrade = styled.img`
   width: 64px;
+
 `;
 
 export const ScorePlate = styled.img`
   width: 96px;
 `;
+

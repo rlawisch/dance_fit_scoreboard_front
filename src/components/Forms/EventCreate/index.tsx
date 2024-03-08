@@ -1,5 +1,9 @@
 import { FunctionComponent } from "react";
-import { FormWrapper, GlobalContainer } from "../../../styles/global";
+import {
+  ContentWrapper,
+  FormWrapper,
+  GlobalContainer,
+} from "../../../styles/global";
 import * as yup from "yup";
 import { useEvents } from "../../../providers/Events";
 import { useForm } from "react-hook-form";
@@ -32,19 +36,23 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
 
   return (
     <GlobalContainer>
-      <p>Criar novo Evento:</p>
-      <FormWrapper onSubmit={handleSubmitCreateEvent(onCreateEventFormSubmit)}>
-        <Input
-          label="Nome"
-          icon={MdDriveFileRenameOutline}
-          name="name"
-          register={registerCreateEvent}
-          error={createEventErrors.name?.message}
-        />
-        <Button vanilla={false} type="submit">
-          Criar
-        </Button>
-      </FormWrapper>
+      <ContentWrapper>
+        <p>Criar novo Evento:</p>
+        <FormWrapper
+          onSubmit={handleSubmitCreateEvent(onCreateEventFormSubmit)}
+        >
+          <Input
+            label="Nome"
+            icon={MdDriveFileRenameOutline}
+            name="name"
+            register={registerCreateEvent}
+            error={createEventErrors.name?.message}
+          />
+          <Button vanilla={false} type="submit">
+            Criar
+          </Button>
+        </FormWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };
