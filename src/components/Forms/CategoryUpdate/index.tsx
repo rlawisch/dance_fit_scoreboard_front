@@ -29,22 +29,22 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
     name: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     level_min: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     level_max: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     number_of_phases: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
   });
 
@@ -58,19 +58,19 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
 
   const onUpdateCategoryFormSubmit = (
     formData: ICategoryUpdate,
-    category: ICategory
+    category: ICategory,
   ) => {
     console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
       toast.error(
-        "Nenhum campo preenchido, não é possível fazer a atualização"
+        "Nenhum campo preenchido, não é possível fazer a atualização",
       );
       return;
     }
 
     const filteredFormData: Partial<ICategoryUpdate> = Object.fromEntries(
-      Object.entries(formData).filter(([_, value]) => value !== undefined)
+      Object.entries(formData).filter(([_, value]) => value !== undefined),
     );
 
     updateCategory(filteredFormData, category);
@@ -82,7 +82,7 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
         <p>Atualizar informações da Categoria: {category.name}</p>
         <FormWrapper
           onSubmit={handleSubmitUpdateCategory(
-            (formData) => onUpdateCategoryFormSubmit(formData, category) // Pass the event parameter
+            (formData) => onUpdateCategoryFormSubmit(formData, category), // Pass the event parameter
           )}
         >
           <Input

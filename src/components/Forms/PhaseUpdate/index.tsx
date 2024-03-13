@@ -31,17 +31,17 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     music_number: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     modes_available: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     passing_players: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
   });
 
@@ -61,13 +61,13 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
 
   const onUpdatePhaseFormSubmit = (
     formData: IPhaseFormUpdate,
-    phase: IPhase
+    phase: IPhase,
   ) => {
     console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
       toast.error(
-        "Nenhum campo preenchido, não é possível fazer a atualização"
+        "Nenhum campo preenchido, não é possível fazer a atualização",
       );
       return;
     }
@@ -76,7 +76,7 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
 
     // Filter out undefined properties from formData
     const filteredFormData: Partial<IPhaseFormUpdate> = Object.fromEntries(
-      Object.entries(formData).filter(([_, value]) => value !== undefined)
+      Object.entries(formData).filter(([_, value]) => value !== undefined),
     );
 
     console.log("filtered:", filteredFormData);
@@ -101,7 +101,7 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
         <p>Atualizar Informações da Fase {phase.phase_number}</p>
         <FormWrapper
           onSubmit={handleSubmitUpdatePhase((formData) =>
-            onUpdatePhaseFormSubmit(formData, phase)
+            onUpdatePhaseFormSubmit(formData, phase),
           )}
         >
           <Input

@@ -28,7 +28,7 @@ const Select: FunctionComponent<SelectProps> = ({
       <div>
         <StyledSelect {...register(name)} {...rest}>
           {placeholder && (
-            <option value="" defaultValue={'Selecionar'}>
+            <option value="" defaultValue={"Selecionar"}>
               {placeholder}
             </option>
           )}

@@ -36,37 +36,37 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
     value: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     perfect: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     great: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     good: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     bad: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     miss: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     max_combo: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     stage_pass: yup
       .boolean()
@@ -77,12 +77,12 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
             ? false
             : originalValue === ""
               ? undefined
-              : null
+              : null,
       ),
     grade: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     plate: yup
       .string()
@@ -91,7 +91,7 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
           ? null
           : originalValue === ""
             ? undefined
-            : value
+            : value,
       )
       .nullable(),
   });
@@ -145,7 +145,7 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
 
     if (JSON.stringify(formData) === "{}") {
       toast.error(
-        "Nenhum campo preenchido, não é possível fazer a atualização"
+        "Nenhum campo preenchido, não é possível fazer a atualização",
       );
       return;
     }

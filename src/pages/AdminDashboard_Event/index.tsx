@@ -31,7 +31,13 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
 
   const navigate = useNavigate();
 
-  const { eventData, getEventData, joinEvent, leaveEvent, eventRefreshTrigger } = useEvents();
+  const {
+    eventData,
+    getEventData,
+    joinEvent,
+    leaveEvent,
+    eventRefreshTrigger,
+  } = useEvents();
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -156,7 +162,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
                         <Button
                           onClick={() =>
                             navigate(
-                              `/admin/events/${event_id}/categories/${category.category_id}`
+                              `/admin/events/${event_id}/categories/${category.category_id}`,
                             )
                           }
                         >
@@ -171,7 +177,7 @@ const AdminDashboardEvent: FunctionComponent<AdminDashboardEventProps> = () => {
                         </DeleteButton>
                         <Modal
                           isOpen={isCategoryDeleteModalOpen(
-                            category.category_id
+                            category.category_id,
                           )}
                           onClose={() =>
                             closeCategoryDeleteModal(category.category_id)

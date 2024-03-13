@@ -62,13 +62,13 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
       .boolean()
       .required()
       .transform((_, originalValue) =>
-        originalValue === "true" ? true : false
+        originalValue === "true" ? true : false,
       ),
     grade: yup.string().required(),
     plate: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       )
       .nullable(),
   });
@@ -155,7 +155,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
   useEffect(() => {
     if (categoryPlayers && searchPlayerQuery.trim() !== "") {
       const filtered = categoryPlayers.filter((player) =>
-        player.nickname.toLowerCase().includes(searchPlayerQuery.toLowerCase())
+        player.nickname.toLowerCase().includes(searchPlayerQuery.toLowerCase()),
       );
       setFilteredPlayers(filtered);
     }

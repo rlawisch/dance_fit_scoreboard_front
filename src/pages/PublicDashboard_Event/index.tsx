@@ -91,7 +91,7 @@ const PublicDashboardEvent: FunctionComponent<
                         <Button
                           onClick={() =>
                             navigate(
-                              `/public/events/${event_id}/categories/${category.category_id}`
+                              `/public/events/${event_id}/categories/${category.category_id}`,
                             )
                           }
                         >

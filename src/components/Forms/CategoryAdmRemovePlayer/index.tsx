@@ -23,39 +23,37 @@ const CategoryAdmRemovePlayerForm: FunctionComponent<
   return (
     <GlobalContainer>
       <ContentWrapper>
+        <p>Você tem certeza que deseja remover o jogador:</p>
 
-      <p>Você tem certeza que deseja remover o jogador:</p>
+        <PlayerInfoWrapper>
+          <PlayerMiniature
+            src={
+              player.profilePicture
+                ? player.profilePicture
+                : "/img/default_player.png"
+            }
+            alt="Mini Profile Picture"
+          />
+          {player.nickname}
+        </PlayerInfoWrapper>
 
-      <PlayerInfoWrapper>
-        <PlayerMiniature
-          src={
-            player.profilePicture
-              ? player.profilePicture
-              : "/img/default_player.png"
+        <DeleteWarning>
+          Todos os Scores que o jogador tiver cadastrado nesta categoria serão
+          APAGADOS! Pense bem antes de fazer a deleção!
+        </DeleteWarning>
+
+        <DeleteButton
+          vanilla={false}
+          onClick={() =>
+            adminRemovePlayer(
+              Number(category.category_id),
+              Number(player.player_id),
+            )
           }
-          alt="Mini Profile Picture"
-        />
-        {player.nickname}
-      </PlayerInfoWrapper>
-
-      <DeleteWarning>
-        Todos os Scores que o jogador tiver cadastrado nesta categoria serão
-        APAGADOS! Pense bem antes de fazer a deleção!
-      </DeleteWarning>
-
-      <DeleteButton
-        vanilla={false}
-        onClick={() =>
-          adminRemovePlayer(
-            Number(category.category_id),
-            Number(player.player_id)
-          )
-        }
-      >
-        Remover
-      </DeleteButton>
+        >
+          Remover
+        </DeleteButton>
       </ContentWrapper>
-
     </GlobalContainer>
   );
 };

@@ -112,8 +112,7 @@ export const TableHeaderWrapper = styled.div`
   justify-content: space-between;
 `;
 
-export const TableData = styled.td`
-`;
+export const TableData = styled.td``;
 
 export const TableDataWrapper = styled.div`
   display: flex;
@@ -179,17 +178,16 @@ export const TableScoreDataWrapper = styled.div`
   margin-bottom: 1rem;
 
   @media screen and (min-width: 576px) {
-  flex-direction: row;
-
+    flex-direction: row;
   }
-`
+`;
 
 export const TableScoreValue = styled.span`
   &:hover {
     text-decoration: underline;
     cursor: pointer;
   }
-`
+`;
 
 export const PlayerMiniature = styled.img`
   width: 48px;
@@ -309,5 +307,3 @@ export const ContentWrapper = styled.div`
   align-items: center;
   gap: 0.5rem;
 `;
-
-

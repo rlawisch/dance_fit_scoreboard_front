@@ -10,7 +10,7 @@ import { useEvents } from "../Events";
 export interface ICategoryContext {
   categoryData: ICategory | undefined;
   categoryRefreshTrigger: boolean;
-  setCategoryRefreshTrigger: (categoryRefreshTrigger: boolean) => void
+  setCategoryRefreshTrigger: (categoryRefreshTrigger: boolean) => void;
   getCategoryData: (category_id: number) => void;
   createCategory: (formData: ICategoryCreate, event_id: number) => void;
   updateCategory: (formData: ICategoryUpdate, category: ICategory) => void;
@@ -26,16 +26,16 @@ const CategoryContext = createContext<ICategoryContext>({} as ICategoryContext);
 export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
   const [categoryData, setCategoryData] = useState<ICategory>();
 
   const { eventRefreshTrigger, setEventRefreshTrigger } = useEvents();
 
-  const [categoryRefreshTrigger, setCategoryRefreshTrigger] = useState<boolean>(true)
+  const [categoryRefreshTrigger, setCategoryRefreshTrigger] =
+    useState<boolean>(true);
 
   const getCategoryData = async (category_id: number) => {
-
     try {
       const res = await api.get(`/categories/${category_id}`, {
         headers: {
@@ -50,10 +50,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const createCategory = async (
     formData: ICategoryCreate,
-    event_id: number
+    event_id: number,
   ) => {
-    hasAdminRights();
-
     try {
       const res = await api.post(
         "/categories",
@@ -65,7 +63,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       );
       console.log(res);
 
@@ -80,8 +78,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const joinCategory = async (category_id: number) => {
-    hasValidSession();
-
     try {
       const res = await api.patch(`/categories/${category_id}/join`, null, {
         headers: {
@@ -91,7 +87,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(res.data.response);
       if (res.status === 200) {
         toast.success("Adicionado na categoria com sucesso!");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -106,8 +102,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const leaveCategory = async (category_id: number) => {
-    hasValidSession();
-
     try {
       const res = await api.patch(`/categories/${category_id}/leave`, null, {
         headers: {
@@ -117,7 +111,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Você saiu da categoria com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       if (
@@ -132,8 +126,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminAddPlayer = async (category_id: number, player_id: number) => {
     try {
-      hasAdminRights();
-
       const res = await api.patch(
         `/categories/${category_id}/admin/add_player`,
         {
@@ -143,12 +135,12 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       );
 
       if (res.status === 200) {
         toast.success("Jogador adicionado a categoria com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       if (
@@ -163,8 +155,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminRemovePlayer = async (category_id: number, player_id: number) => {
     try {
-      hasAdminRights();
-
       const res = await api.patch(
         `/categories/${category_id}/admin/remove_player`,
         {
@@ -174,13 +164,12 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       );
 
       if (res.status === 200) {
         toast.success("Jogador removido da categoria com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
-
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       if (
@@ -193,10 +182,8 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateCategory = async (
     formData: ICategoryUpdate,
-    category: ICategory
+    category: ICategory,
   ) => {
-    hasAdminRights();
-
     const { category_id } = category;
 
     try {
@@ -207,7 +194,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações da categoria atualizadas");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       } else {
         toast.error("Algo deu errado");
       }
@@ -221,8 +208,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const deleteCategory = async (category_id: number) => {
-    hasAdminRights();
-
     try {
       const res = await api.delete(`/categories/${category_id}`, {
         headers: {

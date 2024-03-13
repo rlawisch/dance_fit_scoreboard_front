@@ -26,13 +26,8 @@ interface SidebarProps {}
 const Sidebar: FunctionComponent<SidebarProps> = () => {
   const { toggleSidebar, sideBarStatus } = useDashboard();
 
-  const {
-    playerLogout,
-    hasAdminRights,
-    decodedPlayerInfo,
-    getPlayerData,
-    playerData,
-  } = usePlayer();
+  const { playerLogout, decodedPlayerInfo, getPlayerData, playerData } =
+    usePlayer();
 
   useEffect(() => {
     getPlayerData();
@@ -103,7 +98,6 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
           <SidebarLi
             isopen={sideBarStatus}
             onClick={() => {
-              hasAdminRights();
               navigate("/admin/home");
             }}
           >

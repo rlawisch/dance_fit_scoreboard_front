@@ -36,7 +36,7 @@ const EventAdmAddPlayerForm: FunctionComponent<EventAdmAddPlayerFormProps> = ({
   useEffect(() => {
     if (players && searchPlayerQuery.trim() !== "") {
       const filtered = players.filter((player) =>
-        player.nickname.toLowerCase().includes(searchPlayerQuery.toLowerCase())
+        player.nickname.toLowerCase().includes(searchPlayerQuery.toLowerCase()),
       );
       setFilteredPlayers(filtered);
     }

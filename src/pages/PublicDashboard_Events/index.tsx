@@ -7,7 +7,9 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 
 interface PublicDashboardEventsProps {}
 
-const PublicDashboardEvents: FunctionComponent<PublicDashboardEventsProps> = () => {
+const PublicDashboardEvents: FunctionComponent<
+  PublicDashboardEventsProps
+> = () => {
   const { events, getEvents } = useEvents();
 
   const navigate = useNavigate();
@@ -32,7 +34,9 @@ const PublicDashboardEvents: FunctionComponent<PublicDashboardEventsProps> = () 
               <tr key={event.event_id}>
                 <td>
                   {event.name}
-                  <Button onClick={() => navigate(`/public/events/${event.event_id}`)}>
+                  <Button
+                    onClick={() => navigate(`/public/events/${event.event_id}`)}
+                  >
                     <AiOutlineArrowRight />
                   </Button>
                 </td>

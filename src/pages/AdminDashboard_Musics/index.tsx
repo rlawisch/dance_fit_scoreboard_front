@@ -27,7 +27,7 @@ const AdminDashboardMusics: FunctionComponent<
 > = () => {
   const { musicsData, getMusicsData } = useMusics();
 
-  const { musicRefreshTrigger } = useMusics()
+  const { musicRefreshTrigger } = useMusics();
 
   useEffect(() => {
     getMusicsData();

@@ -31,17 +31,17 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
     name: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     level: yup
       .number()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
     mode: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
+        originalValue === "" ? undefined : value,
       ),
   });
 
@@ -63,7 +63,7 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
 
     // Filter out undefined properties from formData
     const filteredFormData: Partial<IMusicUpdate> = Object.fromEntries(
-      Object.entries(formData).filter(([_, value]) => value !== undefined)
+      Object.entries(formData).filter(([_, value]) => value !== undefined),
     );
 
     updateMusic(filteredFormData, Number(music_id));
@@ -75,7 +75,7 @@ const MusicUpdateForm: FunctionComponent<MusicUpdateFormProps> = ({
         <p>Atualizar informações da Música:</p>
         <FormWrapper
           onSubmit={handleSubmitUpdateMusic((formData) =>
-            onUpdateMusicFormSubmit(formData, music)
+            onUpdateMusicFormSubmit(formData, music),
           )}
         >
           <MusicWrapper>

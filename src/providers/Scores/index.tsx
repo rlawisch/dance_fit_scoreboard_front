@@ -22,14 +22,12 @@ const ScoreContext = createContext<IScoreContext>({} as IScoreContext);
 export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
-  const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory()
+  const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory();
 
   const createScore = async (formData: IScoreCreate) => {
     try {
-      await hasValidSession();
-
       const res = await api.post(`/scores`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -40,7 +38,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Score criado com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -60,7 +58,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
         "There can be only one instance of a Score created by a Player to a Music, inside a Category Phase of an Event"
       ) {
         toast.error(
-          "Já foi cadastrado com os mesmos dados (evento/categoria/fase)"
+          "Já foi cadastrado com os mesmos dados (evento/categoria/fase)",
         );
       }
     }
@@ -68,8 +66,6 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminCreateScore = async (formData: IScoreCreateByAdmin) => {
     try {
-      await hasAdminRights();
-
       const res = await api.post(`/scores/admin`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -80,8 +76,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Score criado com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
-
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -101,7 +96,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
         "There can be only one instance of a Score created by a Player to a Music, inside a Category Phase of an Event"
       ) {
         toast.error(
-          "Já foi cadastrado com os mesmos dados (evento/categoria/fase)"
+          "Já foi cadastrado com os mesmos dados (evento/categoria/fase)",
         );
       }
     }
@@ -109,8 +104,6 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateScore = async (formData: IScoreUpdate, score_id: number) => {
     try {
-      hasAdminRights();
-
       const res = await api.patch(`/scores/${score_id}`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -119,11 +112,10 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Score atualizado com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
-
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
-      console.log(err)
+      console.log(err);
       if (err.response.data.message === "Failed to update score") {
         toast.error("Algo deu errado");
       } else {
@@ -134,8 +126,6 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteScore = async (score_id: number) => {
     try {
-      await hasAdminRights();
-
       const res = await api.delete(`/scores/${score_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -144,8 +134,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Score deletado com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger)
-
+        setCategoryRefreshTrigger(!categoryRefreshTrigger);
       }
     } catch (err: any) {
       if (err.response.data.message === "Internal server error") {

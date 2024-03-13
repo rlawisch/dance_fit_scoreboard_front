@@ -37,7 +37,7 @@ const PhaseAddMusicForm: FunctionComponent<PhaseAddMusicFormProps> = ({
     if (musicsData && searchQuery.trim() !== "") {
       // Filter musicsData based on search query
       const filtered = musicsData.filter((music) =>
-        music.name.toLowerCase().includes(searchQuery.toLowerCase())
+        music.name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
       setFilteredMusics(filtered);
     }

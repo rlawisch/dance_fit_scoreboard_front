@@ -20,23 +20,22 @@ const Modal: FunctionComponent<ModalProps> = ({
   useEffect(() => {
     const handleEscapeKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        closeModal()
+        closeModal();
       }
-    }
+    };
 
     if (isOpen) {
-      document.addEventListener("keydown", handleEscapeKey)
+      document.addEventListener("keydown", handleEscapeKey);
     }
 
     return () => {
-      document.removeEventListener("keydown", handleEscapeKey)
-    }
-
-  }, [isOpen])
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  }, [isOpen]);
 
   return isOpen ? (
     <ModalWrapper isOpen={isOpen} onClick={closeModal}>
-      <ModalContent onClick={e => e.stopPropagation()}>
+      <ModalContent onClick={(e) => e.stopPropagation()}>
         {children}
         <Button vanilla={false} onClick={closeModal}>
           Fechar
