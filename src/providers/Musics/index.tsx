@@ -21,7 +21,7 @@ const MusicsContext = createContext<IMusicsContext>({} as IMusicsContext);
 export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
   const [musicsData, setMusicsData] = useState<IMusic[]>();
 
@@ -29,7 +29,6 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getMusicsData = async () => {
     try {
-      hasValidSession();
       const res = await api.get("/musics", {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -43,7 +42,6 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const createMusic = async (formData: IMusicCreate) => {
     try {
-      hasAdminRights();
       const res = await api.post("/musics", formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -66,7 +64,6 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateMusic = async (formData: IMusicUpdate, music_id: number) => {
     try {
-      hasAdminRights();
       const res = await api.patch(`/musics/${music_id}`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -90,7 +87,6 @@ export const MusicsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteMusic = async (music_id: number) => {
     try {
-      hasAdminRights();
       const res = await api.delete(`musics/${music_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,

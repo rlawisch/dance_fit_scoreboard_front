@@ -26,7 +26,7 @@ const CategoryContext = createContext<ICategoryContext>({} as ICategoryContext);
 export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
   const [categoryData, setCategoryData] = useState<ICategory>();
 
@@ -52,7 +52,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
     formData: ICategoryCreate,
     event_id: number
   ) => {
-    hasAdminRights();
 
     try {
       const res = await api.post(
@@ -80,7 +79,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const joinCategory = async (category_id: number) => {
-    hasValidSession();
 
     try {
       const res = await api.patch(`/categories/${category_id}/join`, null, {
@@ -106,7 +104,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const leaveCategory = async (category_id: number) => {
-    hasValidSession();
 
     try {
       const res = await api.patch(`/categories/${category_id}/leave`, null, {
@@ -132,7 +129,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminAddPlayer = async (category_id: number, player_id: number) => {
     try {
-      hasAdminRights();
+
 
       const res = await api.patch(
         `/categories/${category_id}/admin/add_player`,
@@ -163,7 +160,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminRemovePlayer = async (category_id: number, player_id: number) => {
     try {
-      hasAdminRights();
+
 
       const res = await api.patch(
         `/categories/${category_id}/admin/remove_player`,
@@ -195,7 +192,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
     formData: ICategoryUpdate,
     category: ICategory
   ) => {
-    hasAdminRights();
+
 
     const { category_id } = category;
 
@@ -221,7 +218,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const deleteCategory = async (category_id: number) => {
-    hasAdminRights();
+
 
     try {
       const res = await api.delete(`/categories/${category_id}`, {

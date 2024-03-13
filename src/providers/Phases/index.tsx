@@ -20,12 +20,11 @@ const PhasesContext = createContext<IPhasesContext>({} as IPhasesContext);
 export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
   const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory()
 
   const createPhase = async (formData: IPhaseRealCreate) => {
-    hasAdminRights();
 
     try {
       const res = await api.post("/phases", formData, {
@@ -61,7 +60,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const updatePhase = async (formData: IPhaseRealUpdate, phase_id: number) => {
-    hasAdminRights();
 
     try {
       const res = await api.patch(`/phases/${phase_id}`, formData, {
@@ -95,7 +93,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const addMusic = async (phase: IPhase, music_id: number) => {
-    hasAdminRights();
 
     try {
       const res = await api.patch(
@@ -146,7 +143,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const removeMusic = async (phase: IPhase, music_id: number) => {
-    hasAdminRights();
 
     try {
       const res = await api.patch(

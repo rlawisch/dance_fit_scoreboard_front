@@ -320,7 +320,7 @@ const PublicDashboardCategory: FunctionComponent<
                                 (score: IScore) =>
                                   score.player.player_id === player.player_id
                               )
-                              .reduce((acc, curr) => acc + curr.value, 0) ||
+                              .reduce((acc, curr) => acc + curr.value, 0).toLocaleString() ||
                               "-"}
                           </SmallScreenTableDataWrapper>
                         </TableData>

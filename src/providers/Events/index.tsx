@@ -27,7 +27,7 @@ const EventsContext = createContext<IEventsContext>({} as IEventsContext);
 export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
   const [events, setEvents] = useState([]);
 
@@ -53,7 +53,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
     formData: IUpdateEventFormData
   ) => {
     try {
-      hasAdminRights();
       const res = await api.patch(`/events/${event_id}`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -71,7 +70,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const createEvent = async (formData: IEventCreate) => {
     try {
-      hasAdminRights();
       const res = await api.post(
         "/events",
         { ...formData, status: true },
@@ -108,7 +106,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const joinEvent = async (event_id: number) => {
     try {
-      hasValidSession();
       const res = await api.patch(`/events/${event_id}/join`, null, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -132,7 +129,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const leaveEvent = async (event_id: number) => {
     try {
-      hasValidSession();
       const res = await api.patch(`/events/${event_id}/leave`, null, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -153,7 +149,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminAddPlayer = async (event_id: number, player_id: number) => {
     try {
-      hasAdminRights();
 
       const res = await api.patch(
         `/events/${event_id}/admin/add_player`,
@@ -183,7 +178,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminRemovePlayer = async (event_id: number, player_id: number) => {
     try {
-      hasAdminRights();
 
       const res = await api.patch(
         `/events/${event_id}/admin/remove_player`,
@@ -211,7 +205,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteEvent = async (event_id: number) => {
     try {
-      hasAdminRights();
       const res = await api.delete(`/events/${event_id}`, {
         headers: {
           Authorization: `Bearer ${accToken}`,

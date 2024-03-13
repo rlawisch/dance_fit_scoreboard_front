@@ -22,13 +22,12 @@ const ScoreContext = createContext<IScoreContext>({} as IScoreContext);
 export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const { accToken, hasValidSession, hasAdminRights } = usePlayer();
+  const { accToken } = usePlayer();
 
   const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory()
 
   const createScore = async (formData: IScoreCreate) => {
     try {
-      await hasValidSession();
 
       const res = await api.post(`/scores`, formData, {
         headers: {
@@ -68,7 +67,6 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminCreateScore = async (formData: IScoreCreateByAdmin) => {
     try {
-      await hasAdminRights();
 
       const res = await api.post(`/scores/admin`, formData, {
         headers: {
@@ -109,7 +107,6 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateScore = async (formData: IScoreUpdate, score_id: number) => {
     try {
-      hasAdminRights();
 
       const res = await api.patch(`/scores/${score_id}`, formData, {
         headers: {
@@ -134,7 +131,6 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const deleteScore = async (score_id: number) => {
     try {
-      await hasAdminRights();
 
       const res = await api.delete(`/scores/${score_id}`, {
         headers: {

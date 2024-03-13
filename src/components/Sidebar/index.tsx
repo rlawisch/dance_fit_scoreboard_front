@@ -28,7 +28,6 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
 
   const {
     playerLogout,
-    hasAdminRights,
     decodedPlayerInfo,
     getPlayerData,
     playerData,
@@ -103,7 +102,6 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
           <SidebarLi
             isopen={sideBarStatus}
             onClick={() => {
-              hasAdminRights();
               navigate("/admin/home");
             }}
           >
