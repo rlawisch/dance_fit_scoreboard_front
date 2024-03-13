@@ -82,11 +82,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const playerLogout = async () => {
     try {
-      await api.delete("/auth/logout", {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      });
       setAccToken("");
       setPlayerData({} as IPlayer);
       setDecodedPlayerInfo({
