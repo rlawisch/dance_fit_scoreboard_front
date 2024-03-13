@@ -29,13 +29,13 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
 
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || ""
+    localStorage.getItem("@DFS/PlayerToken") || "",
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
 
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer)
+    JSON.parse(currentPlayer),
   );
 
   const [players, setPlayers] = useState<IPlayer[]>();
@@ -74,14 +74,13 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       toast("Conta criada com sucesso, agora você pode fazer o Login!");
       navigate("/login");
     } catch (err: any) {
-      if (err.response.data.message = "Nickname already in use") {
-        toast.error("Nickname não disponível, por favor escolha outro")
+      if ((err.response.data.message = "Nickname already in use")) {
+        toast.error("Nickname não disponível, por favor escolha outro");
       }
     }
   };
 
   const playerLogout = async () => {
-
     try {
       await api.delete("/auth/logout", {
         headers: {
@@ -107,7 +106,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getPlayers = async () => {
-
     try {
       const res = await api.get(`/players`, {
         headers: {
@@ -122,7 +120,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const getPlayerData = async () => {
-
     try {
       const res = await api.get(`/players/${decodedPlayerInfo.player_id}`, {
         headers: {
@@ -136,7 +133,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const uploadProfilePicture = async (formData: FormData) => {
-    console.log(formData)
+    console.log(formData);
     try {
       setIsUploading(true);
       const res = await api.post("/players/profile-picture", formData, {
@@ -147,7 +144,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res.status === 201) {
         setIsUploading(false);
         toast.success(
-          "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude"
+          "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude",
         );
       } else {
         toast.error("Algo deu errado");
@@ -156,7 +153,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     } catch (err: any) {
       toast.error("Algo deu errado");
       console.log(err);
-      setIsUploading(false)
+      setIsUploading(false);
     }
   };
 

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { MdEventNote } from "react-icons/md";
 import { useDashboard } from "../../providers/Dashboard";
 
-
 interface PublicSidebarProps {}
 
 const PublicSidebar: FunctionComponent<PublicSidebarProps> = () => {
@@ -25,7 +24,6 @@ const PublicSidebar: FunctionComponent<PublicSidebarProps> = () => {
       </SidebarToggleBtn>
 
       <SidebarUl>
-
         <SidebarLi
           isopen={sideBarStatus}
           onClick={() => navigate("/public/events")}
@@ -33,8 +31,6 @@ const PublicSidebar: FunctionComponent<PublicSidebarProps> = () => {
           <MdEventNote />
           {sideBarStatus ? "Eventos" : ""}
         </SidebarLi>
-
-        
       </SidebarUl>
     </SidebarContainer>
   );

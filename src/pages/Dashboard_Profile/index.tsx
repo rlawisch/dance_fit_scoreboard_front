@@ -91,7 +91,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         const croppedImage = await getCroppedImg(
           imageSrc,
           croppedAreaPixels,
-          rotation
+          rotation,
         );
 
         setCroppedImage(croppedImage);
@@ -125,7 +125,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         const croppedImage = await getCroppedImg(
           imageSrc,
           croppedAreaPixels,
-          rotation
+          rotation,
         );
 
         if (croppedImage !== null) {
@@ -231,14 +231,16 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
                       aria-labelledby="Rotation"
                       onChange={(_, rotation) =>
                         setRotation(
-                          typeof rotation === "number" ? rotation : rotation[0]
+                          typeof rotation === "number" ? rotation : rotation[0],
                         )
                       }
                     />
                   </SliderWrapper>
                 </CropperFullWrapper>
               )}
-              <Button type="button" onClick={() => showCroppedImage()}>Mostrar Prévia</Button>
+              <Button type="button" onClick={() => showCroppedImage()}>
+                Mostrar Prévia
+              </Button>
               {croppedImage && <ProfilePicture src={croppedImage} />}
               <UpdateButton vanilla={false} type="submit">
                 Enviar

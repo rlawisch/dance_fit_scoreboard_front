@@ -26,12 +26,8 @@ interface SidebarProps {}
 const Sidebar: FunctionComponent<SidebarProps> = () => {
   const { toggleSidebar, sideBarStatus } = useDashboard();
 
-  const {
-    playerLogout,
-    decodedPlayerInfo,
-    getPlayerData,
-    playerData,
-  } = usePlayer();
+  const { playerLogout, decodedPlayerInfo, getPlayerData, playerData } =
+    usePlayer();
 
   useEffect(() => {
     getPlayerData();

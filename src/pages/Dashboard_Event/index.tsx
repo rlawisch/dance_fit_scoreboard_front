@@ -93,7 +93,7 @@ const DashboardEvent: FunctionComponent<DashboardEventProps> = () => {
                         <Button
                           onClick={() =>
                             navigate(
-                              `/dashboard/events/${event_id}/categories/${category.category_id}`
+                              `/dashboard/events/${event_id}/categories/${category.category_id}`,
                             )
                           }
                         >

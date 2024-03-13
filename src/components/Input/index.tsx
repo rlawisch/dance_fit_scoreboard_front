@@ -7,7 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   icon: IconType;
   register?: UseFormRegister<any>; // Making register prop optional
   name?: string; // Making name prop optional
-  error?: string | FieldError | undefined // Making error prop optional
+  error?: string | FieldError | undefined; // Making error prop optional
   label?: string;
 }
 

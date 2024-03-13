@@ -55,7 +55,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
   }, []);
 
   const sortedPhases = categoryData?.phases?.sort(
-    (a, b) => a.phase_number - b.phase_number
+    (a, b) => a.phase_number - b.phase_number,
   );
 
   // const {
@@ -231,7 +231,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                           const score: IScore | undefined = phase.scores?.find(
                             (s: IScore) =>
                               s.player.player_id === player.player_id &&
-                              s.music.music_id === music.music_id
+                              s.music.music_id === music.music_id,
                           );
                           return (
                             <TableRow
@@ -292,7 +292,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                                       </TableScoreValue>
                                       <Modal
                                         isOpen={isScoreDetailsModalOpen(
-                                          score.score_id
+                                          score.score_id,
                                         )}
                                         onClose={() =>
                                           closeScoreDetailsModal(score.score_id)
@@ -320,7 +320,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                             {phase.scores
                               ?.filter(
                                 (score: IScore) =>
-                                  score.player.player_id === player.player_id
+                                  score.player.player_id === player.player_id,
                               )
                               .reduce((acc, curr) => acc + curr.value, 0)
                               .toLocaleString() || "-"}
@@ -406,13 +406,13 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                       // Calculate total scores for each player in the current phase
                       const totalScoreA = phase.scores
                         ?.filter(
-                          (score) => score.player.player_id === a.player_id
+                          (score) => score.player.player_id === a.player_id,
                         )
                         .reduce((acc, curr) => acc + curr.value, 0);
 
                       const totalScoreB = phase.scores
                         ?.filter(
-                          (score) => score.player.player_id === b.player_id
+                          (score) => score.player.player_id === b.player_id,
                         )
                         .reduce((acc, curr) => acc + curr.value, 0);
 
@@ -468,7 +468,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                               phase.scores?.find(
                                 (s: IScore) =>
                                   s.player.player_id === player.player_id &&
-                                  s.music.music_id === music.music_id
+                                  s.music.music_id === music.music_id,
                               );
                             return (
                               <TableData
@@ -476,29 +476,29 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                               >
                                 {score ? (
                                   <TableScoreDataWrapper>
-                                  <ScoreGradeWrapper>
-                                    <ScoreGrade
-                                      src={getGradeImageFileName(score)}
-                                    />
-                                  </ScoreGradeWrapper>
-                                  <TableScoreValue
-                                    onClick={() =>
-                                      openScoreDetailsModal(score.score_id)
-                                    }
-                                  >
-                                    {score.value.toLocaleString()}
-                                  </TableScoreValue>
-                                  <Modal
-                                    isOpen={isScoreDetailsModalOpen(
-                                      score.score_id
-                                    )}
-                                    onClose={() =>
-                                      closeScoreDetailsModal(score.score_id)
-                                    }
-                                  >
-                                    <ScoreCard score={score} />
-                                  </Modal>
-                                </TableScoreDataWrapper>
+                                    <ScoreGradeWrapper>
+                                      <ScoreGrade
+                                        src={getGradeImageFileName(score)}
+                                      />
+                                    </ScoreGradeWrapper>
+                                    <TableScoreValue
+                                      onClick={() =>
+                                        openScoreDetailsModal(score.score_id)
+                                      }
+                                    >
+                                      {score.value.toLocaleString()}
+                                    </TableScoreValue>
+                                    <Modal
+                                      isOpen={isScoreDetailsModalOpen(
+                                        score.score_id,
+                                      )}
+                                      onClose={() =>
+                                        closeScoreDetailsModal(score.score_id)
+                                      }
+                                    >
+                                      <ScoreCard score={score} />
+                                    </Modal>
+                                  </TableScoreDataWrapper>
                                 ) : (
                                   "-"
                                 )}
@@ -510,7 +510,7 @@ const DashboardCategory: FunctionComponent<DashboardCategoryProps> = () => {
                           {phase.scores
                             ?.filter(
                               (score: IScore) =>
-                                score.player.player_id === player.player_id
+                                score.player.player_id === player.player_id,
                             )
                             .reduce((acc, curr) => acc + curr.value, 0)
                             .toLocaleString() || "-"}

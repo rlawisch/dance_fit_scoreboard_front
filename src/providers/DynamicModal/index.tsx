@@ -8,14 +8,14 @@ const useDynamicModal = (initialState: Record<ModalKey, boolean> = {}) => {
   const openModal = (key: ModalKey) => {
     setModalStates((prev) => ({
       ...prev,
-      [key]: true
+      [key]: true,
     }));
   };
 
   const closeModal = (key: ModalKey) => {
     setModalStates((prev) => ({
       ...prev,
-      [key]: false
+      [key]: false,
     }));
   };
 

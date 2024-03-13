@@ -87,7 +87,7 @@ const AdminDashboardCategory: FunctionComponent<
   }, [categoryRefreshTrigger]);
 
   const sortedPhases = categoryData?.phases?.sort(
-    (a, b) => a.phase_number - b.phase_number
+    (a, b) => a.phase_number - b.phase_number,
   );
 
   const {
@@ -335,7 +335,7 @@ const AdminDashboardCategory: FunctionComponent<
                           </UpdateButton>
                           <Modal
                             isOpen={isPhaseAddMusicModalOpen(
-                              phase.phase_number
+                              phase.phase_number,
                             )}
                             onClose={() =>
                               closePhaseAddMusicModal(phase.phase_number)
@@ -436,7 +436,7 @@ const AdminDashboardCategory: FunctionComponent<
                           const score: IScore | undefined = phase.scores?.find(
                             (s: IScore) =>
                               s.player.player_id === player.player_id &&
-                              s.music.music_id === music.music_id
+                              s.music.music_id === music.music_id,
                           );
                           return (
                             <TableRow
@@ -486,7 +486,7 @@ const AdminDashboardCategory: FunctionComponent<
                                     </UpdateButton>
                                     <Modal
                                       isOpen={isAdmScoreCreateModalOpen(
-                                        music.music_id
+                                        music.music_id,
                                       )}
                                       onClose={() =>
                                         closeAdmScoreCreateModal(music.music_id)
@@ -502,7 +502,7 @@ const AdminDashboardCategory: FunctionComponent<
                                       vanilla={false}
                                       onClick={() =>
                                         openPhaseRemoveMusicModal(
-                                          music.music_id
+                                          music.music_id,
                                         )
                                       }
                                     >
@@ -510,11 +510,11 @@ const AdminDashboardCategory: FunctionComponent<
                                     </DeleteButton>
                                     <Modal
                                       isOpen={isPhaseRemoveMusicModalOpen(
-                                        music.music_id
+                                        music.music_id,
                                       )}
                                       onClose={() =>
                                         closePhaseRemoveMusicModal(
-                                          music.music_id
+                                          music.music_id,
                                         )
                                       }
                                     >
@@ -546,7 +546,7 @@ const AdminDashboardCategory: FunctionComponent<
                                       </TableScoreValue>
                                       <Modal
                                         isOpen={isScoreDetailsModalOpen(
-                                          score.score_id
+                                          score.score_id,
                                         )}
                                         onClose={() =>
                                           closeScoreDetailsModal(score.score_id)
@@ -565,7 +565,7 @@ const AdminDashboardCategory: FunctionComponent<
                                       </UpdateButton>
                                       <Modal
                                         isOpen={isScoreUpdateModalOpen(
-                                          score.score_id
+                                          score.score_id,
                                         )}
                                         onClose={() =>
                                           closeScoreUpdateModal(score.score_id)
@@ -584,7 +584,7 @@ const AdminDashboardCategory: FunctionComponent<
                                       </DeleteButton>
                                       <Modal
                                         isOpen={isScoreDeleteModalOpen(
-                                          score.score_id
+                                          score.score_id,
                                         )}
                                         onClose={() =>
                                           closeScoreDeleteModal(score.score_id)
@@ -612,7 +612,7 @@ const AdminDashboardCategory: FunctionComponent<
                             {phase.scores
                               ?.filter(
                                 (score: IScore) =>
-                                  score.player.player_id === player.player_id
+                                  score.player.player_id === player.player_id,
                               )
                               .reduce((acc, curr) => acc + curr.value, 0)
                               .toLocaleString() || "-"}
@@ -672,7 +672,7 @@ const AdminDashboardCategory: FunctionComponent<
                           </UpdateButton>
                           <Modal
                             isOpen={isPhaseAddMusicModalOpen(
-                              phase.phase_number
+                              phase.phase_number,
                             )}
                             onClose={() =>
                               closePhaseAddMusicModal(phase.phase_number)
@@ -771,7 +771,7 @@ const AdminDashboardCategory: FunctionComponent<
                             </DeleteButton>
                             <Modal
                               isOpen={isPhaseRemoveMusicModalOpen(
-                                music.music_id
+                                music.music_id,
                               )}
                               onClose={() =>
                                 closePhaseRemoveMusicModal(music.music_id)
@@ -796,13 +796,13 @@ const AdminDashboardCategory: FunctionComponent<
                       // Calculate total scores for each player in the current phase
                       const totalScoreA = phase.scores
                         ?.filter(
-                          (score) => score.player.player_id === a.player_id
+                          (score) => score.player.player_id === a.player_id,
                         )
                         .reduce((acc, curr) => acc + curr.value, 0);
 
                       const totalScoreB = phase.scores
                         ?.filter(
-                          (score) => score.player.player_id === b.player_id
+                          (score) => score.player.player_id === b.player_id,
                         )
                         .reduce((acc, curr) => acc + curr.value, 0);
 
@@ -858,7 +858,7 @@ const AdminDashboardCategory: FunctionComponent<
                               phase.scores?.find(
                                 (s: IScore) =>
                                   s.player.player_id === player.player_id &&
-                                  s.music.music_id === music.music_id
+                                  s.music.music_id === music.music_id,
                               );
                             return (
                               <TableData
@@ -882,7 +882,7 @@ const AdminDashboardCategory: FunctionComponent<
                                       </TableScoreValue>
                                       <Modal
                                         isOpen={isScoreDetailsModalOpen(
-                                          score.score_id
+                                          score.score_id,
                                         )}
                                         onClose={() =>
                                           closeScoreDetailsModal(score.score_id)
@@ -901,7 +901,7 @@ const AdminDashboardCategory: FunctionComponent<
                                     </UpdateButton>
                                     <Modal
                                       isOpen={isScoreUpdateModalOpen(
-                                        score.score_id
+                                        score.score_id,
                                       )}
                                       onClose={() =>
                                         closeScoreUpdateModal(score.score_id)
@@ -920,7 +920,7 @@ const AdminDashboardCategory: FunctionComponent<
                                     </DeleteButton>
                                     <Modal
                                       isOpen={isScoreDeleteModalOpen(
-                                        score.score_id
+                                        score.score_id,
                                       )}
                                       onClose={() =>
                                         closeScoreDeleteModal(score.score_id)
@@ -940,7 +940,7 @@ const AdminDashboardCategory: FunctionComponent<
                           {phase.scores
                             ?.filter(
                               (score: IScore) =>
-                                score.player.player_id === player.player_id
+                                score.player.player_id === player.player_id,
                             )
                             .reduce((acc, curr) => acc + curr.value, 0)
                             .toLocaleString() || "-"}

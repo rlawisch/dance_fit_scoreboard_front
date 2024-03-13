@@ -48,7 +48,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
       .boolean()
       .required()
       .transform((_, originalValue) =>
-        originalValue === "true" ? true : false
+        originalValue === "true" ? true : false,
       ),
     grade: yup.string().required(),
     plate: yup.string().required(),

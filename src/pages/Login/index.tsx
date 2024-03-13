@@ -25,7 +25,7 @@ const Login = () => {
     resolver: yupResolver(formSchema),
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { playerLogin } = usePlayer();
 

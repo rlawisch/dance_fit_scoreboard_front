@@ -32,7 +32,11 @@ const DashboardEvents: FunctionComponent<DashboardEventsProps> = () => {
               <tr key={event.event_id}>
                 <td>
                   {event.name}
-                  <Button onClick={() => navigate(`/dashboard/events/${event.event_id}`)}>
+                  <Button
+                    onClick={() =>
+                      navigate(`/dashboard/events/${event.event_id}`)
+                    }
+                  >
                     <AiOutlineArrowRight />
                   </Button>
                 </td>

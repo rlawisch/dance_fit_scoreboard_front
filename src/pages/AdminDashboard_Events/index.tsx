@@ -39,7 +39,6 @@ const AdminDashboardEvents: FunctionComponent<
 
   return (
     <GlobalContainer>
-
       <Button onClick={openEventCreateModal}>Criar Evento</Button>
       <Modal isOpen={isOpenEventCreateModal} onClose={closeEventCreateModal}>
         <EventCreateForm />
@@ -59,23 +58,21 @@ const AdminDashboardEvents: FunctionComponent<
               <tr key={event.event_id}>
                 <td>
                   {event.name}
-                  <Button onClick={() => navigate(`/admin/events/${event.event_id}`)}>
+                  <Button
+                    onClick={() => navigate(`/admin/events/${event.event_id}`)}
+                  >
                     <AiOutlineArrowRight />
                   </Button>
                   <DeleteButton
-                    onClick={() =>
-                      openEventDeleteModal(event.event_id)
-                    }
+                    onClick={() => openEventDeleteModal(event.event_id)}
                   >
                     <FaRegTrashCan />
                   </DeleteButton>
                   <Modal
                     isOpen={isEventDeleteModalOpen(event.event_id)}
-                    onClose={() =>
-                      closeEventDeleteModal(event.event_id)
-                    }
+                    onClose={() => closeEventDeleteModal(event.event_id)}
                   >
-                    <EventDeleteForm event={event}/>
+                    <EventDeleteForm event={event} />
                   </Modal>
                 </td>
               </tr>

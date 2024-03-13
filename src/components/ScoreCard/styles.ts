@@ -5,18 +5,15 @@ export const ScoreCardContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
 `;
 
-export const ScoreInfoContainer = styled.div`
-  
-`
+export const ScoreInfoContainer = styled.div``;
 
 export const ScoreDataContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`
+`;
 
 export const ScoreGradeAndPlating = styled.div`
   display: flex;
@@ -51,7 +48,6 @@ export const ScoreDetailValues = styled.div`
 export const ScoreValue = styled.p`
   color: ${(props) => props.theme.colors.text};
   font-weight: bold;
-
 `;
 
 export const Perfects = styled.p`
@@ -91,14 +87,12 @@ export const ScoreGradeWrapper = styled.div`
   justify-content: center;
   width: 64px;
   height: 41.8px;
-`
+`;
 
 export const ScoreGrade = styled.img`
   width: 64px;
-
 `;
 
 export const ScorePlate = styled.img`
   width: 96px;
 `;
-

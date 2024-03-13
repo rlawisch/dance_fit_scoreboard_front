@@ -26,26 +26,24 @@ export const UploadBtnWrapper = styled.div`
   flex-direction: row;
 `;
 
-export const CropperFullWrapper = styled.div`
-`
+export const CropperFullWrapper = styled.div``;
 
 export const CropperWrapper = styled.div`
-position: relative;
-width: 200px;
-height: 200px;
-margin-top: 1rem;
-`
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin-top: 1rem;
+`;
 
 export const ControlsWrapper = styled.div`
   padding: 16px;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-`
+`;
 
 export const SliderWrapper = styled.div`
   display: flex;
   flex: 1;
   align-items: center;
-`
-
+`;

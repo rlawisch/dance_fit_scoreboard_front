@@ -24,7 +24,7 @@ export const StyledButton = styled.button<ButtonProps>`
       ? "#ffc107"
       : shade(
           0.5,
-          "#ffc107"
+          "#ffc107",
         )}; // Yellow background for "update" actionType, light gray otherwise
 
   &:hover {
@@ -33,7 +33,7 @@ export const StyledButton = styled.button<ButtonProps>`
         ? shade(0.1, "#ffc107")
         : shade(
             0.6,
-            "#ffc107"
+            "#ffc107",
           )}; // Darken yellow for "update" on hover, light gray otherwise
   }
 
@@ -43,7 +43,7 @@ export const StyledButton = styled.button<ButtonProps>`
         ? shade(0.3, "#ffc107")
         : shade(
             0.7,
-            "#ffc107"
+            "#ffc107",
           )}; // Darken yellow for "update" on active, light gray otherwise
   }
 
@@ -53,7 +53,7 @@ export const StyledButton = styled.button<ButtonProps>`
         ? shade(-0.3, "#ffc107")
         : shade(
             -0.3,
-            "#ffc107"
+            "#ffc107",
           )}; // Lighten yellow for "update" when disabled, light gray otherwise
   }
 `;

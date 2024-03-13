@@ -5,7 +5,7 @@ import {
   PlayerLi,
   PlayerMiniature,
   SelectedPlayerWrapper,
-  PlayerInfoWrapper
+  PlayerInfoWrapper,
 } from "../../../styles/global";
 import { ICategory, IPlayer } from "../../../types/entity-types";
 import Input from "../../Input";
@@ -30,7 +30,7 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
   useEffect(() => {
     if (eventPlayers && searchPlayerQuery.trim() !== "") {
       const filtered = eventPlayers.filter((player) =>
-        player.nickname.toLowerCase().includes(searchPlayerQuery.toLowerCase())
+        player.nickname.toLowerCase().includes(searchPlayerQuery.toLowerCase()),
       );
       setFilteredPlayers(filtered);
     }
@@ -47,8 +47,6 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
   return (
     <GlobalContainer>
       <ContentWrapper>
-
-    
         <p>Adicionar jogador</p>
 
         <p>
@@ -91,7 +89,7 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
             onClick={() =>
               adminAddPlayer(
                 Number(category.category_id),
-                Number(selectedPlayer.player_id)
+                Number(selectedPlayer.player_id),
               )
             }
           >
@@ -119,7 +117,7 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
             </PlayerLi>
           ))}
         </ul>
-        </ContentWrapper>
+      </ContentWrapper>
     </GlobalContainer>
   );
 };

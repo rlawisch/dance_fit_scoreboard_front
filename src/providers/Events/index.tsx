@@ -10,7 +10,7 @@ export interface IEventsContext {
   events: IEvent[];
   eventData: IEvent | undefined;
   eventRefreshTrigger: boolean;
-  setEventRefreshTrigger: (eventRefreshTrigger: boolean) => void
+  setEventRefreshTrigger: (eventRefreshTrigger: boolean) => void;
   createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
   getEventData: (event_id: number) => void;
@@ -50,7 +50,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateEventData = async (
     event_id: number,
-    formData: IUpdateEventFormData
+    formData: IUpdateEventFormData,
   ) => {
     try {
       const res = await api.patch(`/events/${event_id}`, formData, {
@@ -60,7 +60,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       });
       if (res.status === 200) {
         toast.success("Informações do evento atualizadas com sucesso");
-        setEventRefreshTrigger(!eventRefreshTrigger)
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       toast.error("Algo deu errado");
@@ -77,12 +77,12 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       );
 
       if (res.status === 201) {
         toast.success("Evento criado com sucesso");
-        setEventRefreshTrigger(!eventRefreshTrigger)
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err) {
       toast.error("Algo deu errado");
@@ -114,7 +114,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Você agora faz parte do Evento:");
-        setEventRefreshTrigger(!eventRefreshTrigger)
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);
@@ -137,8 +137,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Você deixou o evento com sucesso");
-        setEventRefreshTrigger(!eventRefreshTrigger)
-
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       if (err.response.data.message === "Player not assigned to this event") {
@@ -149,7 +148,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminAddPlayer = async (event_id: number, player_id: number) => {
     try {
-
       const res = await api.patch(
         `/events/${event_id}/admin/add_player`,
         {
@@ -159,13 +157,12 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       );
 
       if (res.status === 200) {
         toast.success("Jogador adicionado ao evento com sucesso");
-        setEventRefreshTrigger(!eventRefreshTrigger)
-
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       if (
@@ -178,7 +175,6 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const adminRemovePlayer = async (event_id: number, player_id: number) => {
     try {
-
       const res = await api.patch(
         `/events/${event_id}/admin/remove_player`,
         {
@@ -188,13 +184,12 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
           headers: {
             Authorization: `Bearer ${accToken}`,
           },
-        }
+        },
       );
 
       if (res.status === 200) {
         toast.success("Jogador removido do evento com sucesso");
-        setEventRefreshTrigger(!eventRefreshTrigger)
-
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       if (err.response.data.message === "Player not assigned to this event") {
@@ -213,7 +208,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 200) {
         toast.success("Evento deletado com sucesso");
-        setEventRefreshTrigger(!eventRefreshTrigger)
+        setEventRefreshTrigger(!eventRefreshTrigger);
       }
     } catch (err: any) {
       console.log(err);

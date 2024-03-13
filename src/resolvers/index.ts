@@ -3,7 +3,7 @@ import { Resolver } from "react-hook-form";
 import * as yup from "yup";
 
 export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
-  values
+  values,
 ) => {
   try {
     // Define your Yup schema for validation
@@ -11,9 +11,13 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
       file: yup
         .mixed()
         .required("Please select an image file")
-        .test("fileSize", "Tamanho do arquivo muito grande (máx: 8MB).", (value: any) => {
-          return !value || (value[0] && value[0].size <= 8 * 1024 * 1024);
-        })
+        .test(
+          "fileSize",
+          "Tamanho do arquivo muito grande (máx: 8MB).",
+          (value: any) => {
+            return !value || (value[0] && value[0].size <= 8 * 1024 * 1024);
+          },
+        )
         .test(
           "fileType",
           "Formato inválido, apenas arquivos .jpeg ou .png.",
@@ -22,7 +26,7 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
               !value ||
               (value[0] && ["image/jpeg", "image/png"].includes(value[0].type))
             );
-          }
+          },
         ),
     });
 
@@ -46,7 +50,7 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
         }
       });
 
-      console.log(validationErrors)
+      console.log(validationErrors);
 
       // Return the formatted validation errors
       return {
@@ -62,4 +66,3 @@ export const profilePictureResolver: Resolver<IProfilePicFormData> = async (
     };
   }
 };
-
