@@ -10,7 +10,10 @@ Developed in TypeScript with React, I intend to build the hub where the DFH play
 
 - React (Vite as builder)
 - TypeScript
-- Styled Components
+
+# Live Deploy @ Vercel
+
+[Dance Fit Scoreboard](https://dancefitscoreboard.vercel.app/)
 
 ### Pages
 
@@ -59,9 +62,5 @@ Developed in TypeScript with React, I intend to build the hub where the DFH play
 :construction: Under Development :construction:
 
 ## Player Listing
-
-:construction: Under Development :construction:
-
-# Live Deploy 
 
 :construction: Under Development :construction:
