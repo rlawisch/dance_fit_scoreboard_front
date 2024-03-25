@@ -75,7 +75,7 @@ const AdminDashboardMusics: FunctionComponent<
       <Table>
         <thead>
           <tr>
-            <th>Tabela de Músicas</th>
+            <th>Músicas</th>
           </tr>
         </thead>
         <tbody>

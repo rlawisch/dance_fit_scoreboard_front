@@ -7,7 +7,7 @@ import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
 import { FormContainer } from "./styles";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
 import { ILogin } from "../../types/form-types";
 
@@ -64,9 +64,6 @@ const Login = () => {
           Login
         </Button>
 
-        <Link to="/signup">
-          <Button vanilla={false}>Cadastro</Button>
-        </Link>
       </FormContainer>
     </GlobalContainer>
   );

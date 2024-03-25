@@ -20,6 +20,7 @@ import {
   SidebarToggleBtn,
   SidebarUl,
 } from "../Sidebar/styles";
+import { FaUsers } from "react-icons/fa6";
 
 interface SidebarProps {}
 
@@ -95,10 +96,18 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
 
         <SidebarLi
           isopen={sideBarStatus}
+          onClick={() => navigate("/admin/players")}
+        >
+          <FaUsers />
+          {sideBarStatus ? "Jogadores" : ""}
+        </SidebarLi>
+
+        <SidebarLi
+          isopen={sideBarStatus}
           onClick={() => navigate("/dashboard/home")}
         >
           <FaHouseUser />
-          {sideBarStatus ? "Jogador" : ""}
+          {sideBarStatus ? "Painel do Jogador" : ""}
         </SidebarLi>
       </SidebarUl>
 

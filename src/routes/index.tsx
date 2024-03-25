@@ -11,7 +11,6 @@ import AdminRouter from "./adminRouter";
 import AdminDashboardHome from "../pages/AdminDashboard_Home";
 import AdminDashScoreValidation from "../pages/AdminDashboard_ScoreValidation";
 import Login from "../pages/Login";
-import SignUp from "../pages/SignUp";
 import DashboardEvent from "../pages/Dashboard_Event";
 import AdminDashboardEvents from "../pages/AdminDashboard_Events";
 import AdminDashboardEvent from "../pages/AdminDashboard_Event";
@@ -23,6 +22,8 @@ import PublicDashboard from "../pages/PublicDashboard";
 import PublicDashboardEvents from "../pages/PublicDashboard_Events";
 import PublicDashboardEvent from "../pages/PublicDashboard_Event";
 import PublicDashboardCategory from "../pages/PublicDashboard_Category";
+import Home from "../pages/Home";
+import AdminDashboardPlayers from "../pages/AdminDashboard_Players";
 
 export default function Routing() {
   return (
@@ -31,7 +32,7 @@ export default function Routing() {
         path="/"
         element={
           <RedirectIfLoggedIn>
-            <Login />
+            <Home />
           </RedirectIfLoggedIn>
         }
       />
@@ -41,15 +42,6 @@ export default function Routing() {
         element={
           <RedirectIfLoggedIn>
             <Login />
-          </RedirectIfLoggedIn>
-        }
-      />
-
-      <Route
-        path="/signup"
-        element={
-          <RedirectIfLoggedIn>
-            <SignUp />
           </RedirectIfLoggedIn>
         }
       />
@@ -178,6 +170,17 @@ export default function Routing() {
             <AdminRouter>
               <PrivateRoute>
                 <AdminDashboardCategory />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
+
+        <Route
+          path="/admin/players"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashboardPlayers />
               </PrivateRoute>
             </AdminRouter>
           }

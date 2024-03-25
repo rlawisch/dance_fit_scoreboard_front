@@ -12,13 +12,14 @@ export interface IPlayerContext {
   decodedPlayerInfo: JwtPayload;
   playerData: IPlayer | undefined;
   players: IPlayer[] | undefined;
+  playerRefreshTrigger: boolean;
+  isUploading: boolean;
   getPlayers: () => void;
   getPlayerData: () => void;
   playerLogin: (formData: ILogin) => void;
-  playerSignup: (formData: ISignup) => void;
+  playerSignUp: (formData: ISignup) => void;
   playerLogout: () => void;
   uploadProfilePicture: (formData: FormData) => void;
-  isUploading: boolean;
 }
 
 const PlayerContext = createContext<IPlayerContext>({} as IPlayerContext);
@@ -29,18 +30,21 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
 
   const [accToken, setAccToken] = useState(
-    localStorage.getItem("@DFS/PlayerToken") || "",
+    localStorage.getItem("@DFS/PlayerToken") || ""
   );
 
   const currentPlayer = localStorage.getItem("@DFS/Player") || "{}";
 
   const [decodedPlayerInfo, setDecodedPlayerInfo] = useState<JwtPayload>(
-    JSON.parse(currentPlayer),
+    JSON.parse(currentPlayer)
   );
 
   const [players, setPlayers] = useState<IPlayer[]>();
 
   const [playerData, setPlayerData] = useState<IPlayer>();
+
+  const [playerRefreshTrigger, setPlayerRefresgTrigger] =
+    useState<boolean>(false);
 
   const [isUploading, setIsUploading] = useState<boolean>(false);
 
@@ -68,11 +72,11 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const playerSignup = async (formData: ISignup) => {
+  const playerSignUp = async (formData: ISignup) => {
     try {
       await api.post("/players", formData);
-      toast("Conta criada com sucesso, agora você pode fazer o Login!");
-      navigate("/login");
+      setPlayerRefresgTrigger(!playerRefreshTrigger);
+      toast("Jogador cadastrado com sucesso!");
     } catch (err: any) {
       if ((err.response.data.message = "Nickname already in use")) {
         toast.error("Nickname não disponível, por favor escolha outro");
@@ -139,7 +143,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res.status === 201) {
         setIsUploading(false);
         toast.success(
-          "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude",
+          "Imagem do perfil atualizada, pode demorar alguns momentos até que ela mude"
         );
       } else {
         toast.error("Algo deu errado");
@@ -159,13 +163,14 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         decodedPlayerInfo,
         players,
         playerData,
+        playerRefreshTrigger,
+        isUploading,
         getPlayers,
         getPlayerData,
         playerLogin,
-        playerSignup,
+        playerSignUp,
         playerLogout,
         uploadProfilePicture,
-        isUploading,
       }}
     >
       {children}
