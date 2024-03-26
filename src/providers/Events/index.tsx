@@ -54,7 +54,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getEventTypes = async () => {
     try {
-      const res = await api.get(`/event-type`, {
+      const res = await api.get(`/event-types`, {
         headers: {
           Authorization: `Bearer ${accToken}`
         },
