@@ -25,9 +25,16 @@ export interface IEvent {
   event_id: string;
   name: string;
   status: boolean;
+  event_type: IEventType
   categories?: ICategory[];
   players?: IPlayer[];
   scores?: IScore[];
+}
+
+export interface IEventType {
+  event_type_id: number
+  name: string
+  events: Event[]
 }
 
 export interface ICategory {

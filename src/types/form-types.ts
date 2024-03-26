@@ -15,6 +15,7 @@ export interface IProfilePicFormData {
 
 export interface IEventCreate {
   name: string;
+  event_type_id: number
 }
 
 export interface IUpdateEventFormData {

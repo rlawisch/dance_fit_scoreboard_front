@@ -3,17 +3,19 @@ import api from "../../services/api";
 import * as React from "react";
 import { toast } from "react-toastify";
 import { usePlayer } from "../Players";
-import { IEvent } from "../../types/entity-types";
+import { IEvent, IEventType } from "../../types/entity-types";
 import { IEventCreate, IUpdateEventFormData } from "../../types/form-types";
 
 export interface IEventsContext {
   events: IEvent[];
   eventData: IEvent | undefined;
+  eventTypes: IEventType[] | []
   eventRefreshTrigger: boolean;
   setEventRefreshTrigger: (eventRefreshTrigger: boolean) => void;
   createEvent: (formData: IEventCreate) => void;
   getEvents: () => void;
   getEventData: (event_id: number) => void;
+  getEventTypes: () => void;
   updateEventData: (event_id: number, formData: IUpdateEventFormData) => void;
   deleteEvent: (event_id: number) => void;
   joinEvent: (event_id: number) => void;
@@ -33,6 +35,8 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [eventData, setEventData] = useState<IEvent>();
 
+  const [eventTypes, setEventTypes] = useState<IEventType[]>([])
+
   const [eventRefreshTrigger, setEventRefreshTrigger] = useState<boolean>(true);
 
   const getEventData = async (event_id: number) => {
@@ -47,6 +51,19 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(err);
     }
   };
+
+  const getEventTypes = async () => {
+    try {
+      const res = await api.get(`/event-type`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`
+        },
+      })
+      setEventTypes(res.data)
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
 
   const updateEventData = async (
     event_id: number,
@@ -223,11 +240,13 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         events,
         eventData,
+        eventTypes,
         eventRefreshTrigger,
         setEventRefreshTrigger,
         createEvent,
         getEvents,
         getEventData,
+        getEventTypes,
         updateEventData,
         deleteEvent,
         joinEvent,

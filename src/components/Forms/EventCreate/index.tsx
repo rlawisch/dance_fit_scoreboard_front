@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import {
   ContentWrapper,
   FormWrapper,
@@ -12,15 +12,26 @@ import { IEventCreate } from "../../../types/form-types";
 import Input from "../../Input";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import Button from "../../Button";
+import Select from "../../Select";
 
 interface EventCreateFormProps {}
 
 const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
-  const { createEvent } = useEvents();
+  const { createEvent, eventTypes, getEventTypes } = useEvents();
+
+  useEffect(() => {
+    getEventTypes()
+  }, [])
 
   const createEventFormSchema = yup.object().shape({
     name: yup.string().required(),
+    event_type_id: yup.number().required()
   });
+
+  const eventTypeOptions = eventTypes.map(eventType => ({
+    label: eventType.name,
+    value: eventType.event_type_id
+  }))
 
   const {
     register: registerCreateEvent,
@@ -31,7 +42,7 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
   });
 
   const onCreateEventFormSubmit = (formData: IEventCreate) => {
-    createEvent(formData);
+    createEvent(formData)
   };
 
   return (
@@ -48,6 +59,16 @@ const EventCreateForm: FunctionComponent<EventCreateFormProps> = () => {
             register={registerCreateEvent}
             error={createEventErrors.name?.message}
           />
+
+          <Select
+            label="Tipo de Evento"
+            placeholder="Selecionar"
+            options={eventTypeOptions}
+            name="event_type_id"
+            register={registerCreateEvent}
+            error={createEventErrors.event_type_id?.message}
+          />
+
           <Button vanilla={false} type="submit">
             Criar
           </Button>
