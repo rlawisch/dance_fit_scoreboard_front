@@ -6,6 +6,8 @@ import { ScoreProvider } from "./Scores";
 import { CategoryProvider } from "./Category";
 import { PhasesProvider } from "./Phases";
 import { MusicsProvider } from "./Musics";
+import { ComfortLevelProvider } from "./ComfortLevels";
+import { SongListProvider } from "./SongLists";
 
 interface IAppProvider {
   children: ReactNode;
@@ -17,11 +19,15 @@ export const AppProvider = ({ children }: IAppProvider) => {
       <EventsProvider>
         <CategoryProvider>
           <PhasesProvider>
-            <MusicsProvider>
-              <ScoreProvider>
-                <DashboardProvider>{children}</DashboardProvider>
-              </ScoreProvider>
-            </MusicsProvider>
+            <ComfortLevelProvider>
+              <SongListProvider>
+                <MusicsProvider>
+                  <ScoreProvider>
+                    <DashboardProvider>{children}</DashboardProvider>
+                  </ScoreProvider>
+                </MusicsProvider>
+              </SongListProvider>
+            </ComfortLevelProvider>
           </PhasesProvider>
         </CategoryProvider>
       </EventsProvider>

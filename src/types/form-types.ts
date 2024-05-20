@@ -15,6 +15,7 @@ export interface IProfilePicFormData {
 
 export interface IEventCreate {
   name: string;
+  event_type_id: number
 }
 
 export interface IUpdateEventFormData {
@@ -72,6 +73,16 @@ export interface IMusicUpdate {
   name?: string;
   level?: number;
   mode?: string;
+}
+
+export interface IComfortLevelFormCreate {
+  level_single: number
+  level_double: number
+}
+
+export interface IComfortLevelFormUpdate {
+  level_single?: number
+  level_double?: number
 }
 
 export interface IScoreFormCreate {

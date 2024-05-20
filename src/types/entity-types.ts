@@ -25,9 +25,16 @@ export interface IEvent {
   event_id: string;
   name: string;
   status: boolean;
+  event_type: IEventType
   categories?: ICategory[];
   players?: IPlayer[];
   scores?: IScore[];
+}
+
+export interface IEventType {
+  event_type_id: number
+  name: string
+  events: Event[]
 }
 
 export interface ICategory {
@@ -51,6 +58,20 @@ export interface IPhase {
   category: ICategory;
   musics?: IMusic[];
   scores?: IScore[];
+}
+
+export interface IComfortLevel {
+  comfort_level_id: number
+  level_single: number 
+  level_double: number
+  player: IPlayer
+  event: IEvent
+}
+
+export interface ISongList {
+  song_list_id: number
+  event: IEvent
+  musics: IMusic[]
 }
 
 export interface IScore {
