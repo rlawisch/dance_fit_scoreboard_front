@@ -60,6 +60,20 @@ export interface IPhase {
   scores?: IScore[];
 }
 
+export interface IComfortLevel {
+  comfort_level_id: number
+  level_single: number 
+  level_double: number
+  player: IPlayer
+  event: IEvent
+}
+
+export interface ISongList {
+  song_list_id: number
+  event: IEvent
+  musics: IMusic[]
+}
+
 export interface IScore {
   score_id: string;
   perfect: number;

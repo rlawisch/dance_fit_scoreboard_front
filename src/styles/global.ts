@@ -266,7 +266,7 @@ export const SelectedPlayerWrapper = styled.div`
 `;
 
 export const MusicLevelMiniature = styled.img`
-  width: 40px;
+  width: 48.4px;
   height: 40px;
 `;
 

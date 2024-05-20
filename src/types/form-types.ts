@@ -75,6 +75,16 @@ export interface IMusicUpdate {
   mode?: string;
 }
 
+export interface IComfortLevelFormCreate {
+  level_single: number
+  level_double: number
+}
+
+export interface IComfortLevelFormUpdate {
+  level_single?: number
+  level_double?: number
+}
+
 export interface IScoreFormCreate {
   value: number;
   perfect: number;
