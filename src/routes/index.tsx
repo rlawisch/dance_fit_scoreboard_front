@@ -47,7 +47,11 @@ export default function Routing() {
       />
 
       <Route path="/public" element={<PublicDashboard />}>
-        <Route path="/public/events" element={<PublicDashboardEvents />} />
+
+        <Route 
+          path="/public/events" 
+          element={<PublicDashboardEvents />} 
+        />
 
         <Route
           path="/public/events/:event_id"
@@ -58,6 +62,7 @@ export default function Routing() {
           path="/public/events/:event_id/categories/:category_id"
           element={<PublicDashboardCategory />}
         />
+        
       </Route>
 
       <Route
