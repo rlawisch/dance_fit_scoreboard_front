@@ -1,18 +1,6 @@
 import { FunctionComponent, useEffect } from "react";
-import {
-  GlobalContainer,
-  PlayerInfoWrapper,
-  PlayerMiniature,
-  Table,
-  TableDataWrapper,
-  TableHeader,
-  TableHeaderWrapper,
-  Title,
-} from "../../styles/global";
-import Button from "../../components/Button";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEvents } from "../../providers/Events";
-import { AiOutlineArrowRight } from "react-icons/ai";
 import EventType_Dynamic from "./EventType_Dynamic";
 import EventType_ChampionShip from "./EventType_Championship";
 
