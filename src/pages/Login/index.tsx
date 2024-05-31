@@ -64,6 +64,9 @@ const Login = () => {
           Login
         </Button>
 
+        <Button vanilla={false} onClick={() => navigate(`/signup`)}>
+          Cadastro
+        </Button>
       </FormContainer>
     </GlobalContainer>
   );
