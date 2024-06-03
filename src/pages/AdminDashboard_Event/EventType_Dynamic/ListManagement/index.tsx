@@ -59,9 +59,9 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
     groupedMusics[music.mode].push(music);
   });
 
-  // Sort each group alphabetically by name
+  // Sort each group by level
   Object.keys(groupedMusics).forEach((mode) => {
-    groupedMusics[mode].sort((a, b) => a.name.localeCompare(b.name));
+    groupedMusics[mode].sort((a, b) => a.level - b.level);
   });
 
   const {
