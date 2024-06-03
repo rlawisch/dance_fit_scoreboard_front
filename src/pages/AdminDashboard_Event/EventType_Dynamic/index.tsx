@@ -12,15 +12,12 @@ import AdminGeneralRanking from "./AdminGeneralRanking";
 import AdminSingleRanking from "./AdminSingleRaking";
 import AdminDoubleRanking from "./AdminDoubleRanking";
 import ListManagement from "./ListManagement";
-import { useTheme } from "styled-components";
-import { shade } from "polished";
 
 interface AdminEventType_DynamicProps {}
 
 const AdminEventType_Dynamic: FunctionComponent<
   AdminEventType_DynamicProps
 > = () => {
-  const { theme } = useTheme();
 
   const { event_id } = useParams();
 
