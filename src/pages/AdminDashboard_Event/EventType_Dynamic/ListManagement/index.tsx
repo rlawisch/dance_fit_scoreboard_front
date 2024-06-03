@@ -37,8 +37,9 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
   }, []);
 
   useEffect(() => {
-    console.log(eventData);
-    getSongListData(Number(eventData?.song_list.song_list_id));
+    if (eventData?.song_list) {
+      getSongListData(Number(eventData?.song_list.song_list_id));
+    }
   }, [eventData]);
 
   useEffect(() => {
