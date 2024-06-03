@@ -18,6 +18,7 @@ export interface IPlayerContext {
   getPlayerData: () => void;
   playerLogin: (formData: ILogin) => void;
   playerSignUp: (formData: ISignup) => void;
+  publicPlayerSignUp: (formData: ISignup) => void;
   playerLogout: () => void;
   uploadProfilePicture: (formData: FormData) => void;
 }
@@ -77,6 +78,19 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       await api.post("/players", formData);
       setPlayerRefresgTrigger(!playerRefreshTrigger);
       toast("Jogador cadastrado com sucesso!");
+    } catch (err: any) {
+      if ((err.response.data.message = "Nickname already in use")) {
+        toast.error("Nickname não disponível, por favor escolha outro");
+      }
+    }
+  };
+
+  const publicPlayerSignUp = async (formData: ISignup) => {
+    try {
+      await api.post("/players", formData);
+      setPlayerRefresgTrigger(!playerRefreshTrigger);
+      toast("Jogador cadastrado com sucesso! Você já pode fazer o Login!");
+      navigate('/login')
     } catch (err: any) {
       if ((err.response.data.message = "Nickname already in use")) {
         toast.error("Nickname não disponível, por favor escolha outro");
@@ -169,6 +183,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         getPlayerData,
         playerLogin,
         playerSignUp,
+        publicPlayerSignUp,
         playerLogout,
         uploadProfilePicture,
       }}

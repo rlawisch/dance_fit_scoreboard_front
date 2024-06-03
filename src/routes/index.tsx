@@ -24,6 +24,7 @@ import PublicDashboardEvent from "../pages/PublicDashboard_Event";
 import PublicDashboardCategory from "../pages/PublicDashboard_Category";
 import Home from "../pages/Home";
 import AdminDashboardPlayers from "../pages/AdminDashboard_Players";
+import Signup from "../pages/Signup";
 
 export default function Routing() {
   return (
@@ -46,12 +47,17 @@ export default function Routing() {
         }
       />
 
-      <Route path="/public" element={<PublicDashboard />}>
+      <Route
+        path="/signup"
+        element={
+          <RedirectIfLoggedIn>
+            <Signup />
+          </RedirectIfLoggedIn>
+        }
+      />
 
-        <Route 
-          path="/public/events" 
-          element={<PublicDashboardEvents />} 
-        />
+      <Route path="/public" element={<PublicDashboard />}>
+        <Route path="/public/events" element={<PublicDashboardEvents />} />
 
         <Route
           path="/public/events/:event_id"
@@ -62,7 +68,6 @@ export default function Routing() {
           path="/public/events/:event_id/categories/:category_id"
           element={<PublicDashboardCategory />}
         />
-        
       </Route>
 
       <Route
