@@ -29,7 +29,7 @@ export interface IEvent {
   categories?: ICategory[];
   players?: IPlayer[];
   scores?: IScore[];
-  song_list: ISongList
+  song_list?: ISongList
 }
 
 export interface IEventType {

@@ -7,7 +7,7 @@ import { ISongList } from "../../types/entity-types";
 export interface ISongListContext {
   songListData: ISongList | undefined;
   songListRefreshTrigger: boolean;
-  createSongList: (event_id: number) => void;
+  setSongListData: React.Dispatch<React.SetStateAction<ISongList | undefined>>
   getSongListData: (song_list_id: number) => void;
   addSongToList: (song_list_id: number, music_id: number) => void;
   removeSongFromList: (song_list_id: number, music_id: number) => void;
@@ -24,31 +24,6 @@ export const SongListProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [songListRefreshTrigger, setSongListRefreshTrigger] =
     useState<boolean>(true);
-
-  const createSongList = async (event_id: number) => {
-    try {
-      const res = await api.post(
-        "/song-lists",
-        { event_id: event_id },
-        {
-          headers: {
-            Authorization: `Bearer ${accToken}`,
-          },
-        }
-      );
-
-      if (res.status === 201) {
-        toast.success("Lista de Músicas criada com sucesso");
-        setSongListRefreshTrigger(!songListRefreshTrigger);
-      }
-    } catch (err: any) {
-      console.log(err);
-
-      if (err.response.data.message === 'Event already has a song list') {
-        toast.error("O Evento já possui uma lista de músicas")
-      }
-    }
-  };
 
   const getSongListData = async (song_list_id: number) => {
     try {
@@ -124,7 +99,7 @@ export const SongListProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         songListData,
         songListRefreshTrigger,
-        createSongList,
+        setSongListData,
         getSongListData,
         addSongToList,
         removeSongFromList,

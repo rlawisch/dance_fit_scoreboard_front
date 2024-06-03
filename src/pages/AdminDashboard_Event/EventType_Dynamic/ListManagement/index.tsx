@@ -24,9 +24,9 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
   const { event_id } = useParams();
 
   const {
-    createSongList,
-    getSongListData,
     songListData,
+    getSongListData,
+    setSongListData,
     songListRefreshTrigger,
   } = useSongList();
 
@@ -37,14 +37,18 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
   }, []);
 
   useEffect(() => {
-    if (eventData?.song_list) {
-      getSongListData(Number(eventData?.song_list.song_list_id));
-    }
-  }, [eventData]);
+    getSongListData(Number(eventData?.song_list?.song_list_id))
+  }, [eventData])
 
   useEffect(() => {
-    getSongListData(Number(eventData?.song_list.song_list_id));
-  }, [songListRefreshTrigger]);
+    getSongListData(Number(eventData?.song_list?.song_list_id))
+  }, [songListRefreshTrigger])
+
+  useEffect(() => {
+    return () => {
+      setSongListData(undefined)
+    }
+  }, [])
 
   // Group musics by mode
   const groupedMusics: { [mode: string]: IMusic[] } = {};
@@ -74,14 +78,9 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
 
   return (
     <>
-      <Button
-        style={{ display: songListData ? "none" : `block` }}
-        onClick={() => createSongList(Number(event_id))}
-      >
-        Criar Lista de Musicas
-      </Button>
-
-      <Button onClick={openSongListAddSong}>Adicionar Musica</Button>
+      {!!songListData && (
+        <Button onClick={openSongListAddSong}>Adicionar Musica</Button>
+      )}
 
       <Modal isOpen={isOpenSongListAddSong} onClose={closeSongListAddSong}>
         <SongListAddSongForm song_list={songListData} />
