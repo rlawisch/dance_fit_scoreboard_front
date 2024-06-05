@@ -7,6 +7,8 @@ import GeneralRanking from "./GeneralRanking";
 import SongList from "./SongList";
 import DoubleRanking from "./DoubleRanking";
 import SingleRanking from "./SingleRanking";
+import { useEnrollments } from "../../../providers/Enrollments";
+import { usePlayer } from "../../../providers/Players";
 
 interface EventType_DynamicProps {}
 
@@ -16,6 +18,10 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
   const navigate = useNavigate();
 
   const { eventData, getEventData } = useEvents();
+
+  const { decodedPlayerInfo } = usePlayer()
+
+  const { createEnrollment } = useEnrollments()
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -60,9 +66,15 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
 
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate("/admin/events")}>Voltar</Button>
+      <Button onClick={() => navigate("/dashboard/events")}>Voltar</Button>
 
       <Title>{!!eventData && eventData.name}</Title>
+
+      <Button
+        onClick={() => createEnrollment(Number(decodedPlayerInfo.player_id), Number(event_id))}
+      >
+        Inscrição
+      </Button>
 
       <NavigationHeaderWrapper>
         <NavigationSelector onClick={() => handleViewGeneralRanking()}>

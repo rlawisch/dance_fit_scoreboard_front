@@ -25,6 +25,7 @@ import PublicDashboardCategory from "../pages/PublicDashboard_Category";
 import Home from "../pages/Home";
 import AdminDashboardPlayers from "../pages/AdminDashboard_Players";
 import Signup from "../pages/Signup";
+import AdminDashboard_Enrollments from "../pages/AdminDashboard_Enrollments";
 
 export default function Routing() {
   return (
@@ -213,6 +214,17 @@ export default function Routing() {
             <AdminRouter>
               <PrivateRoute>
                 <AdminDashScoreValidation />
+              </PrivateRoute>
+            </AdminRouter>
+          }
+        />
+
+        <Route
+          path="/admin/enrollments"
+          element={
+            <AdminRouter>
+              <PrivateRoute>
+                <AdminDashboard_Enrollments />
               </PrivateRoute>
             </AdminRouter>
           }

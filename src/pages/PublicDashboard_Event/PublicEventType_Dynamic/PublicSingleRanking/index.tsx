@@ -6,7 +6,7 @@ interface PublicSingleRankingProps {}
 const PublicSingleRanking: FunctionComponent<PublicSingleRankingProps> = () => {
   return (
     <GlobalContainer>
-      <h2>Ranking Singles</h2>
+      <h2>Ranking Single</h2>
     </GlobalContainer>
   );
 };

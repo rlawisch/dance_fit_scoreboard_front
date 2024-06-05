@@ -38,6 +38,12 @@ export interface IEventType {
   events: Event[]
 }
 
+export interface IEnrollment {
+  enrollment_id: number,
+  player: IPlayer,
+  event: IEvent
+}
+
 export interface ICategory {
   category_id: string;
   name: string;

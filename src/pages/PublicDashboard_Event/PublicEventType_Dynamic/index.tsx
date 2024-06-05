@@ -63,7 +63,7 @@ const PublicEventType_Dynamic: FunctionComponent<
 
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate("/admin/events")}>Voltar</Button>
+      <Button onClick={() => navigate("/public/events")}>Voltar</Button>
 
       <Title>{!!eventData && eventData.name}</Title>
 

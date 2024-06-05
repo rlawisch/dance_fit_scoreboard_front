@@ -189,6 +189,10 @@ export const TableScoreValue = styled.span`
   }
 `;
 
+export const EventInfoWrapper = styled.div`
+  
+`
+
 export const PlayerMiniature = styled.img`
   width: 48px;
   height: 48px;

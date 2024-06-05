@@ -80,6 +80,13 @@ export interface IComfortLevelFormCreate {
   level_double: number
 }
 
+export interface IComfortLevelCreate {
+  level_single: number
+  level_double: number
+  player_id: number
+  event_id: number
+}
+
 export interface IComfortLevelFormUpdate {
   level_single?: number
   level_double?: number
