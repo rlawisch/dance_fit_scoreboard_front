@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect } from "react";
-import Button from "../../../../components/Button";
 import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
@@ -10,17 +9,11 @@ import {
   TableHeaderWrapper,
 } from "../../../../styles/global";
 import { IMusic } from "../../../../types/entity-types";
-import DeleteButton from "../../../../components/Button_Delete";
-import useModal from "../../../../providers/Modal";
-import Modal from "../../../../components/Modal";
-import SongListAddSongForm from "../../../../components/Forms/SongListAddSong";
-import useDynamicModal from "../../../../providers/DynamicModal";
-import { TbMusicMinus } from "react-icons/tb";
-import SongListRemoveSongForm from "../../../../components/Forms/SongListRemoveSong";
 
-interface ListManagementProps {}
 
-const ListManagement: FunctionComponent<ListManagementProps> = () => {
+interface PublicSongListProps {}
+
+const PublicSongList: FunctionComponent<PublicSongListProps> = () => {
   const { event_id } = useParams();
 
   const {
@@ -64,28 +57,8 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
     groupedMusics[mode].sort((a, b) => a.level - b.level);
   });
 
-  const {
-    isOpen: isOpenSongListAddSong,
-    openModal: openSongListAddSong,
-    closeModal: closeSongListAddSong,
-  } = useModal();
-
-  const {
-    isModalOpen: isSongListRemoveSongOpen,
-    openModal: openSongListRemoveSongModal,
-    closeModal: closeSongListRemoveSongModal,
-  } = useDynamicModal();
-
   return (
     <>
-      {!!songListData && (
-        <Button onClick={openSongListAddSong}>Adicionar Musica</Button>
-      )}
-
-      <Modal isOpen={isOpenSongListAddSong} onClose={closeSongListAddSong}>
-        <SongListAddSongForm song_list={songListData} />
-      </Modal>
-
       <Table>
         <thead>
           <tr>
@@ -112,26 +85,6 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
                             .padStart(2, "0")}.png`}
                         />
                       </MusicWrapper>
-                      <div>
-                        <DeleteButton
-                          onClick={() =>
-                            openSongListRemoveSongModal(music.music_id)
-                          }
-                        >
-                          <TbMusicMinus />
-                        </DeleteButton>
-                        <Modal
-                          isOpen={isSongListRemoveSongOpen(music.music_id)}
-                          onClose={() =>
-                            closeSongListRemoveSongModal(music.music_id)
-                          }
-                        >
-                          <SongListRemoveSongForm
-                            song_list={songListData}
-                            music={music}
-                          />
-                        </Modal>
-                      </div>
                     </TableHeaderWrapper>
                   </td>
                 </tr>
@@ -144,4 +97,4 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
   );
 };
 
-export default ListManagement;
+export default PublicSongList;

@@ -7,7 +7,7 @@ import { IoHomeOutline } from "react-icons/io5";
 import { useDashboard } from "../../providers/Dashboard";
 import { FaHouseUser } from "react-icons/fa";
 import { GrValidate } from "react-icons/gr";
-import { MdEventNote } from "react-icons/md";
+import { MdAssignment, MdEventNote } from "react-icons/md";
 import {
   Nickname,
   PlayerInfoWrapper,
@@ -84,6 +84,14 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
         >
           <GrValidate />
           {sideBarStatus ? "Validar Scores" : ""}
+        </SidebarLi>
+
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/admin/enrollments")}
+        >
+          <MdAssignment />
+          {sideBarStatus ? "Inscrições" : ""}
         </SidebarLi>
 
         <SidebarLi

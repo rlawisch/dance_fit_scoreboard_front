@@ -1,9 +1,9 @@
 import { FunctionComponent } from "react";
 import { GlobalContainer } from "../../../../styles/global";
 
-interface AdminGeneralRankingProps {}
+interface GeneralRankingProps {}
 
-const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
+const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
   return (
     <GlobalContainer>
       <h2>Ranking Geral</h2>
@@ -11,4 +11,4 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
   );
 };
 
-export default AdminGeneralRanking;
+export default GeneralRanking;

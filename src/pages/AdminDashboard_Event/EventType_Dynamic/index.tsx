@@ -12,6 +12,8 @@ import AdminGeneralRanking from "./AdminGeneralRanking";
 import AdminSingleRanking from "./AdminSingleRaking";
 import AdminDoubleRanking from "./AdminDoubleRanking";
 import ListManagement from "./ListManagement";
+import { useEnrollments } from "../../../providers/Enrollments";
+import { usePlayer } from "../../../providers/Players";
 
 interface AdminEventType_DynamicProps {}
 
@@ -24,6 +26,10 @@ const AdminEventType_Dynamic: FunctionComponent<
   const navigate = useNavigate();
 
   const { eventData, getEventData } = useEvents();
+
+  const { decodedPlayerInfo } = usePlayer()
+
+  const { createEnrollment } = useEnrollments()
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -71,6 +77,12 @@ const AdminEventType_Dynamic: FunctionComponent<
       <Button onClick={() => navigate("/admin/events")}>Voltar</Button>
 
       <Title>{!!eventData && eventData.name}</Title>
+
+      <Button
+        onClick={() => createEnrollment(Number(decodedPlayerInfo.player_id), Number(event_id))}
+      >
+        Inscrição
+      </Button>
 
       <NavigationHeaderWrapper>
         <NavigationSelector onClick={() => handleViewGeneralRanking()}>
