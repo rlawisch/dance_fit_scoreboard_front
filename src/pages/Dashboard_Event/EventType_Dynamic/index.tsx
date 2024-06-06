@@ -9,6 +9,7 @@ import DoubleRanking from "./DoubleRanking";
 import SingleRanking from "./SingleRanking";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
+import PlayerList from "./PlayerList";
 
 interface EventType_DynamicProps {}
 
@@ -35,12 +36,15 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
     useState<boolean>(false);
   const [isActiveSongListManagement, setIsActiveSongListManagement] =
     useState<boolean>(false);
+    useState<boolean>(false);
+    const [isActivePlayerList, setIsActivePlayerList] = useState<boolean>(false)
 
   const handleViewGeneralRanking = () => {
     setIsActiveGeneralRanking(true);
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewSingleRanking = () => {
@@ -48,6 +52,7 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
     setIsActiveSingleRanking(true);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewDoubleRanking = () => {
@@ -55,6 +60,7 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(true);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewSongListManagement = () => {
@@ -62,7 +68,16 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(true);
+    setIsActivePlayerList(false)
   };
+
+  const handleViewPlayerList = () => {
+    setIsActiveGeneralRanking(false);
+    setIsActiveSingleRanking(false);
+    setIsActiveDoubleRanking(false);
+    setIsActiveSongListManagement(false);
+    setIsActivePlayerList(true)
+  }
 
   return (
     <GlobalContainer>
@@ -89,12 +104,16 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
         <NavigationSelector onClick={() => handleViewSongListManagement()}>
           Lista de Músicas
         </NavigationSelector>
+        <NavigationSelector onClick={() => handleViewPlayerList()}>
+          Lista de Jogadores
+        </NavigationSelector>
       </NavigationHeaderWrapper>
 
       {!!isActiveGeneralRanking && <GeneralRanking />}
       {!!isActiveSingleRanking && <SingleRanking />}
       {!!isActiveDoubleRanking && <DoubleRanking />}
       {!!isActiveSongListManagement && <SongList />}
+      {!!isActivePlayerList && <PlayerList />}
     </GlobalContainer>
   );
 };

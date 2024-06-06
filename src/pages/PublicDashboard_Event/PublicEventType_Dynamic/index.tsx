@@ -1,12 +1,18 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEvents } from "../../../providers/Events";
-import { GlobalContainer, NavigationHeaderWrapper, NavigationSelector, Title } from "../../../styles/global";
+import {
+  GlobalContainer,
+  NavigationHeaderWrapper,
+  NavigationSelector,
+  Title,
+} from "../../../styles/global";
 import Button from "../../../components/Button";
 import PublicGeneralRanking from "./PublicGeneralRanking";
 import PublicSingleRanking from "./PublicSingleRanking";
 import PublicDoubleRanking from "./PublicDoubleRanking";
 import PublicSongList from "./PublicSongList";
+import PublicPlayerList from "./PublicPlayerList";
 
 interface PublicEventType_DynamicProps {}
 
@@ -31,12 +37,14 @@ const PublicEventType_Dynamic: FunctionComponent<
     useState<boolean>(false);
   const [isActiveSongListManagement, setIsActiveSongListManagement] =
     useState<boolean>(false);
+  const [isActivePlayerList, setIsActivePlayerList] = useState<boolean>(false);
 
   const handleViewGeneralRanking = () => {
     setIsActiveGeneralRanking(true);
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewSingleRanking = () => {
@@ -44,6 +52,7 @@ const PublicEventType_Dynamic: FunctionComponent<
     setIsActiveSingleRanking(true);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewDoubleRanking = () => {
@@ -51,6 +60,7 @@ const PublicEventType_Dynamic: FunctionComponent<
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(true);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewSongListManagement = () => {
@@ -58,8 +68,16 @@ const PublicEventType_Dynamic: FunctionComponent<
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(true);
+    setIsActivePlayerList(false)
   };
 
+  const handleViewPlayerList = () => {
+    setIsActiveGeneralRanking(false);
+    setIsActiveSingleRanking(false);
+    setIsActiveDoubleRanking(false);
+    setIsActiveSongListManagement(false);
+    setIsActivePlayerList(true)
+  }
 
   return (
     <GlobalContainer>
@@ -80,13 +98,16 @@ const PublicEventType_Dynamic: FunctionComponent<
         <NavigationSelector onClick={() => handleViewSongListManagement()}>
           Lista de Músicas
         </NavigationSelector>
+        <NavigationSelector onClick={() => handleViewPlayerList()}>
+          Lista de Jogadores
+        </NavigationSelector>
       </NavigationHeaderWrapper>
 
       {!!isActiveGeneralRanking && <PublicGeneralRanking />}
       {!!isActiveSingleRanking && <PublicSingleRanking />}
       {!!isActiveDoubleRanking && <PublicDoubleRanking />}
       {!!isActiveSongListManagement && <PublicSongList />}
-
+      {!!isActivePlayerList && <PublicPlayerList />}
     </GlobalContainer>
   );
 };
