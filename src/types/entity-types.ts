@@ -71,8 +71,8 @@ export interface IComfortLevel {
   comfort_level_id: number
   level_single: number 
   level_double: number
-  player: IPlayer
-  event: IEvent
+  player?: IPlayer
+  event?: IEvent
 }
 
 export interface ISongList {

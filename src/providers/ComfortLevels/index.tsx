@@ -7,8 +7,10 @@ import { IComfortLevel } from "../../types/entity-types";
 
 export interface IComfortLevelContext {
   comfortLevels: IComfortLevel[];
+  eventPlayerComfortLevel: IComfortLevel | undefined;
   createComfortLevel: (comfortlevelInput: IComfortLevelCreate) => void;
   getComfortLevels: () => void;
+  getEventPlayerComfortLevel: (event_id: number) => void
 }
 
 const ComfortLevelContext = createContext<IComfortLevelContext>(
@@ -21,6 +23,8 @@ export const ComfortLevelProvider: React.FC<{ children: React.ReactNode }> = ({
   const { accToken } = usePlayer();
 
   const [comfortLevels, setComfortLevels] = useState<IComfortLevel[]>([]);
+
+  const [eventPlayerComfortLevel, setEventPlayerComfortLevel] = useState<IComfortLevel>()
 
   const createComfortLevel = async (
     comfortLevelInput: IComfortLevelCreate
@@ -54,12 +58,31 @@ export const ComfortLevelProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const getEventPlayerComfortLevel = async (event_id: number) => {
+    try {
+      const res = await api.get(`/comfort-levels/events/${event_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`
+        }
+      })
+
+      if (res.status === 200) {
+        setEventPlayerComfortLevel(res.data)
+      }
+
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
+
   return (
     <ComfortLevelContext.Provider
       value={{
         comfortLevels,
+        eventPlayerComfortLevel,
         createComfortLevel,
         getComfortLevels,
+        getEventPlayerComfortLevel,
       }}
     >
       {children}

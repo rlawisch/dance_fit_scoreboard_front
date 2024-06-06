@@ -9,6 +9,10 @@ import {
   TableHeaderWrapper,
 } from "../../../../styles/global";
 import { IMusic } from "../../../../types/entity-types";
+import { useComfortLevel } from "../../../../providers/ComfortLevels";
+import { usePlayer } from "../../../../providers/Players";
+import Button from "../../../../components/Button";
+import { TiUploadOutline } from "react-icons/ti";
 
 
 interface SongListProps {}
@@ -25,12 +29,19 @@ const SongList: FunctionComponent<SongListProps> = () => {
 
   const { getEventData, eventData } = useEvents();
 
+  const { getEventPlayerComfortLevel, eventPlayerComfortLevel } = useComfortLevel()
+
+  const { decodedPlayerInfo } = usePlayer()
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
   useEffect(() => {
     getSongListData(Number(eventData?.song_list?.song_list_id))
+    
+    if (eventData?.players?.some((player) => player.player_id == decodedPlayerInfo.player_id)) {
+      getEventPlayerComfortLevel(Number(event_id))
+    }
   }, [eventData])
 
   useEffect(() => {
@@ -56,6 +67,17 @@ const SongList: FunctionComponent<SongListProps> = () => {
   Object.keys(groupedMusics).forEach((mode) => {
     groupedMusics[mode].sort((a, b) => a.level - b.level);
   });
+
+  // Determine comfort level range
+  const isMusicInComfortLevelRange = (music: IMusic) => {
+    if (!eventPlayerComfortLevel) {
+      return false
+    }
+
+    const {level_single, level_double} = eventPlayerComfortLevel
+    const comfortLevel = music.mode === 'single' ? level_single : level_double
+    return music.level >= comfortLevel && music.level <= comfortLevel + 6
+  }
 
   return (
     <>
@@ -84,6 +106,9 @@ const SongList: FunctionComponent<SongListProps> = () => {
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
+                        {isMusicInComfortLevelRange(music) && (
+                          <Button><TiUploadOutline/></Button>
+                        )}
                       </MusicWrapper>
                     </TableHeaderWrapper>
                   </td>

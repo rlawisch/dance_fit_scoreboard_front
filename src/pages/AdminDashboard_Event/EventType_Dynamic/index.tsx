@@ -14,6 +14,7 @@ import AdminDoubleRanking from "./AdminDoubleRanking";
 import ListManagement from "./ListManagement";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
+import AdminPlayerList from "./AdminPlayerList";
 
 interface AdminEventType_DynamicProps {}
 
@@ -43,12 +44,14 @@ const AdminEventType_Dynamic: FunctionComponent<
     useState<boolean>(false);
   const [isActiveSongListManagement, setIsActiveSongListManagement] =
     useState<boolean>(false);
+  const [isActivePlayerList, setIsActivePlayerList] = useState<boolean>(false)
 
   const handleViewGeneralRanking = () => {
     setIsActiveGeneralRanking(true);
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
   };
 
   const handleViewSingleRanking = () => {
@@ -56,6 +59,8 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveSingleRanking(true);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
+
   };
 
   const handleViewDoubleRanking = () => {
@@ -63,6 +68,8 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(true);
     setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
+
   };
 
   const handleViewSongListManagement = () => {
@@ -70,7 +77,16 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveSingleRanking(false);
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(true);
+    setIsActivePlayerList(false)
   };
+
+  const handleViewPlayerList = () => {
+    setIsActiveGeneralRanking(false);
+    setIsActiveSingleRanking(false);
+    setIsActiveDoubleRanking(false);
+    setIsActiveSongListManagement(false);
+    setIsActivePlayerList(true)
+  }
 
   return (
     <GlobalContainer>
@@ -97,35 +113,18 @@ const AdminEventType_Dynamic: FunctionComponent<
         <NavigationSelector onClick={() => handleViewSongListManagement()}>
           Lista de Músicas
         </NavigationSelector>
+        <NavigationSelector onClick={() => handleViewPlayerList()}>
+          Lista de Jogadores
+        </NavigationSelector>
       </NavigationHeaderWrapper>
 
       {!!isActiveGeneralRanking && <AdminGeneralRanking />}
       {!!isActiveSingleRanking && <AdminSingleRanking />}
       {!!isActiveDoubleRanking && <AdminDoubleRanking />}
       {!!isActiveSongListManagement && <ListManagement />}
-      {/* TODO
+      {!!isActivePlayerList && <AdminPlayerList />}
+      
 
-        Different Views
-
-          Ranking Geral
-
-          Ranking Single
-
-          Ranking Double
-
-          ADM ONLY
-
-            Gerenciamento da Lista de Musicas
-
-              Create Song List Button
-
-              AddSongToListForm
-
-              RemoveSongFromListForm
-
-              Render Song List Table (Singles/Doubles)
-
-      */}
     </GlobalContainer>
   );
 };
