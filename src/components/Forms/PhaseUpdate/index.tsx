@@ -63,7 +63,6 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
     formData: IPhaseFormUpdate,
     phase: IPhase,
   ) => {
-    console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
       toast.error(
@@ -79,8 +78,6 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
       Object.entries(formData).filter(([_, value]) => value !== undefined),
     );
 
-    console.log("filtered:", filteredFormData);
-
     let realFormData: IPhaseRealUpdate = { ...filteredFormData };
 
     if (filteredFormData.modes_available !== undefined) {
@@ -89,8 +86,6 @@ const PhaseUpdateForm: FunctionComponent<PhaseUpdateFormProps> = ({
         modes_available: filteredFormData.modes_available.split(","),
       };
     }
-
-    console.log("real:", realFormData);
 
     updatePhase(realFormData, Number(phase_id));
   };

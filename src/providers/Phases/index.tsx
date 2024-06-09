@@ -31,7 +31,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
           Authorization: `Bearer ${accToken}`,
         },
       });
-      console.log(res);
 
       if (res.status === 201) {
         toast.success("Fase criada com sucesso");
@@ -171,7 +170,6 @@ export const PhasesProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
 
-      console.log(res);
 
       if (res.status === 200) {
         toast.success("Fase deletada com sucesso");

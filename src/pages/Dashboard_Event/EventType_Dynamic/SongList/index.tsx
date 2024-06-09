@@ -13,6 +13,9 @@ import { useComfortLevel } from "../../../../providers/ComfortLevels";
 import { usePlayer } from "../../../../providers/Players";
 import Button from "../../../../components/Button";
 import { TiUploadOutline } from "react-icons/ti";
+import useDynamicModal from "../../../../providers/DynamicModal";
+import Modal from "../../../../components/Modal";
+import ScoreCreateForm from "../../../../components/Forms/ScoreSubmit";
 
 
 interface SongListProps {}
@@ -32,6 +35,7 @@ const SongList: FunctionComponent<SongListProps> = () => {
   const { getEventPlayerComfortLevel, eventPlayerComfortLevel } = useComfortLevel()
 
   const { decodedPlayerInfo } = usePlayer()
+  
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
@@ -79,6 +83,12 @@ const SongList: FunctionComponent<SongListProps> = () => {
     return music.level >= comfortLevel && music.level <= comfortLevel + 6
   }
 
+  const {
+    isModalOpen: isScoreCreateModalOpen,
+    openModal: openScoreCreateModal,
+    closeModal: closeScoreCreateModal,
+  } = useDynamicModal();
+
   return (
     <>
       <Table>
@@ -107,7 +117,19 @@ const SongList: FunctionComponent<SongListProps> = () => {
                             .padStart(2, "0")}.png`}
                         />
                         {isMusicInComfortLevelRange(music) && (
-                          <Button><TiUploadOutline/></Button>
+                          <div>
+                          <Button onClick={() => openScoreCreateModal(music.music_id)}>
+                            <TiUploadOutline/>
+                          </Button>
+                          <Modal
+                            isOpen={isScoreCreateModalOpen(music.music_id)}
+                            onClose={() => closeScoreCreateModal(music.music_id)}>
+                              <ScoreCreateForm
+                                music={music}
+                                event={eventData? eventData : undefined}
+                               />
+                          </Modal>
+                          </div>
                         )}
                       </MusicWrapper>
                     </TableHeaderWrapper>

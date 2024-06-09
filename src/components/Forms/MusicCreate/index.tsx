@@ -40,7 +40,6 @@ const MusicCreateForm: FunctionComponent<MusicCreateFormProps> = () => {
   ];
 
   const onCreateMusicFormSubmit = (formData: IMusicCreate) => {
-    console.log(formData);
     createMusic(formData);
   };
 

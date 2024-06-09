@@ -320,6 +320,8 @@ export const NavigationHeaderWrapper = styled.div`
   align-items: center;
   gap: 0.6rem;
 
+  margin-bottom: 32px;
+
   @media screen and (min-width: 576px) {
     flex-direction: row;
   }
@@ -333,3 +335,5 @@ export const NavigationSelector = styled.h3`
     color: ${props => shade(0.5, props.theme.colors.text)}
   }
 `
+
+// score Validation styles

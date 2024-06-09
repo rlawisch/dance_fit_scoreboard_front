@@ -44,7 +44,6 @@ const ComfortLevelCreateForm: FunctionComponent<
   });
 
   const onCreateComfortLevelSubmit = (formData: IComfortLevelFormCreate) => {
-    console.log(formData)
     
     const { level_single, level_double } = formData;
 
@@ -56,8 +55,6 @@ const ComfortLevelCreateForm: FunctionComponent<
       player_id: Number(player.player_id),
       event_id: Number(event.event_id),
     };
-
-     console.log(comfortLevelData)
 
     createComfortLevel(comfortLevelData)
     adminAddPlayer(Number(event.event_id), Number(player.player_id))

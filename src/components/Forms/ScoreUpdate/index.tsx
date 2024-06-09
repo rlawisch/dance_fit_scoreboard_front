@@ -141,7 +141,6 @@ const ScoreUpdateForm: FunctionComponent<ScoreUpdateFormProps> = ({
   ];
 
   const onUpdateScoreFromSubmit = (formData: IScoreUpdate) => {
-    console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
       toast.error(

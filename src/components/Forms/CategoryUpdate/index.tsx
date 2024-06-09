@@ -60,7 +60,6 @@ const CategoryUpdateForm: FunctionComponent<CategoryUpdateFormProps> = ({
     formData: ICategoryUpdate,
     category: ICategory,
   ) => {
-    console.log(formData);
 
     if (JSON.stringify(formData) === "{}") {
       toast.error(

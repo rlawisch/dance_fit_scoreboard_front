@@ -71,7 +71,6 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         } else if (fileData instanceof ArrayBuffer) {
           const decoder = new TextDecoder();
           imageDataUrl = decoder.decode(fileData);
-          console.log(imageDataUrl);
         }
 
         if (typeof imageDataUrl === "string" && rotation) {
@@ -129,7 +128,6 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         );
 
         if (croppedImage !== null) {
-          console.log(croppedImage);
           const response = await fetch(croppedImage);
           const blob = await response.blob();
           const file = new File([blob], "profile_picture.jpg", {
@@ -138,11 +136,6 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
 
           const formData = new FormData();
           formData.append("file", file, "profile_picture.jpg");
-
-          // Check if FormData is populated
-          for (const pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-          }
 
           // Call the uploadProfilePicture function with the cropped image
           uploadProfilePicture(formData);

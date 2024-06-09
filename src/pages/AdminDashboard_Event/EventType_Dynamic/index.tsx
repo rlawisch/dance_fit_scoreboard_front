@@ -15,6 +15,7 @@ import ListManagement from "./ListManagement";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
 import AdminPlayerList from "./AdminPlayerList";
+import AdminValidateScores from "./AdminValidateScores";
 
 interface AdminEventType_DynamicProps {}
 
@@ -45,6 +46,7 @@ const AdminEventType_Dynamic: FunctionComponent<
   const [isActiveSongListManagement, setIsActiveSongListManagement] =
     useState<boolean>(false);
   const [isActivePlayerList, setIsActivePlayerList] = useState<boolean>(false)
+  const [isActiveScoreValidation, setIsActiveScoreValidation] = useState<boolean>(false)
 
   const handleViewGeneralRanking = () => {
     setIsActiveGeneralRanking(true);
@@ -52,6 +54,7 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
     setIsActivePlayerList(false)
+    setIsActiveScoreValidation(false)
   };
 
   const handleViewSingleRanking = () => {
@@ -60,6 +63,7 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
     setIsActivePlayerList(false)
+    setIsActiveScoreValidation(false)
 
   };
 
@@ -69,6 +73,7 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveDoubleRanking(true);
     setIsActiveSongListManagement(false);
     setIsActivePlayerList(false)
+    setIsActiveScoreValidation(false)
 
   };
 
@@ -78,6 +83,8 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(true);
     setIsActivePlayerList(false)
+    setIsActiveScoreValidation(false)
+
   };
 
   const handleViewPlayerList = () => {
@@ -86,6 +93,17 @@ const AdminEventType_Dynamic: FunctionComponent<
     setIsActiveDoubleRanking(false);
     setIsActiveSongListManagement(false);
     setIsActivePlayerList(true)
+    setIsActiveScoreValidation(false)
+
+  }
+
+  const handleViewScoreValidation = () => {
+    setIsActiveGeneralRanking(false);
+    setIsActiveSingleRanking(false);
+    setIsActiveDoubleRanking(false);
+    setIsActiveSongListManagement(false);
+    setIsActivePlayerList(false)
+    setIsActiveScoreValidation(true)
   }
 
   return (
@@ -116,6 +134,9 @@ const AdminEventType_Dynamic: FunctionComponent<
         <NavigationSelector onClick={() => handleViewPlayerList()}>
           Lista de Jogadores
         </NavigationSelector>
+        <NavigationSelector onClick={() => handleViewScoreValidation()}> 
+          Validação de Scores
+        </NavigationSelector>
       </NavigationHeaderWrapper>
 
       {!!isActiveGeneralRanking && <AdminGeneralRanking />}
@@ -123,6 +144,7 @@ const AdminEventType_Dynamic: FunctionComponent<
       {!!isActiveDoubleRanking && <AdminDoubleRanking />}
       {!!isActiveSongListManagement && <ListManagement />}
       {!!isActivePlayerList && <AdminPlayerList />}
+      {!!isActiveScoreValidation && <AdminValidateScores />}
       
 
     </GlobalContainer>

@@ -106,6 +106,7 @@ export const SidebarLogoutBtn = styled.button`
   margin-bottom: 1rem;
   font-size: 1.5rem;
   font-weight: bold;
+  margin-top: 2rem;
 
   &:hover {
     background: ${(props) => shade(0.2, props.theme.colors.secundary)};
