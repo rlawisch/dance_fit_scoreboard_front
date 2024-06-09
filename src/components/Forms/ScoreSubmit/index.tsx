@@ -21,7 +21,7 @@ import {
 } from "react-icons/bs";
 import Select from "../../Select";
 import Button from "../../Button";
-// import { useScore } from "../../../providers/Scores";
+import { useScore } from "../../../providers/Scores";
 import { FaFileAlt } from "react-icons/fa";
 import Cropper, { Area, Point } from "react-easy-crop";
 import { readFile } from "../../../utils/readFile";
@@ -43,7 +43,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   music,
   event,
 }) => {
-  // const { submitScore } = useScore();
+  const { submitScore } = useScore();
 
   const scoreCreateSchema = yup.object().shape({
     value: yup.number().required(),
@@ -176,7 +176,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             multipartForm.append(key, (realFormData as any)[key]);
           });
 
-          // submitScore(multipartForm);
+          submitScore(multipartForm);
         }
       }
     } catch (error) {
