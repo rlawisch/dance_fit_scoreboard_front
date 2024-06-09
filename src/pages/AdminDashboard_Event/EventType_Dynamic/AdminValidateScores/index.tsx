@@ -10,30 +10,17 @@ interface AdminValidateScoresProps {
  
 const AdminValidateScores: FunctionComponent<AdminValidateScoresProps> = () => {
     
-    // TODO:
-
-    // create a function inside scores context that brings all the 
-    // unvalidated scores submited to this dynamic event
-
-    // render for each score all the score data
-
-    // render two buttons
-
-    // validate (v)
-    //   this will call a function that patches the scores
-    //   changing the validated status to true
-
-    // invalidate (x)
-    //    this will call a function that will delete the score
-    //    and remove its uploaded picture from the bucket (server side)
-
     const { event_id } = useParams()
 
-    const { getPendingScoresByEvent, pendingScores } = useScore()
+    const { getPendingScoresByEvent, pendingScores, scoreRefreshTrigger } = useScore()
 
     useEffect(() => {
         getPendingScoresByEvent(Number(event_id))
     }, [])
+
+    useEffect(() => {
+        getPendingScoresByEvent(Number(event_id))
+    }, [scoreRefreshTrigger])
 
     const sortedScoresByDate = pendingScores.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
 

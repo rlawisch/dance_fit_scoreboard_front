@@ -12,14 +12,18 @@ import { useState } from "react";
 import { IScore } from "../../types/entity-types";
 
 export interface IScoreContext {
-  scores: IScore[];
+  eventScores: IScore[];
   pendingScores: IScore[];
+  isLoadingSubmitScore: boolean;
+  scoreRefreshTrigger: boolean;
   submitScore: (formData: FormData) => Promise<void>;
   adminCreateScore: (formData: IScoreCreateByAdmin) => void;
   getScoresByEvent: (event_id: number) => void;
   getPendingScoresByEvent: (event_id: number) => void
   updateScore: (formData: IScoreUpdate, score_id: number) => void;
   deleteScore: (score_id: number) => void;
+  adminValidateScore: (score_id: number) => void;
+  adminInvalidateScore: (score_id: number) => void;
 }
 
 const ScoreContext = createContext<IScoreContext>({} as IScoreContext);
@@ -31,13 +35,17 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory();
 
-  const [scores, setScores] = useState<IScore[]>([]);
+  const [eventScores, setEventScores] = useState<IScore[]>([]);
 
   const [pendingScores, setPendingScores] = useState<IScore[]>([])
 
+  const [scoreRefreshTrigger, setScoreRefreshTrigger] = useState<boolean>(true)
+
+  const [isLoadingSubmitScore, setIsLoadingSubmitScore] = useState<boolean>(false)
+
   const submitScore = async (formData: FormData): Promise<void> => {
     try {
-
+      setIsLoadingSubmitScore(true)
       const res = await api.post(`/scores`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -47,7 +55,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Score criado com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger);
+        setIsLoadingSubmitScore(false)
+        setScoreRefreshTrigger(!scoreRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -109,12 +118,48 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const adminValidateScore = async (score_id: number) => {
+    try {
+      const res = await api.post(`/scores/admin/validate/${score_id}`, null, {
+        headers: {
+          Authorization: `Bearer ${accToken}`
+        }
+      })
+
+      console.log(res.status)
+
+      if (res.status === 201) {
+        setScoreRefreshTrigger(!scoreRefreshTrigger)
+        toast.success("Score validado com sucesso")
+      }
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
+
+  const adminInvalidateScore = async (score_id: number) => {
+    try {
+      const res = await api.delete(`/scores/admin/invalidate/${score_id}`, {
+        headers: {
+          Authorization: `Bearer ${accToken}`
+        }
+      })
+
+      if (res.status === 200) {
+        setScoreRefreshTrigger(!scoreRefreshTrigger)
+        toast.success("Score invalidado com sucesso")
+      }
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
+
   const getScoresByEvent = async (event_id: number) => {
     try {
       const res = await api.get(`/scores/events/${event_id}`);
 
       if (res.status === 200) {
-        setScores(res.data);
+        setEventScores(res.data);
       }
     } catch (err: any) {
       console.log(err)
@@ -177,14 +222,18 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <ScoreContext.Provider
       value={{
-        scores,
+        eventScores,
         pendingScores,
+        isLoadingSubmitScore,
+        scoreRefreshTrigger,
         submitScore,
         adminCreateScore,
         getScoresByEvent,
         getPendingScoresByEvent,
         updateScore,
         deleteScore,
+        adminValidateScore,
+        adminInvalidateScore,
       }}
     >
       {children}

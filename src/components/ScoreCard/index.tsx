@@ -22,7 +22,7 @@ import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
 import { PlayerInfoWrapper, PlayerMiniature } from "../../styles/global";
 
 interface ScoreCardProps {
-  score: IScore;
+  score: IScore | undefined
 }
 
 const ScoreCard: FunctionComponent<ScoreCardProps> = ({ score }) => {
@@ -31,23 +31,23 @@ const ScoreCard: FunctionComponent<ScoreCardProps> = ({ score }) => {
       <ScoreInfoContainer>
         <PlayerInfoWrapper>
           <PlayerMiniature
-            src={score.player.profilePicture || "/img/default_player.png"}
-            alt={score.player.nickname}
+            src={score?.player.profilePicture || "/img/default_player.png"}
+            alt={score?.player.nickname}
           />
-          {score.player.nickname}
+          {score?.player.nickname}
         </PlayerInfoWrapper>
       </ScoreInfoContainer>
 
       <ScoreDataContainer>
         <ScoreGradeAndPlating>
-          <ScoreValue>{score.value.toLocaleString()}</ScoreValue>
+          <ScoreValue>{score?.value.toLocaleString()}</ScoreValue>
           <div>
             <ScoreGrade src={getGradeImageFileName(score)} />
           </div>
           <div>
-            {score.plate && (
+            {score?.plate && (
               <ScorePlate
-                src={`/static/musics/plating/${score.plate.toLowerCase()}.png`}
+                src={`/static/musics/plating/${score?.plate.toLowerCase()}.png`}
               />
             )}
           </div>
@@ -69,17 +69,17 @@ const ScoreCard: FunctionComponent<ScoreCardProps> = ({ score }) => {
           </ScoreDetailDiscription>
 
           <ScoreDetailValues>
-            <Perfects>{score.perfect}</Perfects>
+            <Perfects>{score?.perfect}</Perfects>
 
-            <Greats>{score.great}</Greats>
+            <Greats>{score?.great}</Greats>
 
-            <Goods>{score.good}</Goods>
+            <Goods>{score?.good}</Goods>
 
-            <Bads>{score.bad}</Bads>
+            <Bads>{score?.bad}</Bads>
 
-            <Misses>{score.miss}</Misses>
+            <Misses>{score?.miss}</Misses>
 
-            <MaxCombo>{score.max_combo}</MaxCombo>
+            <MaxCombo>{score?.max_combo}</MaxCombo>
           </ScoreDetailValues>
         </ScoreDetailedContainer>
       </ScoreDataContainer>

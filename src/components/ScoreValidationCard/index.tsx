@@ -1,6 +1,12 @@
 import { FunctionComponent } from "react";
 import { IScore } from "../../types/entity-types";
-import { PlayerInfoWrapper, PlayerMiniature } from "../../styles/global";
+import {
+  GlobalContainer,
+  MusicLevelMiniature,
+  MusicWrapper,
+  PlayerInfoWrapper,
+  PlayerMiniature,
+} from "../../styles/global";
 import {
   ScoreImage,
   ScoreValidationActionWrapper,
@@ -26,6 +32,9 @@ import {
 import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
 import Button from "../Button";
 import DeleteButton from "../Button_Delete";
+import { useScore } from "../../providers/Scores";
+import useDynamicModal from "../../providers/DynamicModal";
+import Modal from "../Modal";
 
 interface ScoreValidationCardProps {
   score: IScore;
@@ -34,6 +43,20 @@ interface ScoreValidationCardProps {
 const ScoreValidationCard: FunctionComponent<ScoreValidationCardProps> = ({
   score,
 }) => {
+  const { adminValidateScore, adminInvalidateScore } = useScore();
+
+  const {
+    isModalOpen: isConfirmValidationModalOpen,
+    openModal: openConfirmValidationModal,
+    closeModal: closeConfirmValidationModal,
+  } = useDynamicModal();
+
+  const {
+    isModalOpen: isConfirmInvalidationModalOpen,
+    openModal: openConfirmInvalidationModal,
+    closeModal: closeConfirmInvalidationModal,
+  } = useDynamicModal();
+
   return (
     <ScoreValidationCardContainer>
       <ScoreValidationMainInfoWrapper>
@@ -44,6 +67,15 @@ const ScoreValidationCard: FunctionComponent<ScoreValidationCardProps> = ({
           />
           {score.player.nickname}
         </PlayerInfoWrapper>
+
+        <MusicWrapper>
+          <MusicLevelMiniature
+            src={`/static/musics/${score.music.mode}/${score.music.mode.charAt(0).toUpperCase()}${score.music.level
+              .toString()
+              .padStart(2, "0")}.png`}
+          />
+          {score.music.name}
+        </MusicWrapper>
 
         <ScoreGradeAndPlating>
           <ScoreValue>{score.value.toLocaleString()}</ScoreValue>
@@ -96,10 +128,49 @@ const ScoreValidationCard: FunctionComponent<ScoreValidationCardProps> = ({
 
       <ScoreValidationActionWrapper>
         <div>
-          <Button>Validar</Button>
+          <Button onClick={() => openConfirmValidationModal(score.score_id)}>
+            Validar
+          </Button>
+          <Modal
+            isOpen={isConfirmValidationModalOpen(score.score_id)}
+            onClose={() => closeConfirmValidationModal(score.score_id)}
+          >
+            <GlobalContainer>
+              <p>Tem certeza que quer validar o score ?</p>
+              <p>{score.value}</p>
+              <p>{score.great}</p>
+              <Button
+                vanilla={false}
+                onClick={() => adminValidateScore(Number(score.score_id))}
+              >
+                Validar
+              </Button>
+            </GlobalContainer>
+          </Modal>
         </div>
         <div>
-          <DeleteButton>Invalidar</DeleteButton>
+          <DeleteButton
+            onClick={() => openConfirmInvalidationModal(score.score_id)}
+          >
+            Invalidar
+          </DeleteButton>
+          <Modal
+            isOpen={isConfirmInvalidationModalOpen(score.score_id)}
+            onClose={() => closeConfirmInvalidationModal(score.score_id)}
+          >
+            <GlobalContainer>
+              <p>Tem certeza que quer invalidar o score ?</p>
+              <p>{score.value}</p>
+              <p>{score.great}</p>
+
+              <DeleteButton
+                vanilla={false}
+                onClick={() => adminInvalidateScore(Number(score.score_id))}
+              >
+                Invalidar
+              </DeleteButton>
+            </GlobalContainer>
+          </Modal>
         </div>
       </ScoreValidationActionWrapper>
     </ScoreValidationCardContainer>

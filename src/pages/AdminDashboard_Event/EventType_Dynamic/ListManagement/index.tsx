@@ -37,18 +37,18 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
   }, []);
 
   useEffect(() => {
-    getSongListData(Number(eventData?.song_list?.song_list_id))
-  }, [eventData])
+    getSongListData(Number(eventData?.song_list?.song_list_id));
+  }, [eventData]);
 
   useEffect(() => {
-    getSongListData(Number(eventData?.song_list?.song_list_id))
-  }, [songListRefreshTrigger])
+    getSongListData(Number(eventData?.song_list?.song_list_id));
+  }, [songListRefreshTrigger]);
 
   useEffect(() => {
     return () => {
-      setSongListData(undefined)
-    }
-  }, [])
+      setSongListData(undefined);
+    };
+  }, []);
 
   // Group musics by mode
   const groupedMusics: { [mode: string]: IMusic[] } = {};
@@ -105,12 +105,12 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
                   <td>
                     <TableHeaderWrapper>
                       <MusicWrapper>
-                        {music.name}
                         <MusicLevelMiniature
                           src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
+                        {music.name}
                       </MusicWrapper>
                       <div>
                         <DeleteButton
