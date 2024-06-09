@@ -100,4 +100,5 @@ export interface IScore {
   category: ICategory;
   music: IMusic;
   phase: IPhase;
+  score_picture?: string
 }

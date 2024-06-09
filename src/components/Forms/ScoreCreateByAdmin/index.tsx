@@ -118,7 +118,6 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
   ];
 
   const onAdmCreateScoreFormSubmit = (formData: IScoreFormCreate) => {
-    console.log(formData);
 
     const { category_id, event } = category;
 
@@ -141,8 +140,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
       music_id: Number(music_id),
       player_id: Number(player_id),
     };
-
-    console.log(realFormData);
+    
     adminCreateScore(realFormData);
   };
 

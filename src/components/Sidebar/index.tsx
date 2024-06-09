@@ -64,7 +64,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
       <SidebarUl>
         <SidebarLi
           isopen={sideBarStatus}
-          onClick={() => navigate("/dashboard")}
+          onClick={() => navigate("/dashboard/home")}
         >
           <IoHomeOutline />
           {sideBarStatus ? "Home" : ""}
@@ -105,10 +105,10 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
             {sideBarStatus ? "Admin" : ""}
           </SidebarLi>
         )}
-      </SidebarUl>
       <SidebarLogoutBtn onClick={() => playerLogout()}>
         <TbLogout2 />
       </SidebarLogoutBtn>
+      </SidebarUl>
     </SidebarContainer>
   );
 };

@@ -65,7 +65,6 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         },
       );
-      console.log(res);
 
       if (res.status === 201) {
         toast.success("Categoria criada com sucesso");
@@ -84,7 +83,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           Authorization: `Bearer ${accToken}`,
         },
       });
-      console.log(res.data.response);
+
       if (res.status === 200) {
         toast.success("Adicionado na categoria com sucesso!");
         setCategoryRefreshTrigger(!categoryRefreshTrigger);
@@ -198,7 +197,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         toast.error("Algo deu errado");
       }
-      console.log(res);
+
     } catch (err: any) {
       console.log(err);
       if (err.response.data.message === "Internal server error") {
@@ -214,7 +213,7 @@ export const CategoryProvider: React.FC<{ children: React.ReactNode }> = ({
           Authorization: `Bearer ${accToken}`,
         },
       });
-      console.log(res);
+      
       if (res.status === 200) {
         toast.success("Categoria deletada com sucesso");
         setEventRefreshTrigger(!eventRefreshTrigger);

@@ -1,5 +1,5 @@
-import { FunctionComponent } from "react";
-import { ICategory, IMusic, IPhase } from "../../../types/entity-types";
+import React, { FunctionComponent, useState } from "react";
+import { IEvent, IMusic } from "../../../types/entity-types";
 import {
   ContentWrapper,
   FormWrapper,
@@ -21,20 +21,28 @@ import {
 } from "react-icons/bs";
 import Select from "../../Select";
 import Button from "../../Button";
-import { useScore } from "../../../providers/Scores";
+// import { useScore } from "../../../providers/Scores";
+import { FaFileAlt } from "react-icons/fa";
+import Cropper, { Area, Point } from "react-easy-crop";
+import { readFile } from "../../../utils/readFile";
+import {
+  CropperFullWrapper,
+  CropperWrapper,
+  SliderWrapper,
+} from "../../../pages/Dashboard_Profile/styles";
+import { Slider, Typography } from "@material-ui/core";
+import { getCroppedImg } from "../../../utils/canvasUtils";
 
 interface ScoreCreateFormProps {
-  category: ICategory;
-  phase: IPhase;
   music: IMusic;
+  event: IEvent | undefined;
 }
 
 const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
-  category,
-  phase,
   music,
+  event,
 }) => {
-  const { createScore } = useScore();
+  // const { submitScore } = useScore();
 
   const scoreCreateSchema = yup.object().shape({
     value: yup.number().required(),
@@ -48,17 +56,22 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
       .boolean()
       .required()
       .transform((_, originalValue) =>
-        originalValue === "true" ? true : false,
+        originalValue === "true" ? true : false
       ),
     grade: yup.string().required(),
-    plate: yup.string().required(),
+    plate: yup
+      .string()
+      .transform((value, originalValue) =>
+        originalValue === "" ? undefined : value,
+      )
+      .nullable(),
   });
 
   const {
     register: registerCreateScore,
     handleSubmit: handleSubmitCreateScore,
     formState: { errors: createScoreErrors },
-  } = useForm({
+  } = useForm<IScoreFormCreate>({
     resolver: yupResolver(scoreCreateSchema),
   });
 
@@ -97,34 +110,146 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     { label: "Rough Game", value: "RG" },
   ];
 
-  const onCreateScoreFormSubmit = (formData: IScoreFormCreate) => {
-    console.log(formData);
+  // crop component states
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState<number>(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area>({} as Area);
+  const [croppedImage, setCroppedImage] = useState<string | null>(null);
 
-    const { category_id, event } = category;
+  const onCropComplete = (_: Area, croppedAreaPixels: Area) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
 
-    const { phase_id } = phase;
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      let imageDataUrl: string | null = null;
 
-    const { music_id } = music;
+      try {
+        const fileData = await readFile(file);
 
-    const realFormData: IScoreCreate = {
-      ...formData,
-      event_id: Number(event.event_id),
-      category_id: Number(category_id),
-      phase_id: Number(phase_id),
-      music_id: Number(music_id),
-    };
+        if (typeof fileData === "string") {
+          imageDataUrl = fileData;
+        } else if (fileData instanceof ArrayBuffer) {
+          const decoder = new TextDecoder();
+          imageDataUrl = decoder.decode(fileData)
+        }
+      } catch (e) {
+        console.warn("Failed to process the image", e);
+      }
 
-    console.log(realFormData);
-    createScore(realFormData);
+      setImageSrc(imageDataUrl);
+    }
+  };
+
+  const onCreateScoreFormSubmit = async (formData: IScoreFormCreate) => {
+    try {
+      if (imageSrc) {
+        const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+
+        if (croppedImage !== null) {
+          const response = await fetch(croppedImage);
+          const blob = await response.blob();
+
+          // Create a file from the blob with the name "score_picture.jpg"
+          const file = new File([blob], "score_picture.jpg", {
+            type: "image/jpeg",
+          });
+
+          // Create a new FormData object
+          const multipartForm = new FormData();
+
+          // Append the new file to the FormData object
+          multipartForm.append("file", file, "score_picture.jpg");
+
+          const { music_id } = music;
+
+          const realFormData: IScoreCreate = {
+            ...formData,
+            event_id: Number(event?.event_id),
+            music_id: Number(music_id),
+          };
+
+          Object.keys(realFormData).forEach((key) => {
+            multipartForm.append(key, (realFormData as any)[key]);
+          });
+
+          // submitScore(multipartForm);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const showCroppedImage = async () => {
+    try {
+      if (imageSrc) {
+        const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
+
+        setCroppedImage(croppedImage);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
     <GlobalContainer>
       <ContentWrapper>
-        <p>Criar Score:</p>
+        <p>Envio de Score</p>
         <FormWrapper
           onSubmit={handleSubmitCreateScore(onCreateScoreFormSubmit)}
         >
+          {imageSrc && (
+            <CropperFullWrapper>
+              <CropperWrapper>
+                <Cropper
+                  image={imageSrc}
+                  crop={crop}
+                  zoom={zoom}
+                  aspect={5 / 4}
+                  cropShape="rect"
+                  onCropChange={setCrop}
+                  onCropComplete={onCropComplete}
+                  onZoomChange={setZoom}
+                />
+              </CropperWrapper>
+              <SliderWrapper>
+                <Typography
+                  variant="overline"
+                  style={{ marginRight: "16px", padding: "8px" }}
+                >
+                  Zoom
+                </Typography>
+                <Slider
+                  value={zoom}
+                  min={1}
+                  max={3}
+                  step={0.1}
+                  aria-labelledby="Zoom"
+                  onChange={(_, zoom) =>
+                    setZoom(typeof zoom === "number" ? zoom : zoom[0])
+                  }
+                />
+              </SliderWrapper>
+            </CropperFullWrapper>
+          )}
+
+          <Input
+            name="file"
+            icon={FaFileAlt}
+            type="file"
+            onChange={onFileChange}
+          />
+
+          <Button type="button" onClick={() => showCroppedImage()}>
+            Mostrar Prévia
+          </Button>
+
+          {croppedImage && <img src={croppedImage} />}
+
           <Input
             label="Pontuação"
             icon={MdOutlineNumbers}

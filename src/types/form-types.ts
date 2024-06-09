@@ -101,7 +101,8 @@ export interface IScoreFormCreate {
   miss: number;
   max_combo: number;
   grade: string;
-  plate?: string | null;
+  plate?: string | null
+  stage_pass: boolean
 }
 
 export interface IScoreCreate {
@@ -115,8 +116,8 @@ export interface IScoreCreate {
   grade: string;
   plate?: string | null;
   event_id: number;
-  category_id: number;
-  phase_id: number;
+  category_id?: number;
+  phase_id?: number;
   music_id: number;
 }
 
