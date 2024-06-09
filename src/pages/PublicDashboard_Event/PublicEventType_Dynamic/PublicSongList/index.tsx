@@ -78,12 +78,12 @@ const PublicSongList: FunctionComponent<PublicSongListProps> = () => {
                   <td>
                     <TableHeaderWrapper>
                       <MusicWrapper>
-                        {music.name}
                         <MusicLevelMiniature
                           src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
+                        {music.name}
                       </MusicWrapper>
                     </TableHeaderWrapper>
                   </td>
