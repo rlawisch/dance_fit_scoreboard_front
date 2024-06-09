@@ -12,11 +12,15 @@ const AdminValidateScores: FunctionComponent<AdminValidateScoresProps> = () => {
     
     const { event_id } = useParams()
 
-    const { getPendingScoresByEvent, pendingScores } = useScore()
+    const { getPendingScoresByEvent, pendingScores, scoreRefreshTrigger } = useScore()
 
     useEffect(() => {
         getPendingScoresByEvent(Number(event_id))
     }, [])
+
+    useEffect(() => {
+        getPendingScoresByEvent(Number(event_id))
+    }, [scoreRefreshTrigger])
 
     const sortedScoresByDate = pendingScores.sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
 

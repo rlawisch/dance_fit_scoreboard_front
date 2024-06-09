@@ -14,6 +14,8 @@ import { IScore } from "../../types/entity-types";
 export interface IScoreContext {
   eventScores: IScore[];
   pendingScores: IScore[];
+  isLoadingSubmitScore: boolean;
+  scoreRefreshTrigger: boolean;
   submitScore: (formData: FormData) => Promise<void>;
   adminCreateScore: (formData: IScoreCreateByAdmin) => void;
   getScoresByEvent: (event_id: number) => void;
@@ -37,9 +39,13 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [pendingScores, setPendingScores] = useState<IScore[]>([])
 
+  const [scoreRefreshTrigger, setScoreRefreshTrigger] = useState<boolean>(true)
+
+  const [isLoadingSubmitScore, setIsLoadingSubmitScore] = useState<boolean>(false)
+
   const submitScore = async (formData: FormData): Promise<void> => {
     try {
-
+      setIsLoadingSubmitScore(true)
       const res = await api.post(`/scores`, formData, {
         headers: {
           Authorization: `Bearer ${accToken}`,
@@ -49,7 +55,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (res.status === 201) {
         toast.success("Score criado com sucesso");
-        setCategoryRefreshTrigger(!categoryRefreshTrigger);
+        setIsLoadingSubmitScore(false)
+        setScoreRefreshTrigger(!scoreRefreshTrigger)
       }
     } catch (err: any) {
       console.log(err);
@@ -122,6 +129,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log(res.status)
 
       if (res.status === 201) {
+        setScoreRefreshTrigger(!scoreRefreshTrigger)
         toast.success("Score validado com sucesso")
       }
     } catch (err: any) {
@@ -138,6 +146,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
       })
 
       if (res.status === 200) {
+        setScoreRefreshTrigger(!scoreRefreshTrigger)
         toast.success("Score invalidado com sucesso")
       }
     } catch (err: any) {
@@ -215,6 +224,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         eventScores,
         pendingScores,
+        isLoadingSubmitScore,
+        scoreRefreshTrigger,
         submitScore,
         adminCreateScore,
         getScoresByEvent,

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useContext, useState } from "react";
 import { IEvent, IMusic } from "../../../types/entity-types";
 import {
   ContentWrapper,
@@ -33,6 +33,8 @@ import {
 import { Slider, Typography } from "@material-ui/core";
 import { getCroppedImg } from "../../../utils/canvasUtils";
 import { ScoreDGPReview } from "./styles";
+import { ThemeContext } from "styled-components";
+import { BallTriangle } from "react-loader-spinner";
 
 interface ScoreCreateFormProps {
   music: IMusic;
@@ -43,7 +45,10 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   music,
   event,
 }) => {
-  const { submitScore } = useScore();
+
+  const theme = useContext(ThemeContext);
+
+  const { submitScore, isLoadingSubmitScore } = useScore();
 
   const scoreCreateSchema = yup.object().shape({
     value: yup.number().required(),
@@ -333,6 +338,17 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             register={registerCreateScore}
             error={createScoreErrors.plate?.message}
           />
+
+            <BallTriangle
+                height={36}
+                width={36}
+                radius={5}
+                color={theme?.colors.primary}
+                ariaLabel="ball-triangle-loading"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible={isLoadingSubmitScore}
+              />
 
           <Button vanilla={false} type="submit">
             Criar Score

@@ -1,25 +1,50 @@
 import { FunctionComponent } from "react";
 import { GlobalContainer } from "../../styles/global";
-import { ContentList, ContentListItem, HorizontalRuler, PatchTitle } from "./styles";
+import {
+  ContentList,
+  ContentListItem,
+  HorizontalRuler,
+  PatchTitle,
+} from "./styles";
 
 interface DashboardHomeProps {}
 
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 09/06/24 - Parte II</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Envio de Scores liberado, através da Lista de Música o jogador pode agora enviar os Scores para o evento. LEIAM as informações na página da Lista de Músicas do evento.
+        </ContentListItem>
+        <ContentListItem>
+          Ranking Geral dos eventos do tipo Dinâmica disponível (ainda bem simples).
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 09/06/24</PatchTitle>
 
       <HorizontalRuler />
 
       <ContentList>
         <ContentListItem>
-          Erro ao fazer upload de foto de perfil corrigido.    
+          Erro ao fazer upload de foto de perfil corrigido.
         </ContentListItem>
         <ContentListItem>
-          Nova lista de formatos suportados de arquivos de imagem tanto ao altera a foto de perfil quanto no envio de scores (o tamanho continua o mesmo, até 8MB): .jpg, .jpeg, .png, .heic, .gif, .bmp, .tiff, .tif, .webp ou .svg.
+          Nova lista de formatos suportados de arquivos de imagem tanto ao
+          altera a foto de perfil quanto no envio de scores (o tamanho continua
+          o mesmo, até 8MB): .jpg, .jpeg, .png, .heic, .gif, .bmp, .tiff, .tif,
+          .webp ou .svg.
         </ContentListItem>
         <ContentListItem>
-          Prévia do formulário de cadastro de Scores adicionada, as músicas que estiverem dentro dos níveis selecionados para o jogador(a) terão um botão de envio de score na Lista de Músicas do evento. Ainda não liberado o envio (ciclo de envio e reenvio ainda em desenvolvimento), mas já dá pra ter uma ideia de como vai funcionar.
+          Prévia do formulário de cadastro de Scores adicionada, as músicas que
+          estiverem dentro dos níveis selecionados para o jogador(a) terão um
+          botão de envio de score na Lista de Músicas do evento. Ainda não
+          liberado o envio (ciclo de envio e reenvio ainda em desenvolvimento),
+          mas já dá pra ter uma ideia de como vai funcionar.
         </ContentListItem>
       </ContentList>
     </GlobalContainer>
