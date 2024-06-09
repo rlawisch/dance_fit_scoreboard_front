@@ -139,6 +139,11 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
           Authorization: `Bearer ${accToken}`,
         },
       });
+
+      if (res.status === 401) {
+        navigate('/login')
+      }
+
       setPlayerData(res.data);
     } catch (err: any) {
       console.log(err);
