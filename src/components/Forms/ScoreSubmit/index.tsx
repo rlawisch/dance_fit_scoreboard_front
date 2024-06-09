@@ -32,6 +32,7 @@ import {
 } from "../../../pages/Dashboard_Profile/styles";
 import { Slider, Typography } from "@material-ui/core";
 import { getCroppedImg } from "../../../utils/canvasUtils";
+import { ScoreDGPReview } from "./styles";
 
 interface ScoreCreateFormProps {
   music: IMusic;
@@ -248,7 +249,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             Mostrar Prévia
           </Button>
 
-          {croppedImage && <img src={croppedImage} />}
+          {croppedImage && <ScoreDGPReview src={croppedImage} />}
 
           <Input
             label="Pontuação"
