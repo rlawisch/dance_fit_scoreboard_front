@@ -17,7 +17,6 @@ import useDynamicModal from "../../../../providers/DynamicModal";
 import Modal from "../../../../components/Modal";
 import ScoreCreateForm from "../../../../components/Forms/ScoreSubmit";
 
-
 interface SongListProps {}
 
 const SongList: FunctionComponent<SongListProps> = () => {
@@ -32,31 +31,36 @@ const SongList: FunctionComponent<SongListProps> = () => {
 
   const { getEventData, eventData } = useEvents();
 
-  const { getEventPlayerComfortLevel, eventPlayerComfortLevel } = useComfortLevel()
+  const { getEventPlayerComfortLevel, eventPlayerComfortLevel } =
+    useComfortLevel();
 
-  const { decodedPlayerInfo } = usePlayer()
-  
+  const { decodedPlayerInfo } = usePlayer();
+
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
   useEffect(() => {
-    getSongListData(Number(eventData?.song_list?.song_list_id))
-    
-    if (eventData?.players?.some((player) => player.player_id == decodedPlayerInfo.player_id)) {
-      getEventPlayerComfortLevel(Number(event_id))
+    getSongListData(Number(eventData?.song_list?.song_list_id));
+
+    if (
+      eventData?.players?.some(
+        (player) => player.player_id == decodedPlayerInfo.player_id
+      )
+    ) {
+      getEventPlayerComfortLevel(Number(event_id));
     }
-  }, [eventData])
+  }, [eventData]);
 
   useEffect(() => {
-    getSongListData(Number(eventData?.song_list?.song_list_id))
-  }, [songListRefreshTrigger])
+    getSongListData(Number(eventData?.song_list?.song_list_id));
+  }, [songListRefreshTrigger]);
 
   useEffect(() => {
     return () => {
-      setSongListData(undefined)
-    }
-  }, [])
+      setSongListData(undefined);
+    };
+  }, []);
 
   // Group musics by mode
   const groupedMusics: { [mode: string]: IMusic[] } = {};
@@ -75,13 +79,13 @@ const SongList: FunctionComponent<SongListProps> = () => {
   // Determine comfort level range
   const isMusicInComfortLevelRange = (music: IMusic) => {
     if (!eventPlayerComfortLevel) {
-      return false
+      return false;
     }
 
-    const {level_single, level_double} = eventPlayerComfortLevel
-    const comfortLevel = music.mode === 'single' ? level_single : level_double
-    return music.level >= comfortLevel && music.level <= comfortLevel + 6
-  }
+    const { level_single, level_double } = eventPlayerComfortLevel;
+    const comfortLevel = music.mode === "single" ? level_single : level_double;
+    return music.level >= comfortLevel && music.level <= comfortLevel + 6;
+  };
 
   const {
     isModalOpen: isScoreCreateModalOpen,
@@ -110,28 +114,34 @@ const SongList: FunctionComponent<SongListProps> = () => {
                   <td>
                     <TableHeaderWrapper>
                       <MusicWrapper>
-                        {music.name}
                         <MusicLevelMiniature
                           src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
-                        {isMusicInComfortLevelRange(music) && (
-                          <div>
-                          <Button onClick={() => openScoreCreateModal(music.music_id)}>
-                            <TiUploadOutline/>
+                        {music.name}
+                      </MusicWrapper>
+
+                      {isMusicInComfortLevelRange(music) && (
+                        <div>
+                          <Button
+                            onClick={() => openScoreCreateModal(music.music_id)}
+                          >
+                            <TiUploadOutline />
                           </Button>
                           <Modal
                             isOpen={isScoreCreateModalOpen(music.music_id)}
-                            onClose={() => closeScoreCreateModal(music.music_id)}>
-                              <ScoreCreateForm
-                                music={music}
-                                event={eventData? eventData : undefined}
-                               />
+                            onClose={() =>
+                              closeScoreCreateModal(music.music_id)
+                            }
+                          >
+                            <ScoreCreateForm
+                              music={music}
+                              event={eventData ? eventData : undefined}
+                            />
                           </Modal>
-                          </div>
-                        )}
-                      </MusicWrapper>
+                        </div>
+                      )}
                     </TableHeaderWrapper>
                   </td>
                 </tr>
