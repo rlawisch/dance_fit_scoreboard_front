@@ -12,16 +12,29 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 09/06/24 - Parte III</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Corrigido erro no envio de Scores onde mesmo mandando Stage Break, o Score ficava com Stage Pass.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 09/06/24 - Parte II</PatchTitle>
 
       <HorizontalRuler />
 
       <ContentList>
         <ContentListItem>
-          Envio de Scores liberado, através da Lista de Música o jogador pode agora enviar os Scores para o evento. LEIAM as informações na página da Lista de Músicas do evento.
+          Envio de Scores liberado, através da Lista de Música o jogador pode
+          agora enviar os Scores para o evento. LEIAM as informações na página
+          da Lista de Músicas do evento.
         </ContentListItem>
         <ContentListItem>
-          Ranking Geral dos eventos do tipo Dinâmica disponível (ainda bem simples).
+          Ranking Geral dos eventos do tipo Dinâmica disponível (ainda bem
+          simples).
         </ContentListItem>
       </ContentList>
 
