@@ -1,5 +1,6 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import {
+  DynamicEventWrapper,
   GlobalContainer,
   NavigationHeaderWrapper,
   NavigationSelector,
@@ -22,131 +23,106 @@ interface AdminEventType_DynamicProps {}
 const AdminEventType_Dynamic: FunctionComponent<
   AdminEventType_DynamicProps
 > = () => {
-
   const { event_id } = useParams();
 
   const navigate = useNavigate();
 
   const { eventData, getEventData } = useEvents();
 
-  const { decodedPlayerInfo } = usePlayer()
+  const { decodedPlayerInfo } = usePlayer();
 
-  const { createEnrollment } = useEnrollments()
+  const { createEnrollment } = useEnrollments();
 
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
-  const [isActiveGeneralRanking, setIsActiveGeneralRanking] =
-    useState<boolean>(true);
-  const [isActiveSingleRanking, setIsActiveSingleRanking] =
-    useState<boolean>(false);
-  const [isActiveDoubleRanking, setIsActiveDoubleRanking] =
-    useState<boolean>(false);
-  const [isActiveSongListManagement, setIsActiveSongListManagement] =
-    useState<boolean>(false);
-  const [isActivePlayerList, setIsActivePlayerList] = useState<boolean>(false)
-  const [isActiveScoreValidation, setIsActiveScoreValidation] = useState<boolean>(false)
+  const [selectedView, setSelectedView] = useState("generalRanking");
 
-  const handleViewGeneralRanking = () => {
-    setIsActiveGeneralRanking(true);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
-    setIsActiveScoreValidation(false)
+  const handleView = (view: string) => {
+    setSelectedView(view);
   };
-
-  const handleViewSingleRanking = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(true);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
-    setIsActiveScoreValidation(false)
-
-  };
-
-  const handleViewDoubleRanking = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(true);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
-    setIsActiveScoreValidation(false)
-
-  };
-
-  const handleViewSongListManagement = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(true);
-    setIsActivePlayerList(false)
-    setIsActiveScoreValidation(false)
-
-  };
-
-  const handleViewPlayerList = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(true)
-    setIsActiveScoreValidation(false)
-
-  }
-
-  const handleViewScoreValidation = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
-    setIsActiveScoreValidation(true)
-  }
 
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate("/admin/events")}>Voltar</Button>
+      <DynamicEventWrapper>
+        <Button onClick={() => navigate("/admin/events")}>Voltar</Button>
 
-      <Title>{!!eventData && eventData.name}</Title>
+        <Title>{!!eventData && eventData.name}</Title>
 
-      <Button
-        onClick={() => createEnrollment(Number(decodedPlayerInfo.player_id), Number(event_id))}
-      >
-        Inscrição
-      </Button>
+        {eventData?.players?.some(
+          (player) => player.player_id === decodedPlayerInfo.player_id
+        ) ? (
+          <></>
+        ) : (
+          <Button
+            onClick={() =>
+              createEnrollment(
+                Number(decodedPlayerInfo.player_id),
+                Number(event_id)
+              )
+            }
+          >
+            Inscrição
+          </Button>
+        )}
 
-      <NavigationHeaderWrapper>
-        <NavigationSelector onClick={() => handleViewGeneralRanking()}>
-          Ranking Geral
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewSingleRanking()}>
-          Ranking Single
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewDoubleRanking()}>
-          Ranking Double
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewSongListManagement()}>
-          Lista de Músicas
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewPlayerList()}>
-          Lista de Jogadores
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewScoreValidation()}> 
-          Validação de Scores
-        </NavigationSelector>
-      </NavigationHeaderWrapper>
+        <NavigationHeaderWrapper>
+          <NavigationSelector
+            isSelected={selectedView === "generalRanking"}
+            onClick={() => handleView("generalRanking")}
+          >
+            Ranking Geral
+          </NavigationSelector>
+          
 
-      {!!isActiveGeneralRanking && <AdminGeneralRanking />}
-      {!!isActiveSingleRanking && <AdminSingleRanking />}
-      {!!isActiveDoubleRanking && <AdminDoubleRanking />}
-      {!!isActiveSongListManagement && <ListManagement />}
-      {!!isActivePlayerList && <AdminPlayerList />}
-      {!!isActiveScoreValidation && <AdminValidateScores />}
-      
+          <NavigationSelector
+            isSelected={selectedView === 'singleRanking'}
+            onClick={() => handleView('singleRanking')}
+          >
+            Ranking Single
+          </NavigationSelector>
 
+
+          <NavigationSelector
+            isSelected={selectedView === 'doubleRanking'}
+            onClick={() => handleView('doubleRanking')}
+          >
+            Ranking Double
+          </NavigationSelector>
+
+
+          <NavigationSelector
+            isSelected={selectedView === 'songListManagement'}
+            onClick={() => handleView('songListManagement')}
+          >
+            Músicas
+          </NavigationSelector>
+
+
+          <NavigationSelector
+            isSelected={selectedView === 'playerList'}
+            onClick={() => handleView('playerList')}
+          >
+            Jogadores
+          </NavigationSelector>
+
+
+          <NavigationSelector
+            isSelected={selectedView === 'scoreValidation'}
+            onClick={() => handleView('scoreValidation')}
+          >
+            Validação de Scores
+          </NavigationSelector>
+        </NavigationHeaderWrapper>
+
+        {selectedView === 'generalRanking' && <AdminGeneralRanking />}
+        {selectedView === 'singleRanking' && <AdminSingleRanking />}
+        {selectedView === 'doubleRanking' && <AdminDoubleRanking />}
+        {selectedView === 'songListManagement' && <ListManagement />}
+        {selectedView === 'playerList' && <AdminPlayerList />}
+        {selectedView === 'scoreValidation' && <AdminValidateScores />}
+      </DynamicEventWrapper>
     </GlobalContainer>
   );
 };
