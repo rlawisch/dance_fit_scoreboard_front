@@ -78,13 +78,6 @@ const PublicEventType_Dynamic: FunctionComponent<
           >
             Jogadores
           </NavigationSelector>
-
-          <NavigationSelector
-            isSelected={selectedView === "scoreValidation"}
-            onClick={() => handleView("scoreValidation")}
-          >
-            Validação de Scores
-          </NavigationSelector>
         </NavigationHeaderWrapper>
 
         {selectedView === "generalRanking" && <PublicGeneralRanking />}

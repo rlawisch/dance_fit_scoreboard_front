@@ -3,6 +3,7 @@ import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
+  GlobalContainer,
   MusicLevelMiniature,
   MusicWrapper,
   Table,
@@ -58,7 +59,7 @@ const PublicSongList: FunctionComponent<PublicSongListProps> = () => {
   });
 
   return (
-    <>
+    <GlobalContainer>
       <Table>
         <thead>
           <tr>
@@ -93,7 +94,7 @@ const PublicSongList: FunctionComponent<PublicSongListProps> = () => {
           ))}
         </tbody>
       </Table>
-    </>
+    </GlobalContainer>
   );
 };
 

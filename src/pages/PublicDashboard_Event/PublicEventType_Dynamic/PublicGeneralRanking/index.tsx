@@ -1,24 +1,31 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import {
+  DyEvPlayerScoreListWrapper,
+  DynamicEventScoreDataWrapper,
+  DynamicEventScoreTable,
+  DynamicEventTable,
+  DynamicEventTd,
+  DynamicEventTh,
   GlobalContainer,
   MusicLevelMiniature,
   MusicWrapper,
   PlayerInfoWrapper,
   PlayerMiniature,
+  SmallScreenDynamicEventTable,
   TableScoreValue,
 } from "../../../../styles/global";
-import { useScore } from "../../../../providers/Scores";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import { useScore } from "../../../../providers/Scores";
 import { IScore } from "../../../../types/entity-types";
-import ScoreCard from "../../../../components/ScoreCard";
+import useDynamicModal from "../../../../providers/DynamicModal";
 import {
   ScoreGrade,
   ScoreGradeWrapper,
 } from "../../../../components/ScoreCard/styles";
 import { getGradeImageFileName } from "../../../../utils/getGradeImageFileName";
-import useDynamicModal from "../../../../providers/DynamicModal";
 import Modal from "../../../../components/Modal";
+import ScoreCard from "../../../../components/ScoreCard";
+import Button from "../../../../components/Button";
 
 interface PublicGeneralRankingProps {}
 
@@ -30,40 +37,17 @@ interface LeaderboardPlayer {
   profilePicture: string | undefined;
 }
 
-const Table = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-`;
-
-const Th = styled.th`
-  border: 1px solid #ddd;
-  padding: 8px;
-`;
-
-const Td = styled.td`
-  border: 1px solid #ddd;
-  padding: 8px;
-`;
-
-const PlayerScoreList = styled.ul`
-  list-style: none;
-`;
-
-const ScoreListItem = styled.li`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-`
-
-const PublicGeneralRanking: FunctionComponent<PublicGeneralRankingProps> = () => {
-  
+const PublicGeneralRanking: FunctionComponent<
+  PublicGeneralRankingProps
+> = () => {
   const { event_id } = useParams();
 
   const { getScoresByEvent, eventScores } = useScore();
 
   const [leaderboard, setLeaderboard] = useState<LeaderboardPlayer[]>([]);
+  const [visibleScores, setVisibleScores] = useState<{
+    [key: string]: boolean;
+  }>({});
 
   useEffect(() => {
     getScoresByEvent(Number(event_id));
@@ -94,8 +78,20 @@ const PublicGeneralRanking: FunctionComponent<PublicGeneralRankingProps> = () =>
         playerScoresMap.set(playerId, existingData);
       });
 
-      // Convert the map to an array and sort it by the total score
+      // Convert the map to an array
       const leaderboardArray = Array.from(playerScoresMap.values());
+
+      // Sort each player's scores by mode and level
+      leaderboardArray.forEach((player) => {
+        player.scores.sort((a, b) => {
+          if (a.music.mode !== b.music.mode) {
+            return a.music.mode.localeCompare(b.music.mode); // Sort by mode
+          }
+          return a.music.level - b.music.level; // Sort by level within the same mode
+        });
+      });
+
+      // Sort the leaderboard by the total score
       leaderboardArray.sort((a, b) => b.totalScore - a.totalScore);
 
       setLeaderboard(leaderboardArray);
@@ -107,23 +103,117 @@ const PublicGeneralRanking: FunctionComponent<PublicGeneralRankingProps> = () =>
     openModal: openScoreDetailsModal,
     closeModal: closeScoreDetailsModal,
   } = useDynamicModal();
-  
+
+  const toggleScoresVisibility = (playerId: string) => {
+    setVisibleScores((prevState) => ({
+      ...prevState,
+      [playerId]: !prevState[playerId],
+    }));
+  };
+
   return (
     <GlobalContainer>
-      <h2>Ranking Geral</h2>
+    <DynamicEventTable>
+      <thead>
+        <tr>
+          <DynamicEventTh>Posição</DynamicEventTh>
+          <DynamicEventTh>Jogador(a)</DynamicEventTh>
+          <DynamicEventTh>Scores</DynamicEventTh>
+          <DynamicEventTh>Pontuação</DynamicEventTh>
+        </tr>
+      </thead>
+      <tbody>
+        {leaderboard.map((player, index) => (
+          <tr key={index}>
+            <DynamicEventTd>#{index + 1}</DynamicEventTd>
 
-      <Table>
-        <thead>
-          <tr>
-            <Th>Player</Th>
-            <Th>Scores</Th>
-            <Th>Total Score</Th>
+            <DynamicEventTd>
+              <PlayerInfoWrapper>
+                <PlayerMiniature
+                  src={
+                    player.profilePicture
+                      ? player.profilePicture
+                      : "/img/default_player.png"
+                  }
+                  alt="Mini Profile Picture"
+                />
+                {player.nickname}
+              </PlayerInfoWrapper>
+            </DynamicEventTd>
+
+            <DynamicEventTd>
+              <Button
+                onClick={() => toggleScoresVisibility(player.player_id)}
+              >
+                {visibleScores[player.player_id]
+                  ? "Esconder Scores"
+                  : "Mostrar Scores"}
+              </Button>
+
+              {visibleScores[player.player_id] && (
+                <DynamicEventScoreTable>
+                  {player.scores.map((score, i) => (
+                    <tr key={i}>
+                      <td>
+                        <DyEvPlayerScoreListWrapper>
+                          <MusicWrapper>
+                            <MusicLevelMiniature
+                              src={`/static/musics/${score.music.mode}/${score.music.mode.charAt(0).toUpperCase()}${score.music.level
+                                .toString()
+                                .padStart(2, "0")}.png`}
+                            />
+                            {score.music.name}
+                          </MusicWrapper>
+
+                          <DynamicEventScoreDataWrapper>
+                            <TableScoreValue
+                              onClick={() =>
+                                openScoreDetailsModal(score.score_id)
+                              }
+                            >
+                              {score.value.toLocaleString()}
+                            </TableScoreValue>
+                            <ScoreGradeWrapper>
+                              <ScoreGrade
+                                src={getGradeImageFileName(score)}
+                              />
+                            </ScoreGradeWrapper>
+                            <Modal
+                              isOpen={isScoreDetailsModalOpen(score.score_id)}
+                              onClose={() =>
+                                closeScoreDetailsModal(score.score_id)
+                              }
+                            >
+                              <ScoreCard score={score} />
+                            </Modal>
+                          </DynamicEventScoreDataWrapper>
+                        </DyEvPlayerScoreListWrapper>
+                      </td>
+                    </tr>
+                  ))}
+                </DynamicEventScoreTable>
+              )}
+            </DynamicEventTd>
+
+            <DynamicEventTd>
+              {(player.totalScore / player.scores.length)
+                .toFixed(2)
+                .toLocaleString()}
+            </DynamicEventTd>
           </tr>
-        </thead>
-        <tbody>
-          {leaderboard.map((player, index) => (
+        ))}
+      </tbody>
+    </DynamicEventTable>
+
+    <SmallScreenDynamicEventTable>
+      <tbody>
+        {leaderboard.map((player, index) => (
+          <>
             <tr key={index}>
-              <Td>
+              <DynamicEventTd>#{index + 1}</DynamicEventTd>
+            </tr>
+            <tr>
+              <DynamicEventTd>
                 <PlayerInfoWrapper>
                   <PlayerMiniature
                     src={
@@ -135,43 +225,75 @@ const PublicGeneralRanking: FunctionComponent<PublicGeneralRankingProps> = () =>
                   />
                   {player.nickname}
                 </PlayerInfoWrapper>
-              </Td>
-              <Td>
-                <PlayerScoreList>
-                  {player.scores.map((score, i) => (
-                    <ScoreListItem key={i}>
-                      <MusicWrapper>
-                        <MusicLevelMiniature
-                          src={`/static/musics/${score.music.mode}/${score.music.mode.charAt(0).toUpperCase()}${score.music.level
-                            .toString()
-                            .padStart(2, "0")}.png`}
-                        />
-                        {score.music.name}
-                      </MusicWrapper>
-                      <TableScoreValue
-                        onClick={() => openScoreDetailsModal(score.score_id)}
-                      >
-                        {score.value.toLocaleString()}
-                      </TableScoreValue>
-                      <ScoreGradeWrapper>
-                        <ScoreGrade src={getGradeImageFileName(score)} />
-                      </ScoreGradeWrapper>
-                      <Modal
-                        isOpen={isScoreDetailsModalOpen(score.score_id)}
-                        onClose={() => closeScoreDetailsModal(score.score_id)}
-                      >
-                        <ScoreCard score={score} />
-                      </Modal>
-                    </ScoreListItem>
-                  ))}
-                </PlayerScoreList>
-              </Td>
-              <Td>{player.totalScore.toLocaleString()}</Td>
+              </DynamicEventTd>
             </tr>
-          ))}
-        </tbody>
-      </Table>
-    </GlobalContainer>
+            <tr>
+            <DynamicEventTd>
+              <Button
+                onClick={() => toggleScoresVisibility(player.player_id)}
+              >
+                {visibleScores[player.player_id]
+                  ? "Esconder Scores"
+                  : "Mostrar Scores"}
+              </Button>
+
+              {visibleScores[player.player_id] && (
+                <DynamicEventScoreTable>
+                  {player.scores.map((score, i) => (
+                    <tr key={i}>
+                      <td>
+                        <DyEvPlayerScoreListWrapper>
+                          <MusicWrapper>
+                            <MusicLevelMiniature
+                              src={`/static/musics/${score.music.mode}/${score.music.mode.charAt(0).toUpperCase()}${score.music.level
+                                .toString()
+                                .padStart(2, "0")}.png`}
+                            />
+                            {score.music.name}
+                          </MusicWrapper>
+
+                          <DynamicEventScoreDataWrapper>
+                            <TableScoreValue
+                              onClick={() =>
+                                openScoreDetailsModal(score.score_id)
+                              }
+                            >
+                              {score.value.toLocaleString()}
+                            </TableScoreValue>
+                            <ScoreGradeWrapper>
+                              <ScoreGrade
+                                src={getGradeImageFileName(score)}
+                              />
+                            </ScoreGradeWrapper>
+                            <Modal
+                              isOpen={isScoreDetailsModalOpen(score.score_id)}
+                              onClose={() =>
+                                closeScoreDetailsModal(score.score_id)
+                              }
+                            >
+                              <ScoreCard score={score} />
+                            </Modal>
+                          </DynamicEventScoreDataWrapper>
+                        </DyEvPlayerScoreListWrapper>
+                      </td>
+                    </tr>
+                  ))}
+                </DynamicEventScoreTable>
+              )}
+            </DynamicEventTd>
+            </tr>
+            <tr>
+              <DynamicEventTd>
+                {(player.totalScore / player.scores.length)
+                  .toFixed(2)
+                  .toLocaleString()}
+              </DynamicEventTd>
+            </tr>
+          </>
+        ))}
+      </tbody>
+    </SmallScreenDynamicEventTable>
+  </GlobalContainer>
   );
 };
 

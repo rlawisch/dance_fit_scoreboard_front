@@ -99,13 +99,6 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
           >
             Jogadores
           </NavigationSelector>
-
-          <NavigationSelector
-            isSelected={selectedView === "scoreValidation"}
-            onClick={() => handleView("scoreValidation")}
-          >
-            Validação de Scores
-          </NavigationSelector>
         </NavigationHeaderWrapper>
 
         {selectedView === "generalRanking" && <GeneralRanking />}
