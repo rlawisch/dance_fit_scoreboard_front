@@ -44,7 +44,7 @@ const AdminDashboardMusics: FunctionComponent<
 
   // Sort each group alphabetically by name
   Object.keys(groupedMusics).forEach((mode) => {
-    groupedMusics[mode].sort((a, b) => a.name.localeCompare(b.name));
+    groupedMusics[mode].sort((a, b) => a.level - b.level);
   });
 
   const {
@@ -91,12 +91,12 @@ const AdminDashboardMusics: FunctionComponent<
                   <td>
                     <TableHeaderWrapper>
                       <MusicWrapper>
-                        {music.name}
                         <MusicLevelMiniature
                           src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
                             .toString()
                             .padStart(2, "0")}.png`}
-                        />
+                            />
+                            {music.name}
                       </MusicWrapper>
                       <div>
                         <UpdateButton

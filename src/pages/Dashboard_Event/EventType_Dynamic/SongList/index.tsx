@@ -3,6 +3,7 @@ import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
+  GlobalContainer,
   MusicLevelMiniature,
   MusicWrapper,
   Table,
@@ -132,7 +133,7 @@ const SongList: FunctionComponent<SongListProps> = () => {
   };
 
   return (
-    <>
+    <GlobalContainer>
 
     <Paragraph>
       Aqui é onde os jogadores fazem o envio dos Scores usando o botão <Button><TiUploadOutline /></Button>, uma vez enviado, o Score é mandado para análise da administração e se os dados estiverem corretos e baterem com os dados da foto do DG ele será aprovado para só então aparecer nos Rankings.
@@ -239,7 +240,7 @@ const SongList: FunctionComponent<SongListProps> = () => {
           ))}
         </tbody>
       </Table>
-    </>
+    </GlobalContainer>
   );
 };
 

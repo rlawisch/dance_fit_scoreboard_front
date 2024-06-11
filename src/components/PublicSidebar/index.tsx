@@ -9,6 +9,7 @@ import { RiExpandLeftLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import { MdEventNote } from "react-icons/md";
 import { useDashboard } from "../../providers/Dashboard";
+import { IoHomeOutline } from "react-icons/io5";
 
 interface PublicSidebarProps {}
 
@@ -24,6 +25,14 @@ const PublicSidebar: FunctionComponent<PublicSidebarProps> = () => {
       </SidebarToggleBtn>
 
       <SidebarUl>
+        <SidebarLi
+          isopen={sideBarStatus}
+          onClick={() => navigate("/")}
+        >
+          <IoHomeOutline />
+          {sideBarStatus ? "Home" : ""}
+        </SidebarLi>
+
         <SidebarLi
           isopen={sideBarStatus}
           onClick={() => navigate("/public/events")}

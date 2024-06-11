@@ -189,9 +189,7 @@ export const TableScoreValue = styled.span`
   }
 `;
 
-export const EventInfoWrapper = styled.div`
-  
-`
+export const EventInfoWrapper = styled.div``;
 
 export const PlayerMiniature = styled.img`
   width: 48px;
@@ -312,28 +310,91 @@ export const ContentWrapper = styled.div`
   gap: 0.5rem;
 `;
 
-// Dynamic Eventy Styles
+// Dynamic Event Styles
+
+export const DynamicEventWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+`;
 
 export const NavigationHeaderWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.6rem;
+  text-align: center;
 
   margin-bottom: 32px;
+`;
 
-  @media screen and (min-width: 576px) {
-    flex-direction: row;
-  }
-`
+export interface NavigationSelectorProps {
+  isSelected: boolean;
+}
 
-export const NavigationSelector = styled.h3`
-  color: ${props => props.theme.colors.text};
+export const NavigationSelector = styled.h3<NavigationSelectorProps>`
+  color: ${(props) =>
+    props.isSelected ? props.theme.colors.primary : props.theme.colors.text};
   cursor: pointer;
 
   &:hover {
-    color: ${props => shade(0.5, props.theme.colors.text)}
+    color: ${(props) => props.theme.colors.primary};
+  }
+`;
+
+export const DynamicEventTable = styled.table`
+  width: 100%;
+  border: 1px solid ${(props) => props.theme.colors.primary};
+  display: none;
+
+  @media screen and (min-width: 792px) {
+    display: block;
+  }
+`;
+
+export const SmallScreenDynamicEventTable = styled.table`
+  width: 100%;
+  border: 1px solid ${(props) => props.theme.colors.primary};
+  text-align: center;
+
+  @media screen and (min-width: 792px) {
+    display: none;
   }
 `
 
-// score Validation styles
+export const DynamicEventTh = styled.th`
+  padding: 1rem;
+  border: 1px solid ${(props) => props.theme.colors.primary};
+`;
+
+export const DynamicEventTd = styled.td`
+padding: 1rem;
+  border: 1px solid ${(props) => props.theme.colors.primary};
+`;
+
+export const DynamicEventScoreTable = styled.table`
+
+  td {
+    padding: 1rem 0.5rem;
+  }
+`
+
+
+
+export const DyEvPlayerScoreListWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: space-between;
+`
+
+export const DynamicEventScoreDataWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+`

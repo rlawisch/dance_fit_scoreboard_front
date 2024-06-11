@@ -1,15 +1,21 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEvents } from "../../../providers/Events";
-import { GlobalContainer, NavigationHeaderWrapper, NavigationSelector, Title } from "../../../styles/global";
+import {
+  DynamicEventWrapper,
+  GlobalContainer,
+  NavigationHeaderWrapper,
+  NavigationSelector,
+  Title,
+} from "../../../styles/global";
 import Button from "../../../components/Button";
 import GeneralRanking from "./GeneralRanking";
 import SongList from "./SongList";
 import DoubleRanking from "./DoubleRanking";
 import SingleRanking from "./SingleRanking";
+import PlayerList from "./PlayerList";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
-import PlayerList from "./PlayerList";
 
 interface EventType_DynamicProps {}
 
@@ -20,100 +26,87 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
 
   const { eventData, getEventData } = useEvents();
 
-  const { decodedPlayerInfo } = usePlayer()
+  const { decodedPlayerInfo } = usePlayer();
 
-  const { createEnrollment } = useEnrollments()
+  const { createEnrollment } = useEnrollments();
 
   useEffect(() => {
     getEventData(Number(event_id));
   }, []);
 
-  const [isActiveGeneralRanking, setIsActiveGeneralRanking] =
-    useState<boolean>(true);
-  const [isActiveSingleRanking, setIsActiveSingleRanking] =
-    useState<boolean>(false);
-  const [isActiveDoubleRanking, setIsActiveDoubleRanking] =
-    useState<boolean>(false);
-  const [isActiveSongListManagement, setIsActiveSongListManagement] =
-    useState<boolean>(false);
-    useState<boolean>(false);
-    const [isActivePlayerList, setIsActivePlayerList] = useState<boolean>(false)
+  const [selectedView, setSelectedView] = useState("generalRanking");
 
-  const handleViewGeneralRanking = () => {
-    setIsActiveGeneralRanking(true);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
+  const handleView = (view: string) => {
+    setSelectedView(view);
   };
-
-  const handleViewSingleRanking = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(true);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
-  };
-
-  const handleViewDoubleRanking = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(true);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(false)
-  };
-
-  const handleViewSongListManagement = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(true);
-    setIsActivePlayerList(false)
-  };
-
-  const handleViewPlayerList = () => {
-    setIsActiveGeneralRanking(false);
-    setIsActiveSingleRanking(false);
-    setIsActiveDoubleRanking(false);
-    setIsActiveSongListManagement(false);
-    setIsActivePlayerList(true)
-  }
 
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate("/dashboard/events")}>Voltar</Button>
+      <DynamicEventWrapper>
+        <Button onClick={() => navigate("/dashboard/events")}>Voltar</Button>
 
-      <Title>{!!eventData && eventData.name}</Title>
+        <Title>{!!eventData && eventData.name}</Title>
 
-      <Button
-        onClick={() => createEnrollment(Number(decodedPlayerInfo.player_id), Number(event_id))}
-      >
-        Inscrição
-      </Button>
+        {eventData?.players?.some(
+          (player) => player.player_id === decodedPlayerInfo.player_id
+        ) ? (
+          <></>
+        ) : (
+          <Button
+            onClick={() =>
+              createEnrollment(
+                Number(decodedPlayerInfo.player_id),
+                Number(event_id)
+              )
+            }
+          >
+            Inscrição
+          </Button>
+        )}
 
-      <NavigationHeaderWrapper>
-        <NavigationSelector onClick={() => handleViewGeneralRanking()}>
-          Ranking Geral
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewSingleRanking()}>
-          Ranking Single
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewDoubleRanking()}>
-          Ranking Double
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewSongListManagement()}>
-          Lista de Músicas
-        </NavigationSelector>
-        <NavigationSelector onClick={() => handleViewPlayerList()}>
-          Lista de Jogadores
-        </NavigationSelector>
-      </NavigationHeaderWrapper>
+        <NavigationHeaderWrapper>
+          <NavigationSelector
+            isSelected={selectedView === "generalRanking"}
+            onClick={() => handleView("generalRanking")}
+          >
+            Ranking Geral
+          </NavigationSelector>
 
-      {!!isActiveGeneralRanking && <GeneralRanking />}
-      {!!isActiveSingleRanking && <SingleRanking />}
-      {!!isActiveDoubleRanking && <DoubleRanking />}
-      {!!isActiveSongListManagement && <SongList />}
-      {!!isActivePlayerList && <PlayerList />}
+          <NavigationSelector
+            isSelected={selectedView === "singleRanking"}
+            onClick={() => handleView("singleRanking")}
+          >
+            Ranking Single
+          </NavigationSelector>
+
+          <NavigationSelector
+            isSelected={selectedView === "doubleRanking"}
+            onClick={() => handleView("doubleRanking")}
+          >
+            Ranking Double
+          </NavigationSelector>
+
+          <NavigationSelector
+            isSelected={selectedView === "songListManagement"}
+            onClick={() => handleView("songListManagement")}
+          >
+            Músicas
+          </NavigationSelector>
+
+          <NavigationSelector
+            isSelected={selectedView === "playerList"}
+            onClick={() => handleView("playerList")}
+          >
+            Jogadores
+          </NavigationSelector>
+        </NavigationHeaderWrapper>
+
+        {selectedView === "generalRanking" && <GeneralRanking />}
+        {selectedView === "singleRanking" && <SingleRanking />}
+        {selectedView === "doubleRanking" && <DoubleRanking />}
+        {selectedView === "songListManagement" && <SongList />}
+        {selectedView === "playerList" && <PlayerList />}
+      </DynamicEventWrapper>
     </GlobalContainer>
   );
 };
