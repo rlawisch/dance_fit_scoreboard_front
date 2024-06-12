@@ -1,6 +1,5 @@
 import { FunctionComponent, useEffect } from "react";
 import {
-  GlobalContainer,
   PlayerInfoWrapper,
   PlayerMiniature,
   Table,
@@ -26,7 +25,7 @@ const PublicPlayerList: FunctionComponent<PublicPlayerListProps> = () => {
   }, []);
 
   return (
-    <GlobalContainer>
+    <>
       <Table>
         <thead>
           <tr>
@@ -58,7 +57,7 @@ const PublicPlayerList: FunctionComponent<PublicPlayerListProps> = () => {
             ))}
         </tbody>
       </Table>
-    </GlobalContainer>
+    </>
   );
 }
  

@@ -1,6 +1,5 @@
 import { FunctionComponent, useEffect } from "react";
 import {
-  GlobalContainer,
   PlayerInfoWrapper,
   PlayerMiniature,
   Table,
@@ -23,7 +22,7 @@ const AdminPlayerList: FunctionComponent<AdminPlayerListProps> = () => {
   }, []);
 
   return (
-    <GlobalContainer>
+    <>
       <Table>
         <thead>
           <tr>
@@ -55,7 +54,7 @@ const AdminPlayerList: FunctionComponent<AdminPlayerListProps> = () => {
             ))}
         </tbody>
       </Table>
-    </GlobalContainer>
+    </>
   );
 };
 
