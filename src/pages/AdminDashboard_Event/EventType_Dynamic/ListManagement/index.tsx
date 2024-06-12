@@ -4,7 +4,6 @@ import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
-  GlobalContainer,
   MusicLevelMiniature,
   MusicWrapper,
   Table,
@@ -78,7 +77,7 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
   } = useDynamicModal();
 
   return (
-    <GlobalContainer>
+    <>
       {!!songListData && (
         <Button onClick={openSongListAddSong}>Adicionar Musica</Button>
       )}
@@ -88,11 +87,6 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
       </Modal>
 
       <Table>
-        <thead>
-          <tr>
-            <th>Músicas</th>
-          </tr>
-        </thead>
         <tbody>
           {Object.keys(groupedMusics).map((mode) => (
             <React.Fragment key={mode}>
@@ -141,7 +135,7 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
           ))}
         </tbody>
       </Table>
-    </GlobalContainer>
+    </>
   );
 };
 

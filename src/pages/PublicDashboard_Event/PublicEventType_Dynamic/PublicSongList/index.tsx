@@ -3,7 +3,6 @@ import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
-  GlobalContainer,
   MusicLevelMiniature,
   MusicWrapper,
   Table,
@@ -59,13 +58,8 @@ const PublicSongList: FunctionComponent<PublicSongListProps> = () => {
   });
 
   return (
-    <GlobalContainer>
+    <>
       <Table>
-        <thead>
-          <tr>
-            <th>Músicas</th>
-          </tr>
-        </thead>
         <tbody>
           {Object.keys(groupedMusics).map((mode) => (
             <React.Fragment key={mode}>
@@ -94,7 +88,7 @@ const PublicSongList: FunctionComponent<PublicSongListProps> = () => {
           ))}
         </tbody>
       </Table>
-    </GlobalContainer>
+    </>
   );
 };
 

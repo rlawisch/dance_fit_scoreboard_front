@@ -1,4 +1,4 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, {createGlobalStyle } from "styled-components";
 import "@fontsource/roboto";
 import { shade } from "polished";
 
@@ -274,7 +274,7 @@ export const MusicLevelMiniature = styled.img`
 
 export const MusicWrapper = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   align-items: center;
   gap: 0.6rem;
 
@@ -348,9 +348,54 @@ export const DynamicEventTable = styled.table`
   width: 100%;
   border: 1px solid ${(props) => props.theme.colors.primary};
   display: none;
+  font-size: smaller;
 
-  @media screen and (min-width: 792px) {
+  @media screen and (min-width: 840px) {
     display: block;
+    font-size: small;
+  }
+
+  @media screen and (min-width: 920px) {
+    font-size: medium;
+  }
+`;
+
+export const DynamicEventTh = styled.th`
+  padding: 1rem;
+  border: 1px solid ${(props) => props.theme.colors.primary};
+`;
+
+export const DynamicEventTd = styled.td`
+  padding: 1rem;
+  width: 1%;
+  border: 1px solid ${(props) => props.theme.colors.primary};
+`;
+
+export const DynamicEventScoreTable = styled.table`
+  width: 100%;
+
+  td {
+    padding: 1rem 0.5rem;
+  }
+`;
+
+export const DyEvPlayerScoreListWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const DynamicEventScoreDataWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  @media screen and (min-width: 576px) {
+    flex-direction: row;
   }
 `;
 
@@ -359,42 +404,12 @@ export const SmallScreenDynamicEventTable = styled.table`
   border: 1px solid ${(props) => props.theme.colors.primary};
   text-align: center;
 
-  @media screen and (min-width: 792px) {
+  @media screen and (min-width: 840px) {
     display: none;
   }
-`
-
-export const DynamicEventTh = styled.th`
-  padding: 1rem;
-  border: 1px solid ${(props) => props.theme.colors.primary};
 `;
 
-export const DynamicEventTd = styled.td`
-padding: 1rem;
-  border: 1px solid ${(props) => props.theme.colors.primary};
+export const SmallScreeDynamicEventTableHeader = styled.th`
+  background-color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.background};
 `;
-
-export const DynamicEventScoreTable = styled.table`
-
-  td {
-    padding: 1rem 0.5rem;
-  }
-`
-
-
-
-export const DyEvPlayerScoreListWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 0.6rem;
-  align-items: center;
-  justify-content: space-between;
-`
-
-export const DynamicEventScoreDataWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 1rem;
-`

@@ -12,13 +12,28 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 11/06/24</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Visual do Ranking Geral e sua responsividade melhoradas.
+        </ContentListItem>
+
+        <ContentListItem>
+          Fórmula da Pontuação alterada para que a pontuação máxima possível no Ranking seja <strong>100</strong>. (Score Total do Jogador / (Número do Ranking * 10000)) esse valor então é truncado em duas casas decimais e arredondado usando a seguinte regra: se o próximo dígito for 5 ou menor, arredonda pra baixo, se for 6 ou maior, arredonda pra cima.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 09/06/24 - Parte III</PatchTitle>
 
       <HorizontalRuler />
 
       <ContentList>
         <ContentListItem>
-          Corrigido erro no envio de Scores onde mesmo mandando Stage Break, o Score ficava com Stage Pass.
+          Corrigido erro no envio de Scores onde mesmo mandando Stage Break, o
+          Score ficava com Stage Pass.
         </ContentListItem>
       </ContentList>
 
