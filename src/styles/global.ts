@@ -413,3 +413,9 @@ export const SmallScreeDynamicEventTableHeader = styled.th`
   background-color: ${(props) => props.theme.colors.primary};
   color: ${(props) => props.theme.colors.background};
 `;
+
+
+export const RankingMedal = styled.img`
+  width: 34px;
+  height: 41px;
+`

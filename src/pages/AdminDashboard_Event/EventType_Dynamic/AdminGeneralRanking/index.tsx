@@ -10,6 +10,7 @@ import {
   MusicWrapper,
   PlayerInfoWrapper,
   PlayerMiniature,
+  RankingMedal,
   SmallScreeDynamicEventTableHeader,
   SmallScreenDynamicEventTable,
   TableScoreValue,
@@ -36,6 +37,12 @@ interface LeaderboardPlayer {
   totalScore: number;
   profilePicture: string | undefined;
 }
+
+const medals = [
+  "/static/medals/goldMedal.png",
+  "/static/medals/silverMedal.png",
+  "/static/medals/bronzeMedal.png",
+];
 
 const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
   const { event_id } = useParams();
@@ -124,7 +131,16 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
         <tbody>
           {leaderboard.map((player, index) => (
             <tr key={index}>
-              <DynamicEventTd>#{index + 1}</DynamicEventTd>
+              <DynamicEventTd>
+                {index < 3 ? (
+                  <RankingMedal
+                    src={medals[index]}
+                    alt={`${index + 1} medal`}
+                  />
+                ) : (
+                  `#${index + 1}`
+                )}
+              </DynamicEventTd>
 
               <DynamicEventTd>
                 <PlayerInfoWrapper>
@@ -211,7 +227,14 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
           {leaderboard.map((player, index) => (
             <>
               <SmallScreeDynamicEventTableHeader key={index}>
-                <DynamicEventTd>#{index + 1}</DynamicEventTd>
+                <DynamicEventTd>{index < 3 ? (
+                  <RankingMedal
+                    src={medals[index]}
+                    alt={`${index + 1} medal`}
+                  />
+                ) : (
+                  `#${index + 1}`
+                )}</DynamicEventTd>
               </SmallScreeDynamicEventTableHeader>
               <tr>
                 <DynamicEventTd>
