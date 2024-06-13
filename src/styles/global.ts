@@ -59,6 +59,19 @@ export const GlobalContainer = styled.div`
   overflow-y: auto;
 `;
 
+
+export const HeaderContainer = styled.header`
+  height: 60px;
+  background: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.secundary};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.1);
+`;
+
+
 interface DashboardContainerProps {
   isopen: boolean;
 }
@@ -257,6 +270,28 @@ export const PhaseBreakSpan = styled.span`
   }
 `;
 
+export const MusicLi = styled.li`
+  list-style: none;
+  padding: 0.6rem;
+  font-weight: normal;
+  color: ${(props) => props.theme.colors.primary};
+
+  &:hover {
+    background-color: ${(props) => shade(0.3, props.theme.colors.background)};
+    cursor: pointer;
+  }
+`;
+export const SelectedMusicWrapper = styled.div`
+  padding: 1rem;
+  color: ${(props) => props.theme.colors.primary};
+  font-weight: bold;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+
 export const SelectedPlayerWrapper = styled.div`
   padding: 1rem;
   color: ${(props) => props.theme.colors.primary};
@@ -311,6 +346,10 @@ export const ContentWrapper = styled.div`
 `;
 
 // Dynamic Event Styles
+
+export const ScoreDGPReview = styled.img`
+    max-width: 250px;
+`
 
 export const DynamicEventWrapper = styled.div`
   display: flex;
