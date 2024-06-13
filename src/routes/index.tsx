@@ -9,7 +9,6 @@ import Dashboard from "../pages/Dashboard";
 import AdminDashboard from "../pages/AdminDashboard";
 import AdminRouter from "./adminRouter";
 import AdminDashboardHome from "../pages/AdminDashboard_Home";
-import AdminDashScoreValidation from "../pages/AdminDashboard_ScoreValidation";
 import Login from "../pages/Login";
 import DashboardEvent from "../pages/Dashboard_Event";
 import AdminDashboardEvents from "../pages/AdminDashboard_Events";
@@ -203,17 +202,6 @@ export default function Routing() {
             <AdminRouter>
               <PrivateRoute>
                 <AdminDashboardMusics />
-              </PrivateRoute>
-            </AdminRouter>
-          }
-        />
-
-        <Route
-          path="/admin/score_validation"
-          element={
-            <AdminRouter>
-              <PrivateRoute>
-                <AdminDashScoreValidation />
               </PrivateRoute>
             </AdminRouter>
           }

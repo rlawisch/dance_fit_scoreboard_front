@@ -77,15 +77,7 @@ const AdminSidebar: FunctionComponent<SidebarProps> = () => {
           <MdEventNote />
           {sideBarStatus ? "Eventos" : ""}
         </SidebarLi>
-
-        <SidebarLi
-          isopen={sideBarStatus}
-          onClick={() => navigate("/admin/score_validation")}
-        >
-          <GrValidate />
-          {sideBarStatus ? "Validar Scores" : ""}
-        </SidebarLi>
-
+        
         <SidebarLi
           isopen={sideBarStatus}
           onClick={() => navigate("/admin/enrollments")}
