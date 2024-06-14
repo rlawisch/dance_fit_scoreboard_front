@@ -3,6 +3,9 @@ import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
+  DynamicEventApprovedScoreWarning,
+  DynamicEventPendingScoreWarning,
+  DynamicEventScoreSubmissionWarning,
   MusicLevelMiniature,
   MusicListDataWrapper,
   MusicWrapper,
@@ -192,9 +195,7 @@ const SongList: FunctionComponent<SongListProps> = () => {
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
-                        <p>
-                          {stringShortener(windowWidth, music.name)}
-                        </p>
+                        <p>{stringShortener(windowWidth, music.name)}</p>
                       </MusicWrapper>
                       {isMusicInComfortLevelRange(music) && (
                         <div>
@@ -210,27 +211,29 @@ const SongList: FunctionComponent<SongListProps> = () => {
                             }
                           >
                             {!!getApprovedScore(Number(music.music_id)) && (
-                              <>
-                                Você já possui um Score já aprovado para esta
-                                música:
+                              <DynamicEventApprovedScoreWarning>
+                                <h4>Score já APROVADO</h4>
                                 <ScoreCard
                                   score={getApprovedScore(
                                     Number(music.music_id)
                                   )}
                                 />
-                              </>
+                              </DynamicEventApprovedScoreWarning>
                             )}
 
                             {!!getPendingScore(Number(music.music_id)) && (
-                              <>
-                                Você já possui um Score em análise para esta
-                                música:
+                              <DynamicEventPendingScoreWarning>
+                                <h4>Score em ANÁLISE</h4>
                                 <ScoreCard
                                   score={getPendingScore(
                                     Number(music.music_id)
                                   )}
                                 />
-                              </>
+
+                                <DynamicEventScoreSubmissionWarning>
+                                  <strong>IMPORTANTE</strong>: O Envio de um novo Score irá SUBSTITUIR o Score em Análise atual!
+                                </DynamicEventScoreSubmissionWarning>
+                              </DynamicEventPendingScoreWarning>
                             )}
                             <ScoreCreateForm
                               music={music}

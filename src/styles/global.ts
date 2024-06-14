@@ -323,6 +323,7 @@ export const MusicWrapper = styled.div`
 `;
 
 export const FormWrapper = styled.form`
+width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -340,6 +341,7 @@ export const Title = styled.h1`
 `;
 
 export const ContentWrapper = styled.div`
+width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -349,7 +351,8 @@ export const ContentWrapper = styled.div`
 // Dynamic Event Styles
 
 export const ScoreDGPReview = styled.img`
-  max-width: 250px;
+  width: 100%;
+  margin: 2rem 0;
 `;
 
 export const DynamicEventWrapper = styled.div`
@@ -466,3 +469,38 @@ export const RankingMedal = styled.img`
   width: 34px;
   height: 41px;
 `;
+
+export const DynamicEventApprovedScoreWarning = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(81, 140, 70, 0.8); // Slightly transparent green
+  border-radius: 8px;
+  padding: 0.3rem;
+
+  h4 {
+    margin: 1rem 0;
+  }
+`;
+
+export const DynamicEventPendingScoreWarning = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(140, 137, 70, 0.8); // Slightly transparent yellowish
+  border-radius: 8px;
+  padding: 0.3rem;
+  margin: 0.3rem 0;
+  margin-bottom: 1rem;
+
+  h4 {
+    margin: 1rem 0;
+  }
+`;
+export const DynamicEventScoreSubmissionWarning = styled.p`
+  color: red;
+  background-color: black;
+  padding: 0.3rem;
+`

@@ -3,7 +3,6 @@ import { IEvent, IMusic } from "../../../types/entity-types";
 import {
   ContentWrapper,
   FormWrapper,
-  GlobalContainer,
   ScoreDGPReview,
 } from "../../../styles/global";
 import * as yup from "yup";
@@ -23,7 +22,6 @@ import {
 import Select from "../../Select";
 import Button from "../../Button";
 import { useScore } from "../../../providers/Scores";
-import { FaFileAlt } from "react-icons/fa";
 import Cropper, { Area, Point } from "react-easy-crop";
 import { readFile } from "../../../utils/readFile";
 import {
@@ -35,6 +33,7 @@ import { Slider, Typography } from "@material-ui/core";
 import { getCroppedImg } from "../../../utils/canvasUtils";
 import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
+import { FaArrowUpRightFromSquare, FaCameraRetro } from "react-icons/fa6";
 
 interface ScoreCreateFormProps {
   music: IMusic;
@@ -45,7 +44,6 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   music,
   event,
 }) => {
-
   const theme = useContext(ThemeContext);
 
   const { submitScore, isLoadingSubmitScore } = useScore();
@@ -68,7 +66,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     plate: yup
       .string()
       .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value,
+        originalValue === "" ? undefined : value
       )
       .nullable(),
   });
@@ -139,7 +137,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
           imageDataUrl = fileData;
         } else if (fileData instanceof ArrayBuffer) {
           const decoder = new TextDecoder();
-          imageDataUrl = decoder.decode(fileData)
+          imageDataUrl = decoder.decode(fileData);
         }
       } catch (e) {
         console.warn("Failed to process the image", e);
@@ -202,12 +200,19 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   };
 
   return (
-    <GlobalContainer>
+    <>
       <ContentWrapper>
-        <p>Envio de Score</p>
         <FormWrapper
           onSubmit={handleSubmitCreateScore(onCreateScoreFormSubmit)}
         >
+          <Input
+            name="file"
+            icon={FaCameraRetro}
+            label="Foto do Score"
+            type="file"
+            onChange={onFileChange}
+          />
+
           {imageSrc && (
             <CropperFullWrapper>
               <CropperWrapper>
@@ -223,10 +228,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
                 />
               </CropperWrapper>
               <SliderWrapper>
-                <Typography
-                  variant="overline"
-                  style={{ marginRight: "16px", padding: "8px" }}
-                >
+                <Typography variant="overline" style={{ marginTop: `1rem`}}>
                   Zoom
                 </Typography>
                 <Slider
@@ -243,15 +245,8 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             </CropperFullWrapper>
           )}
 
-          <Input
-            name="file"
-            icon={FaFileAlt}
-            type="file"
-            onChange={onFileChange}
-          />
-
-          <Button type="button" onClick={() => showCroppedImage()}>
-            Mostrar Prévia
+          <Button type="button" onClick={() => showCroppedImage()} style={{ margin: `1rem 0`}}>
+            Mostrar Foto Cortada
           </Button>
 
           {croppedImage && <ScoreDGPReview src={croppedImage} />}
@@ -260,6 +255,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Pontuação"
             icon={MdOutlineNumbers}
             name="value"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.value?.message}
           />
@@ -268,6 +264,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Perfects"
             icon={BsEmojiSunglasses}
             name="perfect"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.perfect?.message}
           />
@@ -276,6 +273,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Greats"
             icon={BsEmojiSmile}
             name="great"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.great?.message}
           />
@@ -284,6 +282,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Goods"
             icon={BsEmojiNeutral}
             name="good"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.good?.message}
           />
@@ -292,6 +291,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Bads"
             icon={BsEmojiFrown}
             name="bad"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.bad?.message}
           />
@@ -300,6 +300,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Miss"
             icon={BsEmojiDizzy}
             name="miss"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.miss?.message}
           />
@@ -308,6 +309,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             label="Max Combo"
             icon={BsCapslock}
             name="max_combo"
+            type="number"
             register={registerCreateScore}
             error={createScoreErrors.max_combo?.message}
           />
@@ -339,23 +341,27 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             error={createScoreErrors.plate?.message}
           />
 
-            <BallTriangle
-                height={36}
-                width={36}
-                radius={5}
-                color={theme?.colors.primary}
-                ariaLabel="ball-triangle-loading"
-                wrapperStyle={{}}
-                wrapperClass=""
-                visible={isLoadingSubmitScore}
-              />
+          <BallTriangle
+            height={36}
+            width={36}
+            radius={5}
+            color={theme?.colors.primary}
+            ariaLabel="ball-triangle-loading"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={isLoadingSubmitScore}
+          />
 
-          <Button vanilla={false} type="submit">
-            Criar Score
+          <Button
+            vanilla={false}
+            type="submit"
+            style={{ marginTop: `1rem`, marginBottom: `4rem` }}
+          >
+            Eviar Score <FaArrowUpRightFromSquare/>
           </Button>
         </FormWrapper>
       </ContentWrapper>
-    </GlobalContainer>
+    </>
   );
 };
 

@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const StyledInput = styled.div`
-  padding: 0.6rem 1rem;
-  margin: 0.8rem;
+  padding: 0.1rem 0.3rem;
+  margin: 0.1rem;
   background: transparent;
   min-width: 100px;
 
