@@ -5,7 +5,7 @@ export const StyledSelect = styled.select`
   color: ${(props) => props.theme.colors.text};
   border: 1px solid ${(props) => props.theme.colors.primary};
   border-radius: 0.3rem;
-  padding: 0.6rem 1rem;
+  padding: 0.2rem 0.5rem;
   outline: none;
   cursor: pointer;
 
@@ -22,8 +22,8 @@ export const StyledSelect = styled.select`
 `;
 
 export const SelectContainer = styled.div`
-  padding: 0.6rem 1rem;
-  margin: 0.8rem;
+  padding: 0.2rem 0.5;
+  margin: 0.2rem;
   background: transparent;
   min-width: 100px;
 
