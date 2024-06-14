@@ -221,7 +221,7 @@ const PublicDoubleRanking: FunctionComponent<PublicDoubleRankingProps> = () => {
               </DynamicEventTd>
 
               <DynamicEventTd>
-                {(player.totalScore / (14 * 10000)).toFixed(2).toLocaleString()}
+                {(player.totalScore / (7 * 10000)).toFixed(2).toLocaleString()}
               </DynamicEventTd>
             </tr>
           ))}
