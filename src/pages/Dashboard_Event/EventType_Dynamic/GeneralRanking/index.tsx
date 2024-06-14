@@ -120,10 +120,9 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
       <DynamicEventTable>
         <thead>
           <tr>
-            <DynamicEventTh>Posição</DynamicEventTh>
             <DynamicEventTh>Jogador(a)</DynamicEventTh>
             <DynamicEventTh>Scores</DynamicEventTh>
-            <DynamicEventTh># de Músicas Jogadas</DynamicEventTh>
+            <DynamicEventTh>Músicas Jogadas</DynamicEventTh>
             <DynamicEventTh>Pontuação</DynamicEventTh>
           </tr>
         </thead>
@@ -131,18 +130,15 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
           {leaderboard.map((player, index) => (
             <tr key={index}>
               <DynamicEventTd>
-                {index < 3 ? (
-                  <RankingMedal
-                    src={medals[index]}
-                    alt={`${index + 1} medal`}
-                  />
-                ) : (
-                  `#${index + 1}`
-                )}
-              </DynamicEventTd>
-
-              <DynamicEventTd>
                 <PlayerInfoWrapper>
+                  {index < 3 ? (
+                    <RankingMedal
+                      src={medals[index]}
+                      alt={`${index + 1} medal`}
+                    />
+                  ) : (
+                    `#${index + 1}`
+                  )}
                   <PlayerMiniature
                     src={
                       player.profilePicture
@@ -176,7 +172,9 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
                                   .toString()
                                   .padStart(2, "0")}.png`}
                               />
-                              {score.music.name}
+                              {score.music.name.length > 12
+                                ? `${score.music.name.substring(0, 12)}...`
+                                : score.music.name}
                             </MusicWrapper>
 
                             <DynamicEventScoreDataWrapper>
@@ -227,19 +225,15 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
             <>
               <SmallScreeDynamicEventTableHeader key={index}>
                 <DynamicEventTd>
-                  {index < 3 ? (
-                    <RankingMedal
-                      src={medals[index]}
-                      alt={`${index + 1} medal`}
-                    />
-                  ) : (
-                    `#${index + 1}`
-                  )}
-                </DynamicEventTd>
-              </SmallScreeDynamicEventTableHeader>
-              <tr>
-                <DynamicEventTd>
                   <PlayerInfoWrapper>
+                    {index < 3 ? (
+                      <RankingMedal
+                        src={medals[index]}
+                        alt={`${index + 1} medal`}
+                      />
+                    ) : (
+                      `#${index + 1}`
+                    )}
                     <PlayerMiniature
                       src={
                         player.profilePicture
@@ -251,7 +245,8 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
                     {player.nickname}
                   </PlayerInfoWrapper>
                 </DynamicEventTd>
-              </tr>
+              </SmallScreeDynamicEventTableHeader>
+
               <tr>
                 <DynamicEventTd>
                   <Button
@@ -274,7 +269,9 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
                                     .toString()
                                     .padStart(2, "0")}.png`}
                                 />
-                                {score.music.name}
+                                {score.music.name.length > 10
+                                  ? `${score.music.name.substring(0, 10)}...`
+                                  : score.music.name}
                               </MusicWrapper>
 
                               <DynamicEventScoreDataWrapper>
@@ -311,7 +308,7 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
               </tr>
               <tr>
                 <DynamicEventTd>
-                  {`# de Músicas Jogadas: ${player.scores.length} / 14`}
+                  {`Músicas Jogadas: ${player.scores.length} / 14`}
                 </DynamicEventTd>
               </tr>
               <tr>

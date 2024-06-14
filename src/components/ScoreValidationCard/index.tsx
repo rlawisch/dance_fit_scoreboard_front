@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { IScore } from "../../types/entity-types";
 import {
   GlobalContainer,
@@ -35,6 +35,7 @@ import DeleteButton from "../Button_Delete";
 import { useScore } from "../../providers/Scores";
 import useDynamicModal from "../../providers/DynamicModal";
 import Modal from "../Modal";
+import { stringShortener } from "../../utils/stringShortener";
 
 interface ScoreValidationCardProps {
   score: IScore;
@@ -44,6 +45,23 @@ const ScoreValidationCard: FunctionComponent<ScoreValidationCardProps> = ({
   score,
 }) => {
   const { adminValidateScore, adminInvalidateScore } = useScore();
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+
+  useEffect(() => {
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [])
 
   const {
     isModalOpen: isConfirmValidationModalOpen,
@@ -74,7 +92,7 @@ const ScoreValidationCard: FunctionComponent<ScoreValidationCardProps> = ({
               .toString()
               .padStart(2, "0")}.png`}
           />
-          {score.music.name}
+          {stringShortener(windowWidth, score.music.name)}
         </MusicWrapper>
 
         <ScoreGradeAndPlating>

@@ -27,6 +27,7 @@ import { getGradeImageFileName } from "../../../../utils/getGradeImageFileName";
 import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
 import Button from "../../../../components/Button";
+import { stringShortener } from "../../../../utils/stringShortener";
 
 interface AdminGeneralRankingProps {}
 
@@ -53,9 +54,21 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
   const [visibleScores, setVisibleScores] = useState<{
     [key: string]: boolean;
   }>({});
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     getScoresByEvent(Number(event_id));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -121,10 +134,9 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
       <DynamicEventTable>
         <thead>
           <tr>
-            <DynamicEventTh>Posição</DynamicEventTh>
             <DynamicEventTh>Jogador(a)</DynamicEventTh>
             <DynamicEventTh>Scores</DynamicEventTh>
-            <DynamicEventTh># de Músicas Jogadas</DynamicEventTh>
+            <DynamicEventTh>Músicas Jogadas</DynamicEventTh>
             <DynamicEventTh>Pontuação</DynamicEventTh>
           </tr>
         </thead>
@@ -132,18 +144,15 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
           {leaderboard.map((player, index) => (
             <tr key={index}>
               <DynamicEventTd>
-                {index < 3 ? (
-                  <RankingMedal
-                    src={medals[index]}
-                    alt={`${index + 1} medal`}
-                  />
-                ) : (
-                  `#${index + 1}`
-                )}
-              </DynamicEventTd>
-
-              <DynamicEventTd>
                 <PlayerInfoWrapper>
+                  {index < 3 ? (
+                    <RankingMedal
+                      src={medals[index]}
+                      alt={`${index + 1} medal`}
+                    />
+                  ) : (
+                    `#${index + 1}`
+                  )}
                   <PlayerMiniature
                     src={
                       player.profilePicture
@@ -177,7 +186,7 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
                                   .toString()
                                   .padStart(2, "0")}.png`}
                               />
-                              {score.music.name}
+                              {stringShortener(windowWidth, score.music.name)}
                             </MusicWrapper>
 
                             <DynamicEventScoreDataWrapper>
@@ -227,18 +236,16 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
           {leaderboard.map((player, index) => (
             <>
               <SmallScreeDynamicEventTableHeader key={index}>
-                <DynamicEventTd>{index < 3 ? (
-                  <RankingMedal
-                    src={medals[index]}
-                    alt={`${index + 1} medal`}
-                  />
-                ) : (
-                  `#${index + 1}`
-                )}</DynamicEventTd>
-              </SmallScreeDynamicEventTableHeader>
-              <tr>
                 <DynamicEventTd>
                   <PlayerInfoWrapper>
+                    {index < 3 ? (
+                      <RankingMedal
+                        src={medals[index]}
+                        alt={`${index + 1} medal`}
+                      />
+                    ) : (
+                      `#${index + 1}`
+                    )}
                     <PlayerMiniature
                       src={
                         player.profilePicture
@@ -250,7 +257,8 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
                     {player.nickname}
                   </PlayerInfoWrapper>
                 </DynamicEventTd>
-              </tr>
+              </SmallScreeDynamicEventTableHeader>
+
               <tr>
                 <DynamicEventTd>
                   <Button
@@ -273,7 +281,7 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
                                     .toString()
                                     .padStart(2, "0")}.png`}
                                 />
-                                {score.music.name}
+                                {stringShortener(windowWidth, score.music.name)}
                               </MusicWrapper>
 
                               <DynamicEventScoreDataWrapper>
@@ -310,7 +318,7 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
               </tr>
               <tr>
                 <DynamicEventTd>
-                  {`# de Músicas Jogadas: ${player.scores.length} / 14`}
+                  {`Músicas Jogadas: ${player.scores.length} / 14`}
                 </DynamicEventTd>
               </tr>
               <tr>

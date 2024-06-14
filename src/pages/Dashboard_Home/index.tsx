@@ -12,6 +12,20 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 14/06/24</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Rankings Double e Single agora podem ser consultados.
+        </ContentListItem>
+
+        <ContentListItem>
+          Responsividade dos Rankings melhorada.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 11/06/24</PatchTitle>
 
       <HorizontalRuler />
@@ -22,7 +36,12 @@ const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
         </ContentListItem>
 
         <ContentListItem>
-          Fórmula da Pontuação alterada para que a pontuação máxima possível no Ranking seja <strong>100</strong>. (Score Total do Jogador / (Número do Ranking * 10000)) esse valor então é truncado em duas casas decimais e arredondado usando a seguinte regra: se o próximo dígito for 5 ou menor, arredonda pra baixo, se for 6 ou maior, arredonda pra cima.
+          Fórmula da Pontuação alterada para que a pontuação máxima possível no
+          Ranking seja <strong>100</strong>. (Score Total do Jogador / (Número
+          de Músicas do Ranking * 10000)) esse valor então é truncado em duas
+          casas decimais e arredondado usando a seguinte regra: se o próximo
+          dígito for 5 ou menor, arredonda pra baixo, se for 6 ou maior,
+          arredonda pra cima.
         </ContentListItem>
       </ContentList>
 
