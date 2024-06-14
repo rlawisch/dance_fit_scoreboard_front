@@ -123,10 +123,9 @@ const PublicGeneralRanking: FunctionComponent<
       <DynamicEventTable>
         <thead>
           <tr>
-            <DynamicEventTh>Posição</DynamicEventTh>
             <DynamicEventTh>Jogador(a)</DynamicEventTh>
             <DynamicEventTh>Scores</DynamicEventTh>
-            <DynamicEventTh># de Músicas Jogadas</DynamicEventTh>
+            <DynamicEventTh>Músicas Jogadas</DynamicEventTh>
             <DynamicEventTh>Pontuação</DynamicEventTh>
           </tr>
         </thead>
@@ -134,18 +133,15 @@ const PublicGeneralRanking: FunctionComponent<
           {leaderboard.map((player, index) => (
             <tr key={index}>
               <DynamicEventTd>
-                {index < 3 ? (
-                  <RankingMedal
-                    src={medals[index]}
-                    alt={`${index + 1} medal`}
-                  />
-                ) : (
-                  `#${index + 1}`
-                )}
-              </DynamicEventTd>
-
-              <DynamicEventTd>
                 <PlayerInfoWrapper>
+                  {index < 3 ? (
+                    <RankingMedal
+                      src={medals[index]}
+                      alt={`${index + 1} medal`}
+                    />
+                  ) : (
+                    `#${index + 1}`
+                  )}
                   <PlayerMiniature
                     src={
                       player.profilePicture
@@ -179,7 +175,9 @@ const PublicGeneralRanking: FunctionComponent<
                                   .toString()
                                   .padStart(2, "0")}.png`}
                               />
-                              {score.music.name}
+                              {score.music.name.length > 12
+                                ? `${score.music.name.substring(0, 12)}...`
+                                : score.music.name}
                             </MusicWrapper>
 
                             <DynamicEventScoreDataWrapper>
@@ -230,19 +228,15 @@ const PublicGeneralRanking: FunctionComponent<
             <>
               <SmallScreeDynamicEventTableHeader key={index}>
                 <DynamicEventTd>
-                  {index < 3 ? (
-                    <RankingMedal
-                      src={medals[index]}
-                      alt={`${index + 1} medal`}
-                    />
-                  ) : (
-                    `#${index + 1}`
-                  )}
-                </DynamicEventTd>
-              </SmallScreeDynamicEventTableHeader>
-              <tr>
-                <DynamicEventTd>
                   <PlayerInfoWrapper>
+                    {index < 3 ? (
+                      <RankingMedal
+                        src={medals[index]}
+                        alt={`${index + 1} medal`}
+                      />
+                    ) : (
+                      `#${index + 1}`
+                    )}
                     <PlayerMiniature
                       src={
                         player.profilePicture
@@ -254,7 +248,8 @@ const PublicGeneralRanking: FunctionComponent<
                     {player.nickname}
                   </PlayerInfoWrapper>
                 </DynamicEventTd>
-              </tr>
+              </SmallScreeDynamicEventTableHeader>
+
               <tr>
                 <DynamicEventTd>
                   <Button
@@ -277,7 +272,9 @@ const PublicGeneralRanking: FunctionComponent<
                                     .toString()
                                     .padStart(2, "0")}.png`}
                                 />
-                                {score.music.name}
+                                {score.music.name.length > 10
+                                  ? `${score.music.name.substring(0, 10)}...`
+                                  : score.music.name}
                               </MusicWrapper>
 
                               <DynamicEventScoreDataWrapper>
@@ -314,7 +311,7 @@ const PublicGeneralRanking: FunctionComponent<
               </tr>
               <tr>
                 <DynamicEventTd>
-                  {`# de Músicas Jogadas: ${player.scores.length} / 14`}
+                  {`Músicas Jogadas: ${player.scores.length} / 14`}
                 </DynamicEventTd>
               </tr>
               <tr>

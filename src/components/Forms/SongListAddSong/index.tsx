@@ -10,7 +10,7 @@ import {
 import { IMusic, ISongList } from "../../../types/entity-types";
 import Input from "../../Input";
 import { TbMusic } from "react-icons/tb";
-import { MusicLi, SelectedMusicWrapper } from "../PhaseAddMusic/styles";
+import { MusicLi, SelectedMusicWrapper } from "../../../styles/global";
 import Button from "../../Button";
 
 interface SongListAddSongFormProps {

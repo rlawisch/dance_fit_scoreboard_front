@@ -4,6 +4,7 @@ import {
   ContentWrapper,
   FormWrapper,
   GlobalContainer,
+  ScoreDGPReview,
 } from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -32,7 +33,6 @@ import {
 } from "../../../pages/Dashboard_Profile/styles";
 import { Slider, Typography } from "@material-ui/core";
 import { getCroppedImg } from "../../../utils/canvasUtils";
-import { ScoreDGPReview } from "./styles";
 import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
 

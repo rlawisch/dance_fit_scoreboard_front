@@ -1,12 +1,12 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
   MusicLevelMiniature,
+  MusicListDataWrapper,
   MusicWrapper,
   Table,
-  TableHeaderWrapper,
 } from "../../../../styles/global";
 import { IMusic, IScore } from "../../../../types/entity-types";
 import { useComfortLevel } from "../../../../providers/ComfortLevels";
@@ -19,16 +19,17 @@ import ScoreCreateForm from "../../../../components/Forms/ScoreSubmit";
 import { useScore } from "../../../../providers/Scores";
 import ScoreCard from "../../../../components/ScoreCard";
 import styled from "styled-components";
+import { stringShortener } from "../../../../utils/stringShortener";
 
 interface SongListProps {}
 
 const Paragraph = styled.p`
   padding: 1rem;
-`
+`;
 
 const List = styled.ul`
   padding: 2rem;
-`
+`;
 
 const SongList: FunctionComponent<SongListProps> = () => {
   const { event_id } = useParams();
@@ -54,8 +55,21 @@ const SongList: FunctionComponent<SongListProps> = () => {
     getScoresByEvent,
   } = useScore();
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
   useEffect(() => {
     getEventData(Number(event_id));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -133,61 +147,55 @@ const SongList: FunctionComponent<SongListProps> = () => {
 
   return (
     <>
+      <Paragraph>
+        Aqui é onde os jogadores fazem o envio dos Scores usando o botão{" "}
+        <Button>
+          <TiUploadOutline />
+        </Button>
+        , uma vez enviado, o Score é mandado para análise da administração e se
+        os dados estiverem corretos e baterem com os dados da foto do DG ele
+        será aprovado para só então aparecer nos Rankings.
+      </Paragraph>
 
-    <Paragraph>
-      Aqui é onde os jogadores fazem o envio dos Scores usando o botão <Button><TiUploadOutline /></Button>, uma vez enviado, o Score é mandado para análise da administração e se os dados estiverem corretos e baterem com os dados da foto do DG ele será aprovado para só então aparecer nos Rankings.
-    </Paragraph>
+      <Paragraph>
+        Use a função de enquadramento da foto do DG para ter certeza de que
+        aparecem legíveis dados como:
+      </Paragraph>
 
-    <Paragraph>
-      Use a função de enquadramento da foto do DG para ter certeza de que aparecem legíveis dados como:
-    </Paragraph>
+      <List>
+        <li>Nick do Card</li>
+        <li>Pontuação</li>
+        <li>Grade (SSS+, etc..)</li>
+        <li>Plate (Fair Game, etc..)</li>
+      </List>
 
-    <List>
-      <li>
-        Nick do Card
-      </li>
-      <li>
-        Pontuação
-      </li>
-      <li>
-        Grade (SSS+, etc..)
-      </li>
-      <li>
-        Plate (Fair Game, etc..)
-      </li>
-    </List>
-
-    <Paragraph>
-      Caso o jogador já possuir tanto um Score já ranqueado ou em análise, ao abrir o formulário de cadastro os mesmos apareçerão para ter certeza de que não está fazendo o envio de um Score de valor mais baixo.
-    </Paragraph>
+      <Paragraph>
+        Caso o jogador já possuir tanto um Score já ranqueado ou em análise, ao
+        abrir o formulário de cadastro os mesmos apareçerão para ter certeza de
+        que não está fazendo o envio de um Score de valor mais baixo.
+      </Paragraph>
 
       <Table>
-        <thead>
-          <tr>
-            <th>Músicas</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.keys(groupedMusics).map((mode) => (
-            <React.Fragment key={mode}>
-              <tr>
-                <th colSpan={2}>
-                  {mode.charAt(0).toUpperCase() + mode.slice(1)}s
-                </th>
-              </tr>
+        {Object.keys(groupedMusics).map((mode) => (
+          <React.Fragment key={mode}>
+            <thead>
+              <th>{mode.charAt(0).toUpperCase() + mode.slice(1)}s</th>
+            </thead>
+            <tbody>
               {groupedMusics[mode].map((music) => (
                 <tr key={music.music_id}>
                   <td>
-                    <TableHeaderWrapper>
+                    <MusicListDataWrapper>
                       <MusicWrapper>
                         <MusicLevelMiniature
                           src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
-                        {music.name}
+                        <p>
+                          {stringShortener(windowWidth, music.name)}
+                        </p>
                       </MusicWrapper>
-
                       {isMusicInComfortLevelRange(music) && (
                         <div>
                           <Button
@@ -231,13 +239,13 @@ const SongList: FunctionComponent<SongListProps> = () => {
                           </Modal>
                         </div>
                       )}
-                    </TableHeaderWrapper>
+                    </MusicListDataWrapper>
                   </td>
                 </tr>
               ))}
-            </React.Fragment>
-          ))}
-        </tbody>
+            </tbody>
+          </React.Fragment>
+        ))}
       </Table>
     </>
   );

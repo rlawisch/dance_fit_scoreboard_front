@@ -1,13 +1,13 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import Button from "../../../../components/Button";
 import { useSongList } from "../../../../providers/SongLists";
 import { useParams } from "react-router-dom";
 import { useEvents } from "../../../../providers/Events";
 import {
   MusicLevelMiniature,
+  MusicListDataWrapper,
   MusicWrapper,
   Table,
-  TableHeaderWrapper,
 } from "../../../../styles/global";
 import { IMusic } from "../../../../types/entity-types";
 import DeleteButton from "../../../../components/Button_Delete";
@@ -17,6 +17,7 @@ import SongListAddSongForm from "../../../../components/Forms/SongListAddSong";
 import useDynamicModal from "../../../../providers/DynamicModal";
 import { TbMusicMinus } from "react-icons/tb";
 import SongListRemoveSongForm from "../../../../components/Forms/SongListRemoveSong";
+import { stringShortener } from "../../../../utils/stringShortener";
 
 interface ListManagementProps {}
 
@@ -32,8 +33,21 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
 
   const { getEventData, eventData } = useEvents();
 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
   useEffect(() => {
     getEventData(Number(event_id));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -87,25 +101,25 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
       </Modal>
 
       <Table>
-        <tbody>
-          {Object.keys(groupedMusics).map((mode) => (
-            <React.Fragment key={mode}>
-              <tr>
-                <th colSpan={2}>
-                  {mode.charAt(0).toUpperCase() + mode.slice(1)}s
-                </th>
-              </tr>
+        {Object.keys(groupedMusics).map((mode) => (
+          <React.Fragment key={mode}>
+            <thead>
+              <th>{mode.charAt(0).toUpperCase() + mode.slice(1)}s</th>
+            </thead>
+            <tbody>
               {groupedMusics[mode].map((music) => (
                 <tr key={music.music_id}>
                   <td>
-                    <TableHeaderWrapper>
+                    <MusicListDataWrapper>
                       <MusicWrapper>
                         <MusicLevelMiniature
                           src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
                             .toString()
                             .padStart(2, "0")}.png`}
                         />
-                        {music.name}
+                        <p>
+                          {stringShortener(windowWidth, music.name)}
+                        </p>
                       </MusicWrapper>
                       <div>
                         <DeleteButton
@@ -127,13 +141,13 @@ const ListManagement: FunctionComponent<ListManagementProps> = () => {
                           />
                         </Modal>
                       </div>
-                    </TableHeaderWrapper>
+                    </MusicListDataWrapper>
                   </td>
                 </tr>
               ))}
-            </React.Fragment>
-          ))}
-        </tbody>
+            </tbody>
+          </React.Fragment>
+        ))}
       </Table>
     </>
   );

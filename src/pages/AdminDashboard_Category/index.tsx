@@ -47,7 +47,6 @@ import CategoryUpdateForm from "../../components/Forms/CategoryUpdate";
 import PhaseAddMusicForm from "../../components/Forms/PhaseAddMusic";
 import PhaseRemoveMusicForm from "../../components/Forms/PhaseRemoveMusic";
 import { TiUploadOutline } from "react-icons/ti";
-// import ScoreCreateForm from "../../components/Forms/ScoreCreate";
 import ScoreCard from "../../components/ScoreCard";
 import ScoreCreateByAdmForm from "../../components/Forms/ScoreCreateByAdmin";
 import PhaseDeleteForm from "../../components/Forms/PhaseDelete";
@@ -137,12 +136,6 @@ const AdminDashboardCategory: FunctionComponent<
     openModal: openPhaseDeleteModal,
     closeModal: closePhaseDeleteModal,
   } = useDynamicModal();
-
-  // const {
-  //   isModalOpen: isScoreCreateModalOpen,
-  //   openModal: openScoreCreateModal,
-  //   closeModal: closeScoreCreateModal,
-  // } = useDynamicModal();
 
   const {
     isModalOpen: isAdmScoreCreateModalOpen,
@@ -454,28 +447,6 @@ const AdminDashboardCategory: FunctionComponent<
                                   </MusicWrapper>
 
                                   <TableDataButtonWrapper>
-                                    {/* <Button
-                                      vanilla={false}
-                                      onClick={() =>
-                                        openScoreCreateModal(music.music_id)
-                                      }
-                                    >
-                                      <TiUploadOutline />
-                                    </Button>
-                                    <Modal
-                                      isOpen={isScoreCreateModalOpen(
-                                        music.music_id
-                                      )}
-                                      onClose={() =>
-                                        closeScoreCreateModal(music.music_id)
-                                      }
-                                    >
-                                      <ScoreCreateForm
-                                        category={categoryData}
-                                        phase={phase}
-                                        music={music}
-                                      />
-                                    </Modal> */}
                                     <UpdateButton
                                       vanilla={false}
                                       onClick={() =>

@@ -1,4 +1,4 @@
-import styled, {createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 import "@fontsource/roboto";
 import { shade } from "polished";
 
@@ -59,6 +59,17 @@ export const GlobalContainer = styled.div`
   overflow-y: auto;
 `;
 
+export const HeaderContainer = styled.header`
+  height: 60px;
+  background: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.secundary};
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.1);
+`;
+
 interface DashboardContainerProps {
   isopen: boolean;
 }
@@ -69,15 +80,13 @@ export const DashboardContainer = styled.main<DashboardContainerProps>`
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-  flex: 1;
   overflow-y: auto;
 `;
 
 export const Table = styled.table`
-  width: 100%;
-  border-collapse: separate;
   text-align: center;
   font-weight: bold;
+  width: 100%;
 
   th,
   td {
@@ -91,14 +100,11 @@ export const Table = styled.table`
 
   th {
     background-color: ${({ theme }) => shade(0.1, theme.colors.primary)};
-    color: ${(props) => props.theme.colors.text};
+    color: ${(props) => props.theme.colors.background};
   }
 
   @media screen and (max-width: 576px) {
     font-size: small;
-  }
-
-  @media (min-width: 577px) and (max-width: 768px) {
   }
 `;
 
@@ -119,7 +125,7 @@ export const TableDataWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  /* gap: 1rem; */
 
   @media screen and (max-width: 900px) {
     display: flex;
@@ -257,6 +263,27 @@ export const PhaseBreakSpan = styled.span`
   }
 `;
 
+export const MusicLi = styled.li`
+  list-style: none;
+  padding: 0.6rem;
+  font-weight: normal;
+  color: ${(props) => props.theme.colors.primary};
+
+  &:hover {
+    background-color: ${(props) => shade(0.3, props.theme.colors.background)};
+    cursor: pointer;
+  }
+`;
+export const SelectedMusicWrapper = styled.div`
+  padding: 1rem;
+  color: ${(props) => props.theme.colors.primary};
+  font-weight: bold;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
 export const SelectedPlayerWrapper = styled.div`
   padding: 1rem;
   color: ${(props) => props.theme.colors.primary};
@@ -267,6 +294,13 @@ export const SelectedPlayerWrapper = styled.div`
   align-items: center;
 `;
 
+export const MusicListDataWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const MusicLevelMiniature = styled.img`
   width: 48.4px;
   height: 40px;
@@ -275,8 +309,10 @@ export const MusicLevelMiniature = styled.img`
 export const MusicWrapper = styled.div`
   display: flex;
   flex-direction: column-reverse;
-  align-items: center;
-  gap: 0.6rem;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 50%;
+  gap: 0.5rem;
 
   @media screen and (min-width: 576px) {
     display: flex;
@@ -311,6 +347,10 @@ export const ContentWrapper = styled.div`
 `;
 
 // Dynamic Event Styles
+
+export const ScoreDGPReview = styled.img`
+  max-width: 250px;
+`;
 
 export const DynamicEventWrapper = styled.div`
   display: flex;
@@ -348,15 +388,10 @@ export const DynamicEventTable = styled.table`
   width: 100%;
   border: 1px solid ${(props) => props.theme.colors.primary};
   display: none;
-  font-size: smaller;
+  text-align: center;
 
-  @media screen and (min-width: 840px) {
+  @media screen and (min-width: 768px) {
     display: block;
-    font-size: small;
-  }
-
-  @media screen and (min-width: 920px) {
-    font-size: medium;
   }
 `;
 
@@ -373,6 +408,11 @@ export const DynamicEventTd = styled.td`
 
 export const DynamicEventScoreTable = styled.table`
   width: 100%;
+  font-size: smaller;
+
+  @media screen and (min-width: 400px) {
+    font-size: medium;
+  }
 
   td {
     padding: 1rem 0.5rem;
@@ -386,6 +426,14 @@ export const DyEvPlayerScoreListWrapper = styled.div`
   gap: 0.6rem;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (min-width: 768px) {
+    flex-direction: column;
+  }
+
+  @media screen and (min-width: 1024px) {
+    flex-direction: row;
+  }
 `;
 
 export const DynamicEventScoreDataWrapper = styled.div`
@@ -404,7 +452,7 @@ export const SmallScreenDynamicEventTable = styled.table`
   border: 1px solid ${(props) => props.theme.colors.primary};
   text-align: center;
 
-  @media screen and (min-width: 840px) {
+  @media screen and (min-width: 768px) {
     display: none;
   }
 `;
@@ -414,8 +462,7 @@ export const SmallScreeDynamicEventTableHeader = styled.th`
   color: ${(props) => props.theme.colors.background};
 `;
 
-
 export const RankingMedal = styled.img`
   width: 34px;
   height: 41px;
-`
+`;

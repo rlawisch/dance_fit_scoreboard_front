@@ -4,11 +4,12 @@ import {
   ContentWrapper,
   GlobalContainer,
   MusicLevelMiniature,
+  MusicLi,
   MusicWrapper,
+  SelectedMusicWrapper,
 } from "../../../styles/global";
 import { usePhases } from "../../../providers/Phases";
 import { useMusics } from "../../../providers/Musics";
-import { MusicLi, SelectedMusicWrapper } from "./styles";
 import Input from "../../Input";
 import { TbMusic } from "react-icons/tb";
 import Button from "../../Button";

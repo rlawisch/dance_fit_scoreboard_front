@@ -26,9 +26,6 @@ import {
 import Button from "../../components/Button";
 import { IPhase, IScore } from "../../types/entity-types";
 import { TableHeader, TableRow, TableWrapper } from "../../styles/global";
-// import { TiUploadOutline } from "react-icons/ti";
-// import Modal from "../../components/Modal";
-// import ScoreCreateForm from "../../components/Forms/ScoreCreate";
 import ScoreCard from "../../components/ScoreCard";
 import { ImCross } from "react-icons/im";
 import { FaCheck } from "react-icons/fa6";
@@ -39,7 +36,6 @@ import {
 import { getGradeImageFileName } from "../../utils/getGradeImageFileName";
 import useDynamicModal from "../../providers/DynamicModal";
 import Modal from "../../components/Modal";
-// import useDynamicModal from "../../providers/DynamicModal";
 
 interface PublicDashboardCategoryProps {}
 
@@ -60,11 +56,7 @@ const PublicDashboardCategory: FunctionComponent<
     (a, b) => a.phase_number - b.phase_number,
   );
 
-  // const {
-  //   isModalOpen: isScoreCreateModalOpen,
-  //   openModal: openScoreCreateModal,
-  //   closeModal: closeScoreCreateModal,
-  // } = useDynamicModal();
+
 
   const {
     isModalOpen: isScoreDetailsModalOpen,
@@ -370,28 +362,6 @@ const PublicDashboardCategory: FunctionComponent<
                               src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level.toString().padStart(2, "0")}.png`}
                             />
                           </MusicWrapper>
-                          <div>
-                            {/* <Button
-                              vanilla={false}
-                              onClick={() =>
-                                openScoreCreateModal(music.music_id)
-                              }
-                            >
-                              <TiUploadOutline />
-                            </Button>
-                            <Modal
-                              isOpen={isScoreCreateModalOpen(music.music_id)}
-                              onClose={() =>
-                                closeScoreCreateModal(music.music_id)
-                              }
-                            >
-                              <ScoreCreateForm
-                                category={categoryData}
-                                phase={phase}
-                                music={music}
-                              />
-                            </Modal> */}
-                          </div>
                         </TableHeaderWrapper>
                       </TableHeader>
                     ))}

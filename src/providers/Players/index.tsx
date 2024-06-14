@@ -140,13 +140,24 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         },
       });
 
-      if (res.status === 401) {
-        navigate('/login')
-      }
-
       setPlayerData(res.data);
     } catch (err: any) {
       console.log(err);
+
+      if (err.response && err.response.status === 401) {
+        setAccToken("");
+        setPlayerData({} as IPlayer);
+        setDecodedPlayerInfo({
+          nickname: "",
+          player_id: "",
+          role: "",
+          iat: -1,
+          exp: -1,
+        });
+        localStorage.removeItem("@DFS/PlayerToken");
+        localStorage.removeItem("@DFS/Player");
+        navigate("/login");
+      }
     }
   };
 
