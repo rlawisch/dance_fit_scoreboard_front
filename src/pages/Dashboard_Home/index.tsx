@@ -12,6 +12,17 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 14/06/24 - Parte II</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Formulário de Envio de Scores melhorado, espaçamento e ordenação dos
+          componentes.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 14/06/24</PatchTitle>
 
       <HorizontalRuler />
