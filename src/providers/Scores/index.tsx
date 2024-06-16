@@ -13,6 +13,7 @@ import { IScore } from "../../types/entity-types";
 
 export interface IScoreContext {
   eventScores: IScore[];
+  isLoadingEventScores: boolean;
   pendingScores: IScore[];
   isLoadingSubmitScore: boolean;
   scoreRefreshTrigger: boolean;
@@ -36,6 +37,8 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
   const { categoryRefreshTrigger, setCategoryRefreshTrigger } = useCategory();
 
   const [eventScores, setEventScores] = useState<IScore[]>([]);
+
+  const [isLoadingEventScores, setIsLoadingEventScores] = useState<boolean>(false)
 
   const [pendingScores, setPendingScores] = useState<IScore[]>([])
 
@@ -156,10 +159,12 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getScoresByEvent = async (event_id: number) => {
     try {
+      setIsLoadingEventScores(true)
       const res = await api.get(`/scores/events/${event_id}`);
 
       if (res.status === 200) {
         setEventScores(res.data);
+        setIsLoadingEventScores(false)
       }
     } catch (err: any) {
       console.log(err)
@@ -223,6 +228,7 @@ export const ScoreProvider: React.FC<{ children: React.ReactNode }> = ({
     <ScoreContext.Provider
       value={{
         eventScores,
+        isLoadingEventScores,
         pendingScores,
         isLoadingSubmitScore,
         scoreRefreshTrigger,

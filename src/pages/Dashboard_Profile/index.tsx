@@ -104,7 +104,8 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
 
   const theme = useContext(ThemeContext);
 
-  const onProfilePictureSubmit = async () => {
+  const onProfilePictureSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
     try {
       if (imageSrc) {
         const croppedImage = await getCroppedImg(
@@ -147,7 +148,7 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         <Modal isOpen={isOpenPicUpdate} onClose={closePicUpdateModal}>
           <GlobalContainer>
 
-            <ProfilePictureForm onSubmit={() => onProfilePictureSubmit}>
+            <ProfilePictureForm onSubmit={onProfilePictureSubmit}>
               <Input
                 name="file"
                 icon={FaFileAlt}
