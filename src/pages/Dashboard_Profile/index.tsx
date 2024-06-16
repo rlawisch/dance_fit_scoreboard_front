@@ -12,10 +12,7 @@ import { usePlayer } from "../../providers/Players";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import UpdateButton from "../../components/Button_Update";
-import { useForm } from "react-hook-form";
 import { FaFileAlt } from "react-icons/fa";
-import { IProfilePicFormData } from "../../types/form-types";
-import { profilePictureResolver } from "../../resolvers";
 import { BallTriangle } from "react-loader-spinner";
 import { ThemeContext } from "styled-components";
 import useModal from "../../providers/Modal";
@@ -25,7 +22,6 @@ import { getCroppedImg, getRotatedImage } from "../../utils/canvasUtils";
 import { Orientation, getOrientation } from "get-orientation/browser";
 import Typography from "@material-ui/core/Typography";
 import Slider from "@material-ui/core/Slider";
-import { yupResolver } from "@hookform/resolvers/yup";
 import Button from "../../components/Button";
 
 interface DashboardProfileProps {}
@@ -108,16 +104,6 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
 
   const theme = useContext(ThemeContext);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IProfilePicFormData>({
-    resolver: profilePictureResolver,
-  });
-
-  yupResolver;
-
   const onProfilePictureSubmit = async () => {
     try {
       if (imageSrc) {
@@ -160,19 +146,13 @@ const DashboardProfile: FunctionComponent<DashboardProfileProps> = () => {
         <UpdateButton onClick={openPicUpdateModal}>Alterar Avatar</UpdateButton>
         <Modal isOpen={isOpenPicUpdate} onClose={closePicUpdateModal}>
           <GlobalContainer>
-            <p>
-              Os arquivos de imagem devem ter até 8Mb de tamanho e ser .jpeg ou
-              .png
-            </p>
 
-            <ProfilePictureForm onSubmit={handleSubmit(onProfilePictureSubmit)}>
+            <ProfilePictureForm onSubmit={() => onProfilePictureSubmit}>
               <Input
                 name="file"
                 icon={FaFileAlt}
                 type="file"
-                register={register}
                 onChange={onFileChange}
-                error={errors?.file}
               />
 
               {imageSrc && (
