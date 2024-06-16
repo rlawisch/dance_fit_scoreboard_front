@@ -12,6 +12,16 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 16/06/24</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Corrigido o erro ao fazer upload do Avatar (Imagem do Perfil). 
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 14/06/24 - Parte II</PatchTitle>
 
       <HorizontalRuler />
