@@ -66,7 +66,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       if (jwtPayload.role === "admin") {
         navigate("/admin/home");
       } else {
-        navigate("/dashboard/home");
+        navigate("/dashboard/events/3");
       }
     } catch (err: any) {
       toast.error("Usuário ou senha incorretos");

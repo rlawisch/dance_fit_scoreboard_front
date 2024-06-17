@@ -1,5 +1,6 @@
 import { ButtonHTMLAttributes, FunctionComponent, ReactNode } from "react";
 import { StyledButton } from "./styles";
+import { ButtonContentWrapper } from "../Button/styles";
 
 interface UpdateButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   vanilla?: boolean;
@@ -13,7 +14,7 @@ const UpdateButton: FunctionComponent<UpdateButtonProps> = ({
 }) => {
   return (
     <StyledButton vanilla={vanilla} {...rest}>
-      {children}
+      <ButtonContentWrapper>{children}</ButtonContentWrapper>
     </StyledButton>
   );
 };

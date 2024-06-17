@@ -323,7 +323,7 @@ export const MusicWrapper = styled.div`
 `;
 
 export const FormWrapper = styled.form`
-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -331,7 +331,10 @@ width: 100%;
 
 export const DeleteWarning = styled.p`
   color: red;
-  font-weight: bold;
+
+  ul {
+    text-align: center;
+  }
 `;
 
 export const Title = styled.h1`
@@ -341,7 +344,7 @@ export const Title = styled.h1`
 `;
 
 export const ContentWrapper = styled.div`
-width: 100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -350,7 +353,24 @@ width: 100%;
 
 // Dynamic Event Styles
 
+export const ScoreDGPreviewWrapper = styled.div`
+  
+  button {
+    position: fixed;
+    top: 16px;
+    left: calc(50% + 135px);
+    transform: translateX(-50%);
+    z-index: 99;
+  }
+`;
+
 export const ScoreDGPReview = styled.img`
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 98;
+  max-width: 280px;
   width: 100%;
   margin: 2rem 0;
 `;
@@ -503,4 +523,4 @@ export const DynamicEventScoreSubmissionWarning = styled.p`
   color: red;
   background-color: black;
   padding: 0.3rem;
-`
+`;

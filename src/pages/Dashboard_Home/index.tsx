@@ -12,13 +12,27 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 17/06/24</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+      <ContentListItem>
+          Temporariamente, ao fazer o Login, os Jogadores serão redirecionados à página do Evento em andamento, a Dinâmica DFH 2024.
+        </ContentListItem>
+        <ContentListItem>
+          Alterações no formulário de envio de score para melhorar experiência
+          do usuário.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 16/06/24</PatchTitle>
 
       <HorizontalRuler />
 
       <ContentList>
         <ContentListItem>
-          Corrigido o erro ao fazer upload do Avatar (Imagem do Perfil). 
+          Corrigido o erro ao fazer upload do Avatar (Imagem do Perfil).
         </ContentListItem>
       </ContentList>
 
