@@ -357,10 +357,11 @@ export const ScoreDGPreviewWrapper = styled.div`
   
   button {
     position: fixed;
-    top: 16px;
+    top: 42px;
     left: calc(50% + 135px);
     transform: translateX(-50%);
     z-index: 99;
+    -webkit-backface-visibility: hidden;
   }
 `;
 
@@ -372,7 +373,8 @@ export const ScoreDGPReview = styled.img`
   z-index: 98;
   max-width: 280px;
   width: 100%;
-  margin: 2rem 0;
+  margin: 4rem 0;
+  -webkit-backface-visibility: hidden;
 `;
 
 export const DynamicEventWrapper = styled.div`
