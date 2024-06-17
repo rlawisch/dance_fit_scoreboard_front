@@ -354,26 +354,35 @@ export const ContentWrapper = styled.div`
 // Dynamic Event Styles
 
 export const ScoreDGPreviewWrapper = styled.div`
-  
   button {
     position: fixed;
-    top: 30%;
+    top: 40%;
     left: calc(50% + 110px);
     transform: translateX(-50%);
     z-index: 99;
     -webkit-backface-visibility: hidden;
+
+    @media screen and (min-width: 576px) {
+      top: 20%;
+
+
+    }
   }
 `;
 
 export const ScoreDGPReview = styled.img`
   position: fixed;
-  top: 30%;
+  top: 40%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 98;
   max-width: 260px;
   width: 100%;
   -webkit-backface-visibility: hidden;
+
+  @media screen and (min-width: 576px) {
+    top: 20%;
+  }
 `;
 
 export const DynamicEventWrapper = styled.div`
