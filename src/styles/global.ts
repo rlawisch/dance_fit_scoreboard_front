@@ -357,8 +357,8 @@ export const ScoreDGPreviewWrapper = styled.div`
   
   button {
     position: fixed;
-    top: 42px;
-    left: calc(50% + 135px);
+    top: 30%;
+    left: calc(50% + 110px);
     transform: translateX(-50%);
     z-index: 99;
     -webkit-backface-visibility: hidden;
@@ -367,13 +367,12 @@ export const ScoreDGPreviewWrapper = styled.div`
 
 export const ScoreDGPReview = styled.img`
   position: fixed;
-  top: 0;
+  top: 30%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 98;
-  max-width: 280px;
+  max-width: 260px;
   width: 100%;
-  margin: 4rem 0;
   -webkit-backface-visibility: hidden;
 `;
 
