@@ -5,7 +5,7 @@ interface ButtonProps {
   vanilla: boolean;
 }
 
-const StyledButton = styled.button<ButtonProps>`
+export const StyledButton = styled.button<ButtonProps>`
   padding: 0.3rem 0.6rem;
   margin: 0.2rem;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
@@ -47,4 +47,11 @@ const StyledButton = styled.button<ButtonProps>`
   }
 `;
 
-export default StyledButton;
+export const ButtonContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+`;

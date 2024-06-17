@@ -2,8 +2,10 @@ import React, { FunctionComponent, useContext, useState } from "react";
 import { IEvent, IMusic } from "../../../types/entity-types";
 import {
   ContentWrapper,
+  DeleteWarning,
   FormWrapper,
   ScoreDGPReview,
+  ScoreDGPreviewWrapper,
 } from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -34,6 +36,7 @@ import { getCroppedImg } from "../../../utils/canvasUtils";
 import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
 import { FaArrowUpRightFromSquare, FaCameraRetro } from "react-icons/fa6";
+import { ImCross } from "react-icons/im";
 
 interface ScoreCreateFormProps {
   music: IMusic;
@@ -187,12 +190,15 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     }
   };
 
+  const [isPreviewVisible, setPreviewVisible] = useState<boolean>(false);
+
   const showCroppedImage = async () => {
     try {
       if (imageSrc) {
         const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
 
         setCroppedImage(croppedImage);
+        setPreviewVisible(true);
       }
     } catch (error) {
       console.log(error);
@@ -228,7 +234,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
                 />
               </CropperWrapper>
               <SliderWrapper>
-                <Typography variant="overline" style={{ marginTop: `1rem`}}>
+                <Typography variant="overline" style={{ marginTop: `1rem` }}>
                   Zoom
                 </Typography>
                 <Slider
@@ -245,11 +251,22 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             </CropperFullWrapper>
           )}
 
-          <Button type="button" onClick={() => showCroppedImage()} style={{ margin: `1rem 0`}}>
+          <Button
+            type="button"
+            onClick={() => showCroppedImage()}
+            style={{ margin: `1rem 0` }}
+          >
             Mostrar Foto Cortada
           </Button>
 
-          {croppedImage && <ScoreDGPReview src={croppedImage} />}
+          {croppedImage && isPreviewVisible && (
+            <ScoreDGPreviewWrapper>
+              <Button vanilla={false} onClick={() => setPreviewVisible(false)}>
+                <ImCross />
+              </Button>
+              <ScoreDGPReview src={croppedImage} />
+            </ScoreDGPreviewWrapper>
+          )}
 
           <Input
             label="Pontuação"
@@ -341,6 +358,31 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             error={createScoreErrors.plate?.message}
           />
 
+          <Button
+            type="button"
+            onClick={() => showCroppedImage()}
+            style={{ margin: `1rem 0` }}
+          >
+            Mostrar Foto Cortada
+          </Button>
+
+          <DeleteWarning>
+            IMPORTANTE!! Antes de fazer o envio, certifique que apareçem
+            legíveis na foto:
+            <li>NOME DO CARD</li>
+            <li>PONTUAÇÃO</li>
+            <li>GRADE (SSS+, A+, etc...)</li>
+            <li>PLATE (Talented Game, etc..)</li>
+          </DeleteWarning>
+
+          <Button
+            vanilla={false}
+            type="submit"
+            style={{ marginTop: `1rem`, marginBottom: `4rem` }}
+          >
+            Eviar Score <FaArrowUpRightFromSquare />
+          </Button>
+
           <BallTriangle
             height={36}
             width={36}
@@ -351,14 +393,6 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             wrapperClass=""
             visible={isLoadingSubmitScore}
           />
-
-          <Button
-            vanilla={false}
-            type="submit"
-            style={{ marginTop: `1rem`, marginBottom: `4rem` }}
-          >
-            Eviar Score <FaArrowUpRightFromSquare/>
-          </Button>
         </FormWrapper>
       </ContentWrapper>
     </>
