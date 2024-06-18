@@ -9,10 +9,10 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/Button";
 import { useEvents } from "../../../providers/Events";
-import AdminGeneralRanking from "./AdminGeneralRanking";
-import AdminSingleRanking from "./AdminSingleRaking";
-import AdminDoubleRanking from "./AdminDoubleRanking";
-import ListManagement from "./ListManagement";
+import AdminGeneralRanking from "./AdminRankingGeneral";
+import AdminSingleRanking from "./AdminRankingSingle";
+import AdminDoubleRanking from "./AdminRankingDouble";
+import ListManagement from "./AdminSongList";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
 import AdminPlayerList from "./AdminPlayerList";

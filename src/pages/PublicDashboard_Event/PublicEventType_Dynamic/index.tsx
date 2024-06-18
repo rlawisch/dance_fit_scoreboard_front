@@ -9,9 +9,9 @@ import {
   Title,
 } from "../../../styles/global";
 import Button from "../../../components/Button";
-import PublicGeneralRanking from "./PublicGeneralRanking";
-import PublicSingleRanking from "./PublicSingleRanking";
-import PublicDoubleRanking from "./PublicDoubleRanking";
+import PublicRankingGeneral from "./PublicRankingGeneral";
+import PublicRankingSingle from "./PublicRankingSingle";
+import PublicRankingDouble from "./PublicRankingDouble";
 import PublicSongList from "./PublicSongList";
 import PublicPlayerList from "./PublicPlayerList";
 
@@ -80,9 +80,9 @@ const PublicEventType_Dynamic: FunctionComponent<
           </NavigationSelector>
         </NavigationHeaderWrapper>
 
-        {selectedView === "generalRanking" && <PublicGeneralRanking />}
-        {selectedView === "singleRanking" && <PublicSingleRanking />}
-        {selectedView === "doubleRanking" && <PublicDoubleRanking />}
+        {selectedView === "generalRanking" && <PublicRankingGeneral />}
+        {selectedView === "singleRanking" && <PublicRankingSingle />}
+        {selectedView === "doubleRanking" && <PublicRankingDouble />}
         {selectedView === "songListManagement" && <PublicSongList />}
         {selectedView === "playerList" && <PublicPlayerList />}
       </DynamicEventWrapper>

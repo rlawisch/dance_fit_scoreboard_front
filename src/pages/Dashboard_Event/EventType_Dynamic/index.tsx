@@ -9,10 +9,10 @@ import {
   Title,
 } from "../../../styles/global";
 import Button from "../../../components/Button";
-import GeneralRanking from "./GeneralRanking";
+import RankingGeneral from "./RankingGeneral";
+import RankingDouble from "./RankingDouble";
+import RankingSingle from "./RankingSingle";
 import SongList from "./SongList";
-import DoubleRanking from "./DoubleRanking";
-import SingleRanking from "./SingleRanking";
 import PlayerList from "./PlayerList";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
@@ -101,9 +101,9 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
           </NavigationSelector>
         </NavigationHeaderWrapper>
 
-        {selectedView === "generalRanking" && <GeneralRanking />}
-        {selectedView === "singleRanking" && <SingleRanking />}
-        {selectedView === "doubleRanking" && <DoubleRanking />}
+        {selectedView === "generalRanking" && <RankingGeneral />}
+        {selectedView === "singleRanking" && <RankingSingle />}
+        {selectedView === "doubleRanking" && <RankingDouble />}
         {selectedView === "songListManagement" && <SongList />}
         {selectedView === "playerList" && <PlayerList />}
       </DynamicEventWrapper>

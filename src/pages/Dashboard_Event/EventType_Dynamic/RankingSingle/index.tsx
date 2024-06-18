@@ -27,10 +27,11 @@ import { getGradeImageFileName } from "../../../../utils/getGradeImageFileName";
 import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
 import Button from "../../../../components/Button";
+import { stringShortener } from "../../../../utils/stringShortener";
 import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
 
-interface PublicGeneralRankingProps {}
+interface RankingSingleProps {}
 
 interface LeaderboardPlayer {
   player_id: string;
@@ -46,63 +47,70 @@ const medals = [
   "/static/medals/bronzeMedal.png",
 ];
 
-const PublicGeneralRanking: FunctionComponent<
-  PublicGeneralRankingProps
-> = () => {
+const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
-
   const { getScoresByEvent, eventScores, isLoadingEventScores } = useScore();
 
   const [leaderboard, setLeaderboard] = useState<LeaderboardPlayer[]>([]);
   const [visibleScores, setVisibleScores] = useState<{
     [key: string]: boolean;
   }>({});
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     getScoresByEvent(Number(event_id));
+
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
     if (eventScores) {
-      // Create a map to group scores by player
       const playerScoresMap = new Map<string, LeaderboardPlayer>();
 
-      eventScores.forEach((score: IScore) => {
-        const playerId = score.player.player_id;
-        const existingData = playerScoresMap.get(playerId) || {
-          player_id: playerId,
-          nickname: score.player.nickname,
-          profilePicture: score.player.profilePicture,
-          scores: [] as IScore[],
-          totalScore: 0,
-        };
+      eventScores
+        .filter((score: IScore) => score.music.mode === "single") // Filter scores by "single" mode
+        .forEach((score: IScore) => {
+          const playerId = score.player.player_id;
+          const existingData = playerScoresMap.get(playerId) || {
+            player_id: playerId,
+            nickname: score.player.nickname,
+            profilePicture: score.player.profilePicture,
+            scores: [] as IScore[],
+            totalScore: 0,
+          };
 
-        const leaderboardScore: IScore = {
-          ...score,
-        };
+          const leaderboardScore: IScore = {
+            ...score,
+          };
 
-        existingData.scores.push(leaderboardScore);
-        existingData.totalScore += score.value;
+          existingData.scores.push(leaderboardScore);
+          existingData.totalScore += score.value;
 
-        playerScoresMap.set(playerId, existingData);
-      });
+          playerScoresMap.set(playerId, existingData);
+        });
 
-      // Convert the map to an array
       const leaderboardArray = Array.from(playerScoresMap.values());
 
-      // Sort each player's scores by mode and level
       leaderboardArray.forEach((player) => {
         player.scores.sort((a, b) => {
           if (a.music.mode !== b.music.mode) {
-            return a.music.mode.localeCompare(b.music.mode); // Sort by mode
+            return a.music.mode.localeCompare(b.music.mode);
           }
-          return a.music.level - b.music.level; // Sort by level within the same mode
+          return a.music.level - b.music.level;
         });
       });
 
-      // Sort the leaderboard by the total score
       leaderboardArray.sort((a, b) => b.totalScore - a.totalScore);
 
       setLeaderboard(leaderboardArray);
@@ -192,9 +200,10 @@ const PublicGeneralRanking: FunctionComponent<
                                       .toString()
                                       .padStart(2, "0")}.png`}
                                   />
-                                  {score.music.name.length > 12
-                                    ? `${score.music.name.substring(0, 12)}...`
-                                    : score.music.name}
+                                  {stringShortener(
+                                    windowWidth,
+                                    score.music.name
+                                  )}
                                 </MusicWrapper>
 
                                 <DynamicEventScoreDataWrapper>
@@ -230,11 +239,11 @@ const PublicGeneralRanking: FunctionComponent<
                   </DynamicEventTd>
 
                   <DynamicEventTd>
-                    {player.scores.length} {"/ 14"}
+                    {player.scores.length} {"/ 7"}
                   </DynamicEventTd>
 
                   <DynamicEventTd>
-                    {(player.totalScore / (14 * 10000))
+                    {(player.totalScore / (7 * 10000))
                       .toFixed(2)
                       .toLocaleString()}
                   </DynamicEventTd>
@@ -293,9 +302,10 @@ const PublicGeneralRanking: FunctionComponent<
                                         .toString()
                                         .padStart(2, "0")}.png`}
                                     />
-                                    {score.music.name.length > 10
-                                      ? `${score.music.name.substring(0, 10)}...`
-                                      : score.music.name}
+                                    {stringShortener(
+                                      windowWidth,
+                                      score.music.name
+                                    )}
                                   </MusicWrapper>
 
                                   <DynamicEventScoreDataWrapper>
@@ -332,13 +342,13 @@ const PublicGeneralRanking: FunctionComponent<
                   </tr>
                   <tr>
                     <DynamicEventTd>
-                      {`Músicas Jogadas: ${player.scores.length} / 14`}
+                      {`Músicas Jogadas: ${player.scores.length} / 7`}
                     </DynamicEventTd>
                   </tr>
                   <tr>
                     <DynamicEventTd>
-                      {"Pontuação:  "}
-                      {(player.totalScore / (14 * 10000))
+                      {"Pontuação: "}
+                      {(player.totalScore / (7 * 10000))
                         .toFixed(2)
                         .toLocaleString()}
                     </DynamicEventTd>
@@ -353,4 +363,4 @@ const PublicGeneralRanking: FunctionComponent<
   );
 };
 
-export default PublicGeneralRanking;
+export default RankingSingle;
