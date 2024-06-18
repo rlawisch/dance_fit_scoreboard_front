@@ -360,12 +360,11 @@ export const ScoreDGPreviewWrapper = styled.div`
     left: calc(50% + 110px);
     transform: translateX(-50%);
     z-index: 99;
+    backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
 
     @media screen and (min-width: 576px) {
       top: 20%;
-
-
     }
   }
 `;
@@ -378,6 +377,7 @@ export const ScoreDGPReview = styled.img`
   z-index: 98;
   max-width: 260px;
   width: 100%;
+  backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 
   @media screen and (min-width: 576px) {
