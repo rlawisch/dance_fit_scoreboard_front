@@ -27,10 +27,10 @@ import { getGradeImageFileName } from "../../../../utils/getGradeImageFileName";
 import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
 import Button from "../../../../components/Button";
-import { BallTriangle } from "react-loader-spinner";
 import { ThemeContext } from "styled-components";
+import { BallTriangle } from "react-loader-spinner";
 
-interface GeneralRankingProps {}
+interface PublicRankingGeneralProps {}
 
 interface LeaderboardPlayer {
   player_id: string;
@@ -45,8 +45,10 @@ const medals = [
   "/static/medals/silverMedal.png",
   "/static/medals/bronzeMedal.png",
 ];
-const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
 
+const PublicRankingGeneral: FunctionComponent<
+  PublicRankingGeneralProps
+> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
@@ -351,4 +353,4 @@ const GeneralRanking: FunctionComponent<GeneralRankingProps> = () => {
   );
 };
 
-export default GeneralRanking;
+export default PublicRankingGeneral;

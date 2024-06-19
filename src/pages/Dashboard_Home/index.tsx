@@ -12,6 +12,14 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 18/06/24</PatchTitle>
+
+      <ContentList>
+        <ContentListItem>
+          Rankings por Música dos eventos do tipo Dinâmica adicionados.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 17/06/24</PatchTitle>
 
       <HorizontalRuler />

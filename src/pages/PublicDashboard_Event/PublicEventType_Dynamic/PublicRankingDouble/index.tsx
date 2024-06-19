@@ -31,7 +31,7 @@ import { stringShortener } from "../../../../utils/stringShortener";
 import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
 
-interface PublicDoubleRankingProps {}
+interface PublicRankingDoubleProps {}
 
 interface LeaderboardPlayer {
   player_id: string;
@@ -47,7 +47,7 @@ const medals = [
   "/static/medals/bronzeMedal.png",
 ];
 
-const PublicDoubleRanking: FunctionComponent<PublicDoubleRankingProps> = () => {
+const PublicRankingDouble: FunctionComponent<PublicRankingDoubleProps> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
@@ -363,4 +363,4 @@ const PublicDoubleRanking: FunctionComponent<PublicDoubleRankingProps> = () => {
   );
 };
 
-export default PublicDoubleRanking;
+export default PublicRankingDouble;
