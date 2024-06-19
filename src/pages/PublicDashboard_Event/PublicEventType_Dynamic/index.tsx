@@ -14,6 +14,7 @@ import PublicRankingSingle from "./PublicRankingSingle";
 import PublicRankingDouble from "./PublicRankingDouble";
 import PublicSongList from "./PublicSongList";
 import PublicPlayerList from "./PublicPlayerList";
+import PublicRankingByMusic from "./PublicRankingByMusic";
 
 interface PublicEventType_DynamicProps {}
 
@@ -66,6 +67,13 @@ const PublicEventType_Dynamic: FunctionComponent<
           </NavigationSelector>
 
           <NavigationSelector
+            isSelected={selectedView === "rankingByMusic"}
+            onClick={() => handleView("rankingByMusic")}
+          >
+            Ranking por Música
+          </NavigationSelector>
+
+          <NavigationSelector
             isSelected={selectedView === "songListManagement"}
             onClick={() => handleView("songListManagement")}
           >
@@ -85,6 +93,7 @@ const PublicEventType_Dynamic: FunctionComponent<
         {selectedView === "doubleRanking" && <PublicRankingDouble />}
         {selectedView === "songListManagement" && <PublicSongList />}
         {selectedView === "playerList" && <PublicPlayerList />}
+        {selectedView === "rankingByMusic" && <PublicRankingByMusic />}
       </DynamicEventWrapper>
     </GlobalContainer>
   );

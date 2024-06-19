@@ -16,6 +16,7 @@ import SongList from "./SongList";
 import PlayerList from "./PlayerList";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
+import RankingByMusic from "./RankingByMusic";
 
 interface EventType_DynamicProps {}
 
@@ -87,6 +88,13 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
           </NavigationSelector>
 
           <NavigationSelector
+            isSelected={selectedView === "rankingByMusic"}
+            onClick={() => handleView("rankingByMusic")}
+          >
+            Ranking por Música
+          </NavigationSelector>
+
+          <NavigationSelector
             isSelected={selectedView === "songListManagement"}
             onClick={() => handleView("songListManagement")}
           >
@@ -106,6 +114,7 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
         {selectedView === "doubleRanking" && <RankingDouble />}
         {selectedView === "songListManagement" && <SongList />}
         {selectedView === "playerList" && <PlayerList />}
+        {selectedView === "rankingByMusic" && <RankingByMusic />}
       </DynamicEventWrapper>
     </GlobalContainer>
   );

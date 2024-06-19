@@ -17,6 +17,7 @@ import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
 import AdminPlayerList from "./AdminPlayerList";
 import AdminValidateScores from "./AdminValidateScores";
+import AdminRankingByMusic from "./AdminRankingByMusic";
 
 interface AdminEventType_DynamicProps {}
 
@@ -74,54 +75,57 @@ const AdminEventType_Dynamic: FunctionComponent<
           >
             Ranking Geral
           </NavigationSelector>
-          
 
           <NavigationSelector
-            isSelected={selectedView === 'singleRanking'}
-            onClick={() => handleView('singleRanking')}
+            isSelected={selectedView === "singleRanking"}
+            onClick={() => handleView("singleRanking")}
           >
             Ranking Single
           </NavigationSelector>
 
-
           <NavigationSelector
-            isSelected={selectedView === 'doubleRanking'}
-            onClick={() => handleView('doubleRanking')}
+            isSelected={selectedView === "doubleRanking"}
+            onClick={() => handleView("doubleRanking")}
           >
             Ranking Double
           </NavigationSelector>
 
+          <NavigationSelector
+            isSelected={selectedView === "rankingByMusic"}
+            onClick={() => handleView("rankingByMusic")}
+          >
+            Ranking por Música
+          </NavigationSelector>
 
           <NavigationSelector
-            isSelected={selectedView === 'songListManagement'}
-            onClick={() => handleView('songListManagement')}
+            isSelected={selectedView === "songListManagement"}
+            onClick={() => handleView("songListManagement")}
           >
             Músicas
           </NavigationSelector>
 
-
           <NavigationSelector
-            isSelected={selectedView === 'playerList'}
-            onClick={() => handleView('playerList')}
+            isSelected={selectedView === "playerList"}
+            onClick={() => handleView("playerList")}
           >
             Jogadores
           </NavigationSelector>
 
-
           <NavigationSelector
-            isSelected={selectedView === 'scoreValidation'}
-            onClick={() => handleView('scoreValidation')}
+            isSelected={selectedView === "scoreValidation"}
+            onClick={() => handleView("scoreValidation")}
           >
             Validação de Scores
           </NavigationSelector>
         </NavigationHeaderWrapper>
 
-        {selectedView === 'generalRanking' && <AdminGeneralRanking />}
-        {selectedView === 'singleRanking' && <AdminSingleRanking />}
-        {selectedView === 'doubleRanking' && <AdminDoubleRanking />}
-        {selectedView === 'songListManagement' && <ListManagement />}
-        {selectedView === 'playerList' && <AdminPlayerList />}
-        {selectedView === 'scoreValidation' && <AdminValidateScores />}
+        {selectedView === "generalRanking" && <AdminGeneralRanking />}
+        {selectedView === "singleRanking" && <AdminSingleRanking />}
+        {selectedView === "doubleRanking" && <AdminDoubleRanking />}
+        {selectedView === "songListManagement" && <ListManagement />}
+        {selectedView === "playerList" && <AdminPlayerList />}
+        {selectedView === "scoreValidation" && <AdminValidateScores />}
+        {selectedView === "rankingByMusic" && <AdminRankingByMusic />}
       </DynamicEventWrapper>
     </GlobalContainer>
   );
