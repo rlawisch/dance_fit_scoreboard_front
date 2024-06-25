@@ -273,6 +273,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={MdOutlineNumbers}
             name="value"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.value?.message}
           />
@@ -282,6 +283,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={BsEmojiSunglasses}
             name="perfect"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.perfect?.message}
           />
@@ -291,6 +293,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={BsEmojiSmile}
             name="great"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.great?.message}
           />
@@ -300,6 +303,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={BsEmojiNeutral}
             name="good"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.good?.message}
           />
@@ -309,6 +313,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={BsEmojiFrown}
             name="bad"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.bad?.message}
           />
@@ -318,6 +323,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={BsEmojiDizzy}
             name="miss"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.miss?.message}
           />
@@ -327,6 +333,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             icon={BsCapslock}
             name="max_combo"
             type="number"
+            onWheel={(e) => e.currentTarget.blur()}
             register={registerCreateScore}
             error={createScoreErrors.max_combo?.message}
           />

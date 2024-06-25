@@ -12,7 +12,20 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 25/06/24</PatchTitle>
+
+      <HorizontalRuler />
+
+
+      <ContentList>
+        <ContentListItem>
+          Corrigido o problema dos campos mudarem os valores ao serem      <i>scrollados</i> no formulário de envio de scores.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 18/06/24</PatchTitle>
+      <HorizontalRuler />
+
 
       <ContentList>
         <ContentListItem>
@@ -25,8 +38,9 @@ const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
       <HorizontalRuler />
 
       <ContentList>
-      <ContentListItem>
-          Temporariamente, ao fazer o Login, os Jogadores serão redirecionados à página do Evento em andamento, a Dinâmica DFH 2024.
+        <ContentListItem>
+          Temporariamente, ao fazer o Login, os Jogadores serão redirecionados à
+          página do Evento em andamento, a Dinâmica DFH 2024.
         </ContentListItem>
         <ContentListItem>
           Alterações no formulário de envio de score para melhorar experiência
