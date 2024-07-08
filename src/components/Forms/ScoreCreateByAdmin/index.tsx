@@ -185,7 +185,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
           <SelectedPlayerWrapper>
             <p>Jogador Selecionado:</p>
             {selectedPlayer ? (
-              <>
+              <PlayerInfoWrapper>
                 <PlayerMiniature
                   src={
                     selectedPlayer.profilePicture
@@ -195,7 +195,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
                   alt="Mini Profile Picture"
                 />
                 {selectedPlayer.nickname}
-              </>
+              </PlayerInfoWrapper>
             ) : (
               "Nenhum jogador selecionado"
             )}

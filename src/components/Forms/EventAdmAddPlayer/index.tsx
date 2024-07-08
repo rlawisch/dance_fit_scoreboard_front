@@ -69,7 +69,7 @@ const EventAdmAddPlayerForm: FunctionComponent<EventAdmAddPlayerFormProps> = ({
           <SelectedPlayerWrapper>
             <p>Jogador Selecionado:</p>
             {selectedPlayer ? (
-              <>
+              <PlayerInfoWrapper>
                 <PlayerMiniature
                   src={
                     selectedPlayer.profilePicture
@@ -79,7 +79,7 @@ const EventAdmAddPlayerForm: FunctionComponent<EventAdmAddPlayerFormProps> = ({
                   alt="Mini Profile Picture"
                 />
                 {selectedPlayer.nickname}
-              </>
+              </PlayerInfoWrapper>
             ) : (
               "Nenhum jogador selecionado"
             )}

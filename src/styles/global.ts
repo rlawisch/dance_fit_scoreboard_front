@@ -205,9 +205,13 @@ export const PlayerMiniature = styled.img`
 
 export const PlayerInfoWrapper = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   gap: 0.6rem;
+
+  @media screen and (min-width: 576px) {
+    flex-direction: row;
+  }
 `;
 
 export const PlayerLi = styled.li`

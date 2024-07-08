@@ -16,16 +16,15 @@ const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
 
       <HorizontalRuler />
 
-
       <ContentList>
         <ContentListItem>
-          Corrigido o problema dos campos mudarem os valores ao serem      <i>scrollados</i> no formulário de envio de scores.
+          Corrigido o problema dos campos mudarem os valores ao serem{" "}
+          <i>scrollados</i> no formulário de envio de scores.
         </ContentListItem>
       </ContentList>
 
       <PatchTitle>Notas de Atualização - 18/06/24</PatchTitle>
       <HorizontalRuler />
-
 
       <ContentList>
         <ContentListItem>
