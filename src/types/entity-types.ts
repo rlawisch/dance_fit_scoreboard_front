@@ -102,3 +102,16 @@ export interface IScore {
   phase: IPhase;
   score_picture?: string
 }
+
+export interface IScorePreview {
+  value: number,
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  stage_pass: boolean;
+  grade: string;
+  plate?: string;
+}

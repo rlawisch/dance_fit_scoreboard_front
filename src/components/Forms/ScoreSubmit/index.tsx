@@ -1,5 +1,10 @@
-import React, { FunctionComponent, useContext, useState } from "react";
-import { IEvent, IMusic } from "../../../types/entity-types";
+import React, {
+  FunctionComponent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { IEvent, IMusic, IScorePreview } from "../../../types/entity-types";
 import {
   ContentWrapper,
   DeleteWarning,
@@ -11,7 +16,6 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IScoreCreate, IScoreFormCreate } from "../../../types/form-types";
-import { MdOutlineNumbers } from "react-icons/md";
 import Input from "../../Input";
 import {
   BsCapslock,
@@ -37,6 +41,10 @@ import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
 import { FaArrowUpRightFromSquare, FaCameraRetro } from "react-icons/fa6";
 import { ImCross } from "react-icons/im";
+import { getScoreValue } from "../../../utils/getScoreValue";
+import { getScoreGrade } from "../../../utils/getScoreGrade";
+import { getScorePlate } from "../../../utils/getScorePlate";
+import ScorePreviewCard from "../../ScorePreviewCard";
 
 interface ScoreCreateFormProps {
   music: IMusic;
@@ -52,12 +60,26 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   const { submitScore, isLoadingSubmitScore } = useScore();
 
   const scoreCreateSchema = yup.object().shape({
-    value: yup.number().required(),
-    perfect: yup.number().required(),
-    great: yup.number().required(),
-    good: yup.number().required(),
-    bad: yup.number().required(),
-    miss: yup.number().required(),
+    perfect: yup
+      .number()
+      .required()
+      .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
+    great: yup
+      .number()
+      .required()
+      .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
+    good: yup
+      .number()
+      .required()
+      .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
+    bad: yup
+      .number()
+      .required()
+      .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
+    miss: yup
+      .number()
+      .required()
+      .transform((value, originalValue) => (originalValue === "" ? 0 : value)),
     max_combo: yup.number().required(),
     stage_pass: yup
       .boolean()
@@ -65,18 +87,12 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
       .transform((_, originalValue) =>
         originalValue === "true" ? true : false
       ),
-    grade: yup.string().required(),
-    plate: yup
-      .string()
-      .transform((value, originalValue) =>
-        originalValue === "" ? undefined : value
-      )
-      .nullable(),
   });
 
   const {
     register: registerCreateScore,
     handleSubmit: handleSubmitCreateScore,
+    watch,
     formState: { errors: createScoreErrors },
   } = useForm<IScoreFormCreate>({
     resolver: yupResolver(scoreCreateSchema),
@@ -85,36 +101,6 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
   const stagePassOptions = [
     { label: "Pass", value: "true" },
     { label: "Break", value: "" },
-  ];
-
-  const gradeOptions = [
-    { label: "SSS+", value: "SSS+" },
-    { label: "SSS", value: "SSS" },
-    { label: "SS+", value: "SS+" },
-    { label: "SS", value: "SS" },
-    { label: "S+", value: "S+" },
-    { label: "S", value: "S" },
-    { label: "AAA+", value: "AAA+" },
-    { label: "AAA", value: "AAA" },
-    { label: "AA+", value: "AA+" },
-    { label: "AA", value: "AA" },
-    { label: "A+", value: "A+" },
-    { label: "A", value: "A" },
-    { label: "B", value: "B" },
-    { label: "C", value: "C" },
-    { label: "D", value: "D" },
-    { label: "F", value: "F" },
-  ];
-
-  const platingOptions = [
-    { label: "Perfect Game", value: "PG" },
-    { label: "Ultimate Game", value: "UG" },
-    { label: "Extreme Game", value: "EG" },
-    { label: "Superb Game", value: "SG" },
-    { label: "Marvelous Game", value: "MG" },
-    { label: "Talented Game", value: "TG" },
-    { label: "Fair Game", value: "FG" },
-    { label: "Rough Game", value: "RG" },
   ];
 
   // crop component states
@@ -172,14 +158,36 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
 
           const { music_id } = music;
 
+          const { perfect, great, good, bad, miss, max_combo, stage_pass } =
+            formData;
+
+          const scoreValue = getScoreValue(
+            perfect,
+            great,
+            good,
+            bad,
+            miss,
+            max_combo
+          );
+
+          const scoreGrade = getScoreGrade(scoreValue);
+
+          const scorePlate = getScorePlate(great, good, bad, miss, stage_pass);
+
           const realFormData: IScoreCreate = {
             ...formData,
+            value: scoreValue,
+            plate: scorePlate,
+            grade: scoreGrade,
             event_id: Number(event?.event_id),
             music_id: Number(music_id),
           };
 
           Object.keys(realFormData).forEach((key) => {
-            multipartForm.append(key, (realFormData as any)[key]);
+            const value = (realFormData as any)[key];
+            if (value !== undefined) {
+              multipartForm.append(key, value);
+            }
           });
 
           submitScore(multipartForm);
@@ -204,6 +212,60 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
       console.log(error);
     }
   };
+
+  const [scorePreview, setScorePreview] = useState<IScorePreview>({
+    perfect: 0,
+    great: 0,
+    good: 0,
+    bad: 0,
+    miss: 0,
+    max_combo: 0,
+    stage_pass: false,
+    value: 0,
+    grade: "",
+    plate: undefined,
+  });
+
+  const perfect = watch("perfect");
+  const great = watch("great");
+  const good = watch("good");
+  const bad = watch("bad");
+  const miss = watch("miss");
+  const max_combo = watch("max_combo");
+  const stage_pass = watch("stage_pass");
+
+  useEffect(() => {
+    const value = getScoreValue(
+      Number(perfect),
+      Number(great),
+      Number(good),
+      Number(bad),
+      Number(miss),
+      Number(max_combo)
+    );
+    const grade = getScoreGrade(value);
+    const plate = getScorePlate(
+      Number(great),
+      Number(good),
+      Number(bad),
+      Number(miss),
+      Boolean(stage_pass)
+    );
+
+    setScorePreview((prevScore) => ({
+      ...prevScore,
+      value: Number(value),
+      grade: grade,
+      plate: plate,
+      perfect: Number(perfect),
+      great: Number(great),
+      good: Number(good),
+      bad: Number(bad),
+      miss: Number(miss),
+      max_combo: Number(max_combo),
+      stage_pass: Boolean(stage_pass),
+    }));
+  }, [perfect, great, good, bad, miss, max_combo, stage_pass]);
 
   return (
     <>
@@ -267,16 +329,6 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
               <ScoreDGPReview src={croppedImage} />
             </ScoreDGPreviewWrapper>
           )}
-
-          <Input
-            label="Pontuação"
-            icon={MdOutlineNumbers}
-            name="value"
-            type="number"
-            onWheel={(e) => e.currentTarget.blur()}
-            register={registerCreateScore}
-            error={createScoreErrors.value?.message}
-          />
 
           <Input
             label="Perfects"
@@ -347,24 +399,6 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             error={createScoreErrors.stage_pass?.message}
           />
 
-          <Select
-            label="Grade"
-            placeholder="Selecionar"
-            options={gradeOptions}
-            name="grade"
-            register={registerCreateScore}
-            error={createScoreErrors.grade?.message}
-          />
-
-          <Select
-            label="Plate"
-            placeholder="Selecionar"
-            options={platingOptions}
-            name="plate"
-            register={registerCreateScore}
-            error={createScoreErrors.plate?.message}
-          />
-
           <Button
             type="button"
             onClick={() => showCroppedImage()}
@@ -373,13 +407,12 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             Mostrar Foto Cortada
           </Button>
 
+          <h2>Prévia do Score:</h2>
+
+          <ScorePreviewCard score={scorePreview}/>
+
           <DeleteWarning>
-            IMPORTANTE!! Antes de fazer o envio, certifique que apareçem
-            legíveis na foto:
-            <li>NOME DO CARD</li>
-            <li>PONTUAÇÃO</li>
-            <li>GRADE (SSS+, A+, etc...)</li>
-            <li>PLATE (Talented Game, etc..)</li>
+            NÃO ESQUECER DE TIRAR O ZOOM E ENQUADRAR A FOTO ANTES DE ENVIAR!!
           </DeleteWarning>
 
           <Button
@@ -387,7 +420,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
             type="submit"
             style={{ marginTop: `1rem`, marginBottom: `4rem` }}
           >
-            Eviar Score <FaArrowUpRightFromSquare />
+            Enviar Score <FaArrowUpRightFromSquare />
           </Button>
 
           <BallTriangle

@@ -10,6 +10,7 @@ interface SelectProps {
   register: UseFormRegister<any>;
   placeholder?: string;
   error: string | undefined;
+  [key: string]: any;
 }
 
 const Select: FunctionComponent<SelectProps> = ({
@@ -19,14 +20,13 @@ const Select: FunctionComponent<SelectProps> = ({
   placeholder,
   name,
   error = "",
-
   ...rest
 }) => {
   return (
     <SelectContainer>
       {label && <Label>{label}</Label>}
       <div>
-        <StyledSelect {...register(name)} {...rest}>
+        <StyledSelect {...rest} {...register(name)} >
           {placeholder && (
             <option value="" defaultValue={"Selecionar"}>
               {placeholder}

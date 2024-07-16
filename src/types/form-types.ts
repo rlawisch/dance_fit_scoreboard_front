@@ -93,15 +93,12 @@ export interface IComfortLevelFormUpdate {
 }
 
 export interface IScoreFormCreate {
-  value: number;
   perfect: number;
   great: number;
   good: number;
   bad: number;
   miss: number;
   max_combo: number;
-  grade: string;
-  plate?: string | null
   stage_pass: boolean
 }
 
