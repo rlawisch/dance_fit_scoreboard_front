@@ -15,7 +15,7 @@ import {
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IScoreCreate, IScoreFormCreate } from "../../../types/form-types";
+import { IScoreCreate, IScoreSubmitByPlayerForm } from "../../../types/form-types";
 import Input from "../../Input";
 import {
   BsCapslock,
@@ -94,7 +94,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     handleSubmit: handleSubmitCreateScore,
     watch,
     formState: { errors: createScoreErrors },
-  } = useForm<IScoreFormCreate>({
+  } = useForm<IScoreSubmitByPlayerForm>({
     resolver: yupResolver(scoreCreateSchema),
   });
 
@@ -136,7 +136,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     }
   };
 
-  const onCreateScoreFormSubmit = async (formData: IScoreFormCreate) => {
+  const onCreateScoreFormSubmit = async (formData: IScoreSubmitByPlayerForm) => {
     try {
       if (imageSrc) {
         const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);

@@ -92,7 +92,20 @@ export interface IComfortLevelFormUpdate {
   level_double?: number
 }
 
-export interface IScoreFormCreate {
+export interface IScoreSubmitByPlayerForm {
+  perfect: number;
+  great: number;
+  good: number;
+  bad: number;
+  miss: number;
+  max_combo: number;
+  stage_pass: boolean
+}
+
+export interface IScoreCreateByAdminForm {
+  value: number;
+  grade: string;
+  plate?: string | null;
   perfect: number;
   great: number;
   good: number;
