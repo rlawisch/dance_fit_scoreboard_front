@@ -66,7 +66,7 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
           <SelectedPlayerWrapper>
             <p>Jogador Selecionado:</p>
             {selectedPlayer ? (
-              <>
+              <PlayerInfoWrapper>
                 <PlayerMiniature
                   src={
                     selectedPlayer.profilePicture
@@ -76,7 +76,7 @@ const CategoryAdmAddPlayerForm: FunctionComponent<
                   alt="Mini Profile Picture"
                 />
                 {selectedPlayer.nickname}
-              </>
+              </PlayerInfoWrapper>
             ) : (
               "Nenhum jogador selecionado"
             )}

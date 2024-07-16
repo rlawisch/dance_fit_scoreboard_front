@@ -1,6 +1,6 @@
-import { IScore } from "../types/entity-types";
+import { IScore, IScorePreview } from "../types/entity-types";
 
-export function getGradeImageFileName(score: IScore | undefined): string {
+export function getGradeImageFileName(score: IScore | IScorePreview | undefined): string {
   let fileNamePrefix = "";
 
   // Check if stage_pass is false, if yes, prefix with "x_"

@@ -18,10 +18,6 @@ import { useScore } from "../../../providers/Scores";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {
-  IScoreCreateByAdmin,
-  IScoreFormCreate,
-} from "../../../types/form-types";
 import Input from "../../Input";
 import { FaUserPlus } from "react-icons/fa6";
 import { MdOutlineNumbers } from "react-icons/md";
@@ -36,6 +32,7 @@ import {
 import Select from "../../Select";
 import Button from "../../Button";
 import { toast } from "react-toastify";
+import { IScoreCreateByAdmin, IScoreCreateByAdminForm } from "../../../types/form-types";
 
 interface ScoreCreateByAdmFormProps {
   category: ICategory;
@@ -117,7 +114,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
     { label: "Rough Game", value: "RG" },
   ];
 
-  const onAdmCreateScoreFormSubmit = (formData: IScoreFormCreate) => {
+  const onAdmCreateScoreFormSubmit = (formData: IScoreCreateByAdminForm) => {
 
     const { category_id, event } = category;
 
@@ -185,7 +182,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
           <SelectedPlayerWrapper>
             <p>Jogador Selecionado:</p>
             {selectedPlayer ? (
-              <>
+              <PlayerInfoWrapper>
                 <PlayerMiniature
                   src={
                     selectedPlayer.profilePicture
@@ -195,7 +192,7 @@ const ScoreCreateByAdmForm: FunctionComponent<ScoreCreateByAdmFormProps> = ({
                   alt="Mini Profile Picture"
                 />
                 {selectedPlayer.nickname}
-              </>
+              </PlayerInfoWrapper>
             ) : (
               "Nenhum jogador selecionado"
             )}
