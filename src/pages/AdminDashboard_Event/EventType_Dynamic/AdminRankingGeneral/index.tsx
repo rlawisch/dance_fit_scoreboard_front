@@ -49,7 +49,7 @@ const medals = [
 
 const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
   const theme = useContext(ThemeContext);
-  
+
   const { event_id } = useParams();
 
   const { getScoresByEvent, eventScores, isLoadingEventScores } = useScore();
@@ -82,22 +82,26 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
 
       eventScores.forEach((score: IScore) => {
         const playerId = score.player.player_id;
-        const existingData = playerScoresMap.get(playerId) || {
-          player_id: playerId,
-          nickname: score.player.nickname,
-          profilePicture: score.player.profilePicture,
-          scores: [] as IScore[],
-          totalScore: 0,
-        };
+        console.log(score.player);
 
-        const leaderboardScore: IScore = {
-          ...score,
-        };
+        if (score.player.bar) {
+          const existingData = playerScoresMap.get(playerId) || {
+            player_id: playerId,
+            nickname: score.player.nickname,
+            profilePicture: score.player.profilePicture,
+            scores: [] as IScore[],
+            totalScore: 0,
+          };
 
-        existingData.scores.push(leaderboardScore);
-        existingData.totalScore += score.value;
+          const leaderboardScore: IScore = {
+            ...score,
+          };
 
-        playerScoresMap.set(playerId, existingData);
+          existingData.scores.push(leaderboardScore);
+          existingData.totalScore += score.value;
+
+          playerScoresMap.set(playerId, existingData);
+        }
       });
 
       // Convert the map to an array

@@ -4,6 +4,7 @@ export interface IPlayer {
   password: string;
   profilePicture?: string;
   role: string;
+  bar: boolean;
 }
 
 export interface ISession {
