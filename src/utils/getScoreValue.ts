@@ -11,9 +11,11 @@ export const getScoreValue = (
 
   const total_notes = perfect + great + good + bad + miss;
 
-  const calculatedScore = Math.floor(
-    ((0.995 * weights + 0.005 * max_combo) / total_notes) * 1000000
-  );
+  const valuePart = Math.fround(0.995 * weights * 1000000 / total_notes)
+
+  const comboPart = Math.fround(0.005 * max_combo * 1000000 / total_notes)
+
+  const calculatedScore = Math.floor(valuePart + comboPart)
 
   return calculatedScore
 };
