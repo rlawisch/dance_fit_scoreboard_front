@@ -78,6 +78,12 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
       const musicScoresMap = new Map<string, LeaderboardMusic>();
 
       eventScores.forEach((score: IScore) => {
+
+        // Filter out no bar players
+        if (!score.player.bar) {
+          return;
+        }
+
         const musicId = score.music.music_id;
         const existingData = musicScoresMap.get(musicId) || {
           music_id: musicId,
@@ -100,7 +106,8 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
 
       // Sort each music's scores by value from highest to lowest
       musicLeaderboardArray.forEach((music) => {
-        music.scores.sort((a, b) => b.value - a.value);
+        music.scores
+          .sort((a, b) => b.value - a.value)
       });
 
       // Sort by mode then by level
@@ -113,7 +120,7 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
 
       setMusicLeaderboard(musicLeaderboardArray);
     }
-  });
+  }, [eventScores, setMusicLeaderboard]);
 
   const {
     isModalOpen: isScoreDetailsModalOpen,
@@ -254,55 +261,54 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
                           : "Mostrar Scores"}
                       </Button>
 
-                    { visibleScores[music.music_id] && (
+                      {visibleScores[music.music_id] && (
                         <DynamicEventScoreTable>
-                            {music.scores.map((score, i) => (
-                                <tr key={i}>
-                                <td>
-                                  <DyEvPlayerScoreListWrapper>
-                                    <PlayerInfoWrapper>
-                                      <PlayerMiniature
-                                        src={
-                                          score.player.profilePicture
-                                            ? score.player.profilePicture
-                                            : "/img/default_player.png"
-                                        }
-                                        alt="Mini Profile Picture"
-                                      />
-                                      {score.player.nickname}
-                                    </PlayerInfoWrapper>
-    
-                                    <DynamicEventScoreDataWrapper>
-                                      <TableScoreValue
-                                        onClick={() =>
-                                          openScoreDetailsModal(score.score_id)
-                                        }
-                                      >
-                                        {score.value.toLocaleString()}
-                                      </TableScoreValue>
-                                      <ScoreGradeWrapper>
-                                        <ScoreGrade
-                                          src={getGradeImageFileName(score)}
-                                        />
-                                      </ScoreGradeWrapper>
-                                      <Modal
-                                        isOpen={isScoreDetailsModalOpen(
-                                          score.score_id
-                                        )}
-                                        onClose={() =>
-                                          closeScoreDetailsModal(score.score_id)
-                                        }
-                                      >
-                                        <ScoreCard score={score} />
-                                      </Modal>
-                                    </DynamicEventScoreDataWrapper>
-                                  </DyEvPlayerScoreListWrapper>
-                                </td>
-                              </tr>
-                            ))}
-                        </DynamicEventScoreTable>
-                    )}
+                          {music.scores.map((score, i) => (
+                            <tr key={i}>
+                              <td>
+                                <DyEvPlayerScoreListWrapper>
+                                  <PlayerInfoWrapper>
+                                    <PlayerMiniature
+                                      src={
+                                        score.player.profilePicture
+                                          ? score.player.profilePicture
+                                          : "/img/default_player.png"
+                                      }
+                                      alt="Mini Profile Picture"
+                                    />
+                                    {score.player.nickname}
+                                  </PlayerInfoWrapper>
 
+                                  <DynamicEventScoreDataWrapper>
+                                    <TableScoreValue
+                                      onClick={() =>
+                                        openScoreDetailsModal(score.score_id)
+                                      }
+                                    >
+                                      {score.value.toLocaleString()}
+                                    </TableScoreValue>
+                                    <ScoreGradeWrapper>
+                                      <ScoreGrade
+                                        src={getGradeImageFileName(score)}
+                                      />
+                                    </ScoreGradeWrapper>
+                                    <Modal
+                                      isOpen={isScoreDetailsModalOpen(
+                                        score.score_id
+                                      )}
+                                      onClose={() =>
+                                        closeScoreDetailsModal(score.score_id)
+                                      }
+                                    >
+                                      <ScoreCard score={score} />
+                                    </Modal>
+                                  </DynamicEventScoreDataWrapper>
+                                </DyEvPlayerScoreListWrapper>
+                              </td>
+                            </tr>
+                          ))}
+                        </DynamicEventScoreTable>
+                      )}
                     </DynamicEventTd>
                   </tr>
                 </>

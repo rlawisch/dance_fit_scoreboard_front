@@ -2,10 +2,13 @@ import { FunctionComponent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEvents } from "../../../providers/Events";
 import {
+  ChevronIcon,
   DynamicEventWrapper,
   GlobalContainer,
+  NavigationContainer,
   NavigationHeaderWrapper,
   NavigationSelector,
+  NavigationTitle,
   Title,
 } from "../../../styles/global";
 import Button from "../../../components/Button";
@@ -17,6 +20,10 @@ import PlayerList from "./PlayerList";
 import { useEnrollments } from "../../../providers/Enrollments";
 import { usePlayer } from "../../../providers/Players";
 import RankingByMusic from "./RankingByMusic";
+import RankingGeneralNoBar from "./RankingGeneralNoBar";
+import RankingSingleNoBar from "./RankingSingleNoBar";
+import RankingDoubleNoBar from "./RankingDoubleNoBar";
+import RankingByMusicNoBar from "./RankingByMusicNoBar";
 
 interface EventType_DynamicProps {}
 
@@ -30,6 +37,10 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
   const { decodedPlayerInfo } = usePlayer();
 
   const { createEnrollment } = useEnrollments();
+
+  const [isRankingsOpen, setRankingsOpen] = useState(false);
+
+  const [isRankingsNoBarOpen, setRankingsNoBarOpen] = useState(false);
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -66,55 +77,102 @@ const EventType_Dynamic: FunctionComponent<EventType_DynamicProps> = () => {
         )}
 
         <NavigationHeaderWrapper>
-          <NavigationSelector
-            isSelected={selectedView === "generalRanking"}
-            onClick={() => handleView("generalRanking")}
-          >
-            Ranking Geral
-          </NavigationSelector>
+        <NavigationTitle onClick={() => setRankingsOpen(!isRankingsOpen)}>
+            RANKING OFICIAL <ChevronIcon size={20} open={isRankingsOpen} />
+          </NavigationTitle>
 
-          <NavigationSelector
-            isSelected={selectedView === "singleRanking"}
-            onClick={() => handleView("singleRanking")}
-          >
-            Ranking Single
-          </NavigationSelector>
+          <NavigationContainer open={isRankingsOpen}>
+            <NavigationSelector
+              isSelected={selectedView === "generalRanking"}
+              onClick={() => handleView("generalRanking")}
+            >
+              Geral
+            </NavigationSelector>
 
-          <NavigationSelector
-            isSelected={selectedView === "doubleRanking"}
-            onClick={() => handleView("doubleRanking")}
-          >
-            Ranking Double
-          </NavigationSelector>
+            <NavigationSelector
+              isSelected={selectedView === "singleRanking"}
+              onClick={() => handleView("singleRanking")}
+            >
+              Single
+            </NavigationSelector>
 
-          <NavigationSelector
-            isSelected={selectedView === "rankingByMusic"}
-            onClick={() => handleView("rankingByMusic")}
+            <NavigationSelector
+              isSelected={selectedView === "doubleRanking"}
+              onClick={() => handleView("doubleRanking")}
+            >
+              Double
+            </NavigationSelector>
+
+            <NavigationSelector
+              isSelected={selectedView === "rankingByMusic"}
+              onClick={() => handleView("rankingByMusic")}
+            >
+              Por Música
+            </NavigationSelector>
+          </NavigationContainer>
+
+          <NavigationTitle
+            onClick={() => setRankingsNoBarOpen(!isRankingsNoBarOpen)}
           >
-            Ranking por Música
-          </NavigationSelector>
+            RANKING NO BAR <ChevronIcon size={20} open={isRankingsNoBarOpen} />
+          </NavigationTitle>
+
+          <NavigationContainer open={isRankingsNoBarOpen}>
+            <NavigationSelector
+              isSelected={selectedView === "generalRankingNoBar"}
+              onClick={() => handleView("generalRankingNoBar")}
+            >
+              Geral
+            </NavigationSelector>
+
+            <NavigationSelector
+              isSelected={selectedView === "singleRankingNoBar"}
+              onClick={() => handleView("singleRankingNoBar")}
+            >
+              Single
+            </NavigationSelector>
+
+            <NavigationSelector
+              isSelected={selectedView === "doubleRankingNoBar"}
+              onClick={() => handleView("doubleRankingNoBar")}
+            >
+              Double
+            </NavigationSelector>
+            <NavigationSelector
+              isSelected={selectedView === "rankingByMusicNoBar"}
+              onClick={() => handleView("rankingByMusicNoBar")}
+            >
+              Por Música
+            </NavigationSelector>
+          </NavigationContainer>
 
           <NavigationSelector
             isSelected={selectedView === "songListManagement"}
             onClick={() => handleView("songListManagement")}
           >
-            Músicas
+            Lista de Músicas
           </NavigationSelector>
 
           <NavigationSelector
             isSelected={selectedView === "playerList"}
             onClick={() => handleView("playerList")}
           >
-            Jogadores
+            Lista de Jogadores
           </NavigationSelector>
         </NavigationHeaderWrapper>
 
         {selectedView === "generalRanking" && <RankingGeneral />}
         {selectedView === "singleRanking" && <RankingSingle />}
         {selectedView === "doubleRanking" && <RankingDouble />}
+        {selectedView === "rankingByMusic" && <RankingByMusic />}
+
+        {selectedView === "generalRankingNoBar" && <RankingGeneralNoBar />}
+        {selectedView === "singleRankingNoBar" && <RankingSingleNoBar />}
+        {selectedView === "doubleRankingNoBar" && <RankingDoubleNoBar />}
+        {selectedView === "rankingByMusicNoBar" && <RankingByMusicNoBar />}
+
         {selectedView === "songListManagement" && <SongList />}
         {selectedView === "playerList" && <PlayerList />}
-        {selectedView === "rankingByMusic" && <RankingByMusic />}
       </DynamicEventWrapper>
     </GlobalContainer>
   );

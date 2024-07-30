@@ -82,22 +82,25 @@ const AdminSingleRanking: FunctionComponent<AdminSingleRankingProps> = () => {
         .filter((score: IScore) => score.music.mode === "single") // Filter scores by "single" mode
         .forEach((score: IScore) => {
           const playerId = score.player.player_id;
-          const existingData = playerScoresMap.get(playerId) || {
-            player_id: playerId,
-            nickname: score.player.nickname,
-            profilePicture: score.player.profilePicture,
-            scores: [] as IScore[],
-            totalScore: 0,
-          };
 
-          const leaderboardScore: IScore = {
-            ...score,
-          };
+          if (score.player.bar) {
+            const existingData = playerScoresMap.get(playerId) || {
+              player_id: playerId,
+              nickname: score.player.nickname,
+              profilePicture: score.player.profilePicture,
+              scores: [] as IScore[],
+              totalScore: 0,
+            };
 
-          existingData.scores.push(leaderboardScore);
-          existingData.totalScore += score.value;
+            const leaderboardScore: IScore = {
+              ...score,
+            };
 
-          playerScoresMap.set(playerId, existingData);
+            existingData.scores.push(leaderboardScore);
+            existingData.totalScore += score.value;
+
+            playerScoresMap.set(playerId, existingData);
+          }
         });
 
       const leaderboardArray = Array.from(playerScoresMap.values());

@@ -28,10 +28,10 @@ import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
 import Button from "../../../../components/Button";
 import { stringShortener } from "../../../../utils/stringShortener";
-import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
+import { ThemeContext } from "styled-components";
 
-interface RankingSingleProps {}
+interface AdminDoubleRankingNoBarProps {}
 
 interface LeaderboardPlayer {
   player_id: string;
@@ -47,7 +47,7 @@ const medals = [
   "/static/medals/bronzeMedal.png",
 ];
 
-const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
+const AdminDoubleRankingNoBar: FunctionComponent<AdminDoubleRankingNoBarProps> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
@@ -79,11 +79,11 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
       const playerScoresMap = new Map<string, LeaderboardPlayer>();
 
       eventScores
-        .filter((score: IScore) => score.music.mode === "single") // Filter scores by "single" mode
+        .filter((score: IScore) => score.music.mode === "double") // Filter scores by "double" mode
         .forEach((score: IScore) => {
           const playerId = score.player.player_id;
 
-          if (score.player.bar) {
+          if (!score.player.bar) {
             const existingData = playerScoresMap.get(playerId) || {
               player_id: playerId,
               nickname: score.player.nickname,
@@ -366,4 +366,4 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
   );
 };
 
-export default RankingSingle;
+export default AdminDoubleRankingNoBar;

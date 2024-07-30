@@ -78,6 +78,11 @@ const RankingByMusic: FunctionComponent<RankingByMusicProps> = () => {
       const musicScoresMap = new Map<string, LeaderboardMusic>();
 
       eventScores.forEach((score: IScore) => {
+        // Filter out no bar players
+        if (!score.player.bar) {
+          return;
+        }
+
         const musicId = score.music.music_id;
         const existingData = musicScoresMap.get(musicId) || {
           music_id: musicId,
@@ -113,7 +118,7 @@ const RankingByMusic: FunctionComponent<RankingByMusicProps> = () => {
 
       setMusicLeaderboard(musicLeaderboardArray);
     }
-  });
+  }, [eventScores, setMusicLeaderboard]);
 
   const {
     isModalOpen: isScoreDetailsModalOpen,

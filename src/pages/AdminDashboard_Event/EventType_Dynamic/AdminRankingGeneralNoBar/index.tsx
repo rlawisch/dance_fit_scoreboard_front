@@ -28,10 +28,10 @@ import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
 import Button from "../../../../components/Button";
 import { stringShortener } from "../../../../utils/stringShortener";
-import { ThemeContext } from "styled-components";
 import { BallTriangle } from "react-loader-spinner";
+import { ThemeContext } from "styled-components";
 
-interface RankingSingleProps {}
+interface AdminGeneralRankingNoBarProps {}
 
 interface LeaderboardPlayer {
   player_id: string;
@@ -47,10 +47,11 @@ const medals = [
   "/static/medals/bronzeMedal.png",
 ];
 
-const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
+const AdminGeneralRankingNoBar: FunctionComponent<AdminGeneralRankingNoBarProps> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
+
   const { getScoresByEvent, eventScores, isLoadingEventScores } = useScore();
 
   const [leaderboard, setLeaderboard] = useState<LeaderboardPlayer[]>([]);
@@ -76,44 +77,47 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
 
   useEffect(() => {
     if (eventScores) {
+      // Create a map to group scores by player
       const playerScoresMap = new Map<string, LeaderboardPlayer>();
 
-      eventScores
-        .filter((score: IScore) => score.music.mode === "single") // Filter scores by "single" mode
-        .forEach((score: IScore) => {
-          const playerId = score.player.player_id;
+      eventScores.forEach((score: IScore) => {
+        const playerId = score.player.player_id;
+        console.log(score.player);
 
-          if (score.player.bar) {
-            const existingData = playerScoresMap.get(playerId) || {
-              player_id: playerId,
-              nickname: score.player.nickname,
-              profilePicture: score.player.profilePicture,
-              scores: [] as IScore[],
-              totalScore: 0,
-            };
+        if (!score.player.bar) {
+          const existingData = playerScoresMap.get(playerId) || {
+            player_id: playerId,
+            nickname: score.player.nickname,
+            profilePicture: score.player.profilePicture,
+            scores: [] as IScore[],
+            totalScore: 0,
+          };
 
-            const leaderboardScore: IScore = {
-              ...score,
-            };
+          const leaderboardScore: IScore = {
+            ...score,
+          };
 
-            existingData.scores.push(leaderboardScore);
-            existingData.totalScore += score.value;
+          existingData.scores.push(leaderboardScore);
+          existingData.totalScore += score.value;
 
-            playerScoresMap.set(playerId, existingData);
-          }
-        });
+          playerScoresMap.set(playerId, existingData);
+        }
+      });
 
+      // Convert the map to an array
       const leaderboardArray = Array.from(playerScoresMap.values());
 
+      // Sort each player's scores by mode and level
       leaderboardArray.forEach((player) => {
         player.scores.sort((a, b) => {
           if (a.music.mode !== b.music.mode) {
-            return a.music.mode.localeCompare(b.music.mode);
+            return a.music.mode.localeCompare(b.music.mode); // Sort by mode
           }
-          return a.music.level - b.music.level;
+          return a.music.level - b.music.level; // Sort by level within the same mode
         });
       });
 
+      // Sort the leaderboard by the total score
       leaderboardArray.sort((a, b) => b.totalScore - a.totalScore);
 
       setLeaderboard(leaderboardArray);
@@ -242,11 +246,11 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
                   </DynamicEventTd>
 
                   <DynamicEventTd>
-                    {player.scores.length} {"/ 7"}
+                    {player.scores.length} {"/ 14"}
                   </DynamicEventTd>
 
                   <DynamicEventTd>
-                    {(player.totalScore / (7 * 10000))
+                    {(player.totalScore / (14 * 10000))
                       .toFixed(2)
                       .toLocaleString()}
                   </DynamicEventTd>
@@ -345,13 +349,13 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
                   </tr>
                   <tr>
                     <DynamicEventTd>
-                      {`Músicas Jogadas: ${player.scores.length} / 7`}
+                      {`Músicas Jogadas: ${player.scores.length} / 14`}
                     </DynamicEventTd>
                   </tr>
                   <tr>
                     <DynamicEventTd>
-                      {"Pontuação: "}
-                      {(player.totalScore / (7 * 10000))
+                      {"Pontuação:  "}
+                      {(player.totalScore / (14 * 10000))
                         .toFixed(2)
                         .toLocaleString()}
                     </DynamicEventTd>
@@ -366,4 +370,4 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
   );
 };
 
-export default RankingSingle;
+export default AdminGeneralRankingNoBar;

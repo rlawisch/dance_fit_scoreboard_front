@@ -1,35 +1,50 @@
 export const getScoreGrade = (value: number) => {
-  if (value >= 995000 && value <= 1000000) {
+  if (value >= 995000) {
     return "SSS+";
-  } else if (value >= 990000 && value <= 994999) {
+  }
+  if (value >= 990000) {
     return "SSS";
-  } else if (value >= 985000 && value <= 989999) {
+  }
+  if (value >= 985000) {
     return "SS+";
-  } else if (value >= 980000 && value <= 984999) {
+  }
+  if (value >= 980000) {
     return "SS";
-  } else if (value >= 975000 && value <= 979999) {
+  }
+  if (value >= 975000) {
     return "S+";
-  } else if (value >= 970000 && value <= 974999) {
+  }
+  if (value >= 970000) {
     return "S";
-  } else if (value >= 960000 && value <= 969999) {
+  }
+  if (value >= 960000) {
     return "AAA+";
-  } else if (value >= 950000 && value <= 959999) {
+  }
+  if (value >= 950000) {
     return "AAA";
-  } else if (value >= 925000 && value <= 949999) {
+  }
+  if (value >= 925000) {
     return "AA+";
-  } else if (value >= 900000 && value <= 924999) {
+  }
+  if (value >= 900000) {
     return "AA";
-  } else if (value >= 825000 && value <= 899999) {
+  }
+  if (value >= 825000) {
     return "A+";
-  } else if (value >= 750000 && value <= 824999) {
+  }
+  if (value >= 750000) {
     return "A";
-  } else if (value >= 650000 && value <= 749999) {
+  }
+  if (value >= 650000) {
     return "B";
-  } else if (value >= 550000 && value <= 649999) {
+  }
+  if (value >= 550000) {
     return "C";
-  } else if (value >= 450000 && value <= 549999) {
+  }
+  if (value >= 450000) {
     return "D";
-  } else if (value >= 0 && value <= 449999) {
+  }
+  if (value >= 0) {
     return "F";
   }
 

@@ -1,6 +1,7 @@
-import styled, { createGlobalStyle } from "styled-components";
+import styled, { createGlobalStyle, keyframes } from "styled-components";
 import "@fontsource/roboto";
 import { shade } from "polished";
+import { FaChevronRight } from "react-icons/fa6";
 
 export const GlobalStyle = createGlobalStyle`
 
@@ -407,6 +408,48 @@ export const NavigationHeaderWrapper = styled.div`
   margin-bottom: 32px;
 `;
 
+const slideDown = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+export interface NavigationContainerProps {
+  open: boolean;
+}
+
+export const NavigationContainer = styled.div<NavigationContainerProps>`
+  display: ${(props) => (props.open ? "flex" : "none")};
+  flex-direction: column;
+  padding: 0.6rem;
+  gap: 0.6rem;
+  opacity: ${(props) => (props.open ? 1 : 0)};
+  transform: ${(props) => (props.open ? "translateY(0)" : "translateY(-20px)")};
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+  animation: ${(props) => (props.open ? slideDown : "none")} 0.5s ease;
+`;
+
+export const NavigationTitle = styled.h2`
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+`;
+
+export const ChevronIcon = styled(FaChevronRight)<{ open: boolean }>`
+  transition: transform 0.3s ease;
+  transform: ${(props) => (props.open ? "rotate(90deg)" : "rotate(0deg)")};
+`;
+
 export interface NavigationSelectorProps {
   isSelected: boolean;
 }
@@ -415,6 +458,7 @@ export const NavigationSelector = styled.h3<NavigationSelectorProps>`
   color: ${(props) =>
     props.isSelected ? props.theme.colors.primary : props.theme.colors.text};
   cursor: pointer;
+  transform: translateY(0);
 
   &:hover {
     color: ${(props) => props.theme.colors.primary};

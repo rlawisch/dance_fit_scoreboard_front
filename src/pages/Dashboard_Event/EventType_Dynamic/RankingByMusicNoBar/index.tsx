@@ -1,4 +1,8 @@
 import { FunctionComponent, useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { ThemeContext } from "styled-components";
+import { useScore } from "../../../../providers/Scores";
+import { IScore } from "../../../../types/entity-types";
 import {
   DyEvPlayerScoreListWrapper,
   DynamicEventScoreDataWrapper,
@@ -10,15 +14,14 @@ import {
   MusicWrapper,
   PlayerInfoWrapper,
   PlayerMiniature,
-  RankingMedal,
   SmallScreeDynamicEventTableHeader,
   SmallScreenDynamicEventTable,
   TableScoreValue,
 } from "../../../../styles/global";
-import { useParams } from "react-router-dom";
-import { useScore } from "../../../../providers/Scores";
-import { IScore } from "../../../../types/entity-types";
 import useDynamicModal from "../../../../providers/DynamicModal";
+import { BallTriangle } from "react-loader-spinner";
+import { stringShortener } from "../../../../utils/stringShortener";
+import Button from "../../../../components/Button";
 import {
   ScoreGrade,
   ScoreGradeWrapper,
@@ -26,39 +29,35 @@ import {
 import { getGradeImageFileName } from "../../../../utils/getGradeImageFileName";
 import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
-import Button from "../../../../components/Button";
-import { stringShortener } from "../../../../utils/stringShortener";
-import { ThemeContext } from "styled-components";
-import { BallTriangle } from "react-loader-spinner";
 
-interface RankingSingleProps {}
+interface RankingByMusicNoBarProps {}
 
-interface LeaderboardPlayer {
-  player_id: string;
-  nickname: string;
+interface LeaderboardMusic {
+  music_id: string;
+  name: string;
+  level: number;
+  mode: string;
   scores: IScore[];
-  totalScore: number;
-  profilePicture: string | undefined;
 }
 
-const medals = [
-  "/static/medals/goldMedal.png",
-  "/static/medals/silverMedal.png",
-  "/static/medals/bronzeMedal.png",
-];
-
-const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
+const RankingByMusicNoBar: FunctionComponent<RankingByMusicNoBarProps> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
-  const { getScoresByEvent, eventScores, isLoadingEventScores } = useScore();
 
-  const [leaderboard, setLeaderboard] = useState<LeaderboardPlayer[]>([]);
+  // states
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [musicLeaderboard, setMusicLeaderboard] = useState<LeaderboardMusic[]>(
+    []
+  );
   const [visibleScores, setVisibleScores] = useState<{
     [key: string]: boolean;
   }>({});
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  // providers
+  const { getScoresByEvent, eventScores, isLoadingEventScores } = useScore();
+
+  // life cycle
   useEffect(() => {
     getScoresByEvent(Number(event_id));
 
@@ -68,7 +67,6 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
 
     window.addEventListener("resize", handleResize);
 
-    // Clean up the event listener on component unmount
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -76,49 +74,51 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
 
   useEffect(() => {
     if (eventScores) {
-      const playerScoresMap = new Map<string, LeaderboardPlayer>();
+      // Create a map to group scores by music
+      const musicScoresMap = new Map<string, LeaderboardMusic>();
 
-      eventScores
-        .filter((score: IScore) => score.music.mode === "single") // Filter scores by "single" mode
-        .forEach((score: IScore) => {
-          const playerId = score.player.player_id;
+      eventScores.forEach((score: IScore) => {
+        // Filter out bar players
+        if (score.player.bar) {
+          return;
+        }
 
-          if (score.player.bar) {
-            const existingData = playerScoresMap.get(playerId) || {
-              player_id: playerId,
-              nickname: score.player.nickname,
-              profilePicture: score.player.profilePicture,
-              scores: [] as IScore[],
-              totalScore: 0,
-            };
+        const musicId = score.music.music_id;
+        const existingData = musicScoresMap.get(musicId) || {
+          music_id: musicId,
+          name: score.music.name,
+          level: score.music.level,
+          mode: score.music.mode,
+          scores: [] as IScore[],
+        };
 
-            const leaderboardScore: IScore = {
-              ...score,
-            };
+        const leaderboardScore: IScore = {
+          ...score,
+        };
 
-            existingData.scores.push(leaderboardScore);
-            existingData.totalScore += score.value;
-
-            playerScoresMap.set(playerId, existingData);
-          }
-        });
-
-      const leaderboardArray = Array.from(playerScoresMap.values());
-
-      leaderboardArray.forEach((player) => {
-        player.scores.sort((a, b) => {
-          if (a.music.mode !== b.music.mode) {
-            return a.music.mode.localeCompare(b.music.mode);
-          }
-          return a.music.level - b.music.level;
-        });
+        existingData.scores.push(leaderboardScore);
+        musicScoresMap.set(musicId, existingData);
       });
 
-      leaderboardArray.sort((a, b) => b.totalScore - a.totalScore);
+      // Convert the map to an array
+      const musicLeaderboardArray = Array.from(musicScoresMap.values());
 
-      setLeaderboard(leaderboardArray);
+      // Sort each music's scores by value from highest to lowest
+      musicLeaderboardArray.forEach((music) => {
+        music.scores.sort((a, b) => b.value - a.value);
+      });
+
+      // Sort by mode then by level
+      musicLeaderboardArray.sort((a, b) => {
+        if (a.mode === b.mode) {
+          return a.level - b.level;
+        }
+        return a.mode.localeCompare(b.mode);
+      });
+
+      setMusicLeaderboard(musicLeaderboardArray);
     }
-  }, [eventScores]);
+  }, [eventScores, setMusicLeaderboard]);
 
   const {
     isModalOpen: isScoreDetailsModalOpen,
@@ -151,63 +151,50 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
           <DynamicEventTable>
             <thead>
               <tr>
-                <DynamicEventTh>Jogador(a)</DynamicEventTh>
+                <DynamicEventTh>Música</DynamicEventTh>
                 <DynamicEventTh>Scores</DynamicEventTh>
-                <DynamicEventTh>Músicas Jogadas</DynamicEventTh>
-                <DynamicEventTh>Pontuação</DynamicEventTh>
               </tr>
             </thead>
             <tbody>
-              {leaderboard.map((player, index) => (
+              {musicLeaderboard.map((music, index) => (
                 <tr key={index}>
                   <DynamicEventTd>
-                    <PlayerInfoWrapper>
-                      {index < 3 ? (
-                        <RankingMedal
-                          src={medals[index]}
-                          alt={`${index + 1} medal`}
-                        />
-                      ) : (
-                        `#${index + 1}`
-                      )}
-                      <PlayerMiniature
-                        src={
-                          player.profilePicture
-                            ? player.profilePicture
-                            : "/img/default_player.png"
-                        }
-                        alt="Mini Profile Picture"
+                    <MusicWrapper>
+                      <MusicLevelMiniature
+                        src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
+                          .toString()
+                          .padStart(2, "0")}.png`}
                       />
-                      {player.nickname}
-                    </PlayerInfoWrapper>
+                      {stringShortener(windowWidth, music.name)}
+                    </MusicWrapper>
                   </DynamicEventTd>
 
                   <DynamicEventTd>
                     <Button
-                      onClick={() => toggleScoresVisibility(player.player_id)}
+                      onClick={() => toggleScoresVisibility(music.music_id)}
                     >
-                      {visibleScores[player.player_id]
+                      {visibleScores[music.music_id]
                         ? "Esconder Scores"
                         : "Mostrar Scores"}
                     </Button>
 
-                    {visibleScores[player.player_id] && (
+                    {visibleScores[music.music_id] && (
                       <DynamicEventScoreTable>
-                        {player.scores.map((score, i) => (
+                        {music.scores.map((score, i) => (
                           <tr key={i}>
                             <td>
                               <DyEvPlayerScoreListWrapper>
-                                <MusicWrapper>
-                                  <MusicLevelMiniature
-                                    src={`/static/musics/${score.music.mode}/${score.music.mode.charAt(0).toUpperCase()}${score.music.level
-                                      .toString()
-                                      .padStart(2, "0")}.png`}
+                                <PlayerInfoWrapper>
+                                  <PlayerMiniature
+                                    src={
+                                      score.player.profilePicture
+                                        ? score.player.profilePicture
+                                        : "/img/default_player.png"
+                                    }
+                                    alt="Mini Profile Picture"
                                   />
-                                  {stringShortener(
-                                    windowWidth,
-                                    score.music.name
-                                  )}
-                                </MusicWrapper>
+                                  {score.player.nickname}
+                                </PlayerInfoWrapper>
 
                                 <DynamicEventScoreDataWrapper>
                                   <TableScoreValue
@@ -240,16 +227,6 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
                       </DynamicEventScoreTable>
                     )}
                   </DynamicEventTd>
-
-                  <DynamicEventTd>
-                    {player.scores.length} {"/ 7"}
-                  </DynamicEventTd>
-
-                  <DynamicEventTd>
-                    {(player.totalScore / (7 * 10000))
-                      .toFixed(2)
-                      .toLocaleString()}
-                  </DynamicEventTd>
                 </tr>
               ))}
             </tbody>
@@ -257,59 +234,48 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
 
           <SmallScreenDynamicEventTable>
             <tbody>
-              {leaderboard.map((player, index) => (
+              {musicLeaderboard.map((music, index) => (
                 <>
                   <SmallScreeDynamicEventTableHeader key={index}>
                     <DynamicEventTd>
-                      <PlayerInfoWrapper>
-                        {index < 3 ? (
-                          <RankingMedal
-                            src={medals[index]}
-                            alt={`${index + 1} medal`}
-                          />
-                        ) : (
-                          `#${index + 1}`
-                        )}
-                        <PlayerMiniature
-                          src={
-                            player.profilePicture
-                              ? player.profilePicture
-                              : "/img/default_player.png"
-                          }
-                          alt="Mini Profile Picture"
+                      <MusicWrapper>
+                        <MusicLevelMiniature
+                          src={`/static/musics/${music.mode}/${music.mode.charAt(0).toUpperCase()}${music.level
+                            .toString()
+                            .padStart(2, "0")}.png`}
                         />
-                        {player.nickname}
-                      </PlayerInfoWrapper>
+                        {stringShortener(windowWidth, music.name)}
+                      </MusicWrapper>
                     </DynamicEventTd>
                   </SmallScreeDynamicEventTableHeader>
 
                   <tr>
                     <DynamicEventTd>
                       <Button
-                        onClick={() => toggleScoresVisibility(player.player_id)}
+                        onClick={() => toggleScoresVisibility(music.music_id)}
                       >
-                        {visibleScores[player.player_id]
+                        {visibleScores[music.music_id]
                           ? "Esconder Scores"
                           : "Mostrar Scores"}
                       </Button>
 
-                      {visibleScores[player.player_id] && (
+                      {visibleScores[music.music_id] && (
                         <DynamicEventScoreTable>
-                          {player.scores.map((score, i) => (
+                          {music.scores.map((score, i) => (
                             <tr key={i}>
                               <td>
                                 <DyEvPlayerScoreListWrapper>
-                                  <MusicWrapper>
-                                    <MusicLevelMiniature
-                                      src={`/static/musics/${score.music.mode}/${score.music.mode.charAt(0).toUpperCase()}${score.music.level
-                                        .toString()
-                                        .padStart(2, "0")}.png`}
+                                  <PlayerInfoWrapper>
+                                    <PlayerMiniature
+                                      src={
+                                        score.player.profilePicture
+                                          ? score.player.profilePicture
+                                          : "/img/default_player.png"
+                                      }
+                                      alt="Mini Profile Picture"
                                     />
-                                    {stringShortener(
-                                      windowWidth,
-                                      score.music.name
-                                    )}
-                                  </MusicWrapper>
+                                    {score.player.nickname}
+                                  </PlayerInfoWrapper>
 
                                   <DynamicEventScoreDataWrapper>
                                     <TableScoreValue
@@ -343,19 +309,6 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
                       )}
                     </DynamicEventTd>
                   </tr>
-                  <tr>
-                    <DynamicEventTd>
-                      {`Músicas Jogadas: ${player.scores.length} / 7`}
-                    </DynamicEventTd>
-                  </tr>
-                  <tr>
-                    <DynamicEventTd>
-                      {"Pontuação: "}
-                      {(player.totalScore / (7 * 10000))
-                        .toFixed(2)
-                        .toLocaleString()}
-                    </DynamicEventTd>
-                  </tr>
                 </>
               ))}
             </tbody>
@@ -366,4 +319,4 @@ const RankingSingle: FunctionComponent<RankingSingleProps> = () => {
   );
 };
 
-export default RankingSingle;
+export default RankingByMusicNoBar;
