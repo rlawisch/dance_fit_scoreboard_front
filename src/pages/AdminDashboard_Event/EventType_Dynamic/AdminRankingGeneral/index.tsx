@@ -82,7 +82,6 @@ const AdminGeneralRanking: FunctionComponent<AdminGeneralRankingProps> = () => {
 
       eventScores.forEach((score: IScore) => {
         const playerId = score.player.player_id;
-        console.log(score.player);
 
         if (score.player.bar) {
           const existingData = playerScoresMap.get(playerId) || {

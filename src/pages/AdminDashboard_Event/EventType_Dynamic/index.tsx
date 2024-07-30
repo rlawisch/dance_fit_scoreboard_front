@@ -1,9 +1,12 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import {
+  ChevronIcon,
   DynamicEventWrapper,
   GlobalContainer,
+  NavigationContainer,
   NavigationHeaderWrapper,
   NavigationSelector,
+  NavigationTitle,
   Title,
 } from "../../../styles/global";
 import { useNavigate, useParams } from "react-router-dom";
@@ -18,6 +21,10 @@ import { usePlayer } from "../../../providers/Players";
 import AdminPlayerList from "./AdminPlayerList";
 import AdminValidateScores from "./AdminValidateScores";
 import AdminRankingByMusic from "./AdminRankingByMusic";
+import AdminGeneralRankingNoBar from "./AdminRankingGeneralNoBar";
+import AdminSingleRankingNoBar from "./AdminRankingSingleNoBar";
+import AdminDoubleRankingNoBar from "./AdminRankingDoubleNoBar";
+import AdminRankingByMusicNoBar from "./AdminRankingByMusicNoBar";
 
 interface AdminEventType_DynamicProps {}
 
@@ -33,6 +40,10 @@ const AdminEventType_Dynamic: FunctionComponent<
   const { decodedPlayerInfo } = usePlayer();
 
   const { createEnrollment } = useEnrollments();
+
+  const [isRankingsOpen, setRankingsOpen] = useState(false);
+
+  const [isRankingsNoBarOpen, setRankingsNoBarOpen] = useState(false);
 
   useEffect(() => {
     getEventData(Number(event_id));
@@ -69,46 +80,87 @@ const AdminEventType_Dynamic: FunctionComponent<
         )}
 
         <NavigationHeaderWrapper>
-          <NavigationSelector
-            isSelected={selectedView === "generalRanking"}
-            onClick={() => handleView("generalRanking")}
-          >
-            Ranking Geral
-          </NavigationSelector>
+          <NavigationTitle onClick={() => setRankingsOpen(!isRankingsOpen)}>
+            RANKING OFICIAL <ChevronIcon size={20} open={isRankingsOpen} />
+          </NavigationTitle>
 
-          <NavigationSelector
-            isSelected={selectedView === "singleRanking"}
-            onClick={() => handleView("singleRanking")}
-          >
-            Ranking Single
-          </NavigationSelector>
+          <NavigationContainer open={isRankingsOpen}>
+            <NavigationSelector
+              isSelected={selectedView === "generalRanking"}
+              onClick={() => handleView("generalRanking")}
+            >
+              Geral
+            </NavigationSelector>
 
-          <NavigationSelector
-            isSelected={selectedView === "doubleRanking"}
-            onClick={() => handleView("doubleRanking")}
-          >
-            Ranking Double
-          </NavigationSelector>
+            <NavigationSelector
+              isSelected={selectedView === "singleRanking"}
+              onClick={() => handleView("singleRanking")}
+            >
+              Single
+            </NavigationSelector>
 
-          <NavigationSelector
-            isSelected={selectedView === "rankingByMusic"}
-            onClick={() => handleView("rankingByMusic")}
+            <NavigationSelector
+              isSelected={selectedView === "doubleRanking"}
+              onClick={() => handleView("doubleRanking")}
+            >
+              Double
+            </NavigationSelector>
+
+            <NavigationSelector
+              isSelected={selectedView === "rankingByMusic"}
+              onClick={() => handleView("rankingByMusic")}
+            >
+              Por Música
+            </NavigationSelector>
+          </NavigationContainer>
+
+          <NavigationTitle
+            onClick={() => setRankingsNoBarOpen(!isRankingsNoBarOpen)}
           >
-            Ranking por Música
-          </NavigationSelector>
+            RANKING NO BAR <ChevronIcon size={20} open={isRankingsNoBarOpen} />
+          </NavigationTitle>
+
+          <NavigationContainer open={isRankingsNoBarOpen}>
+            <NavigationSelector
+              isSelected={selectedView === "generalRankingNoBar"}
+              onClick={() => handleView("generalRankingNoBar")}
+            >
+              Geral
+            </NavigationSelector>
+
+            <NavigationSelector
+              isSelected={selectedView === "singleRankingNoBar"}
+              onClick={() => handleView("singleRankingNoBar")}
+            >
+              Single
+            </NavigationSelector>
+
+            <NavigationSelector
+              isSelected={selectedView === "doubleRankingNoBar"}
+              onClick={() => handleView("doubleRankingNoBar")}
+            >
+              Double
+            </NavigationSelector>
+            <NavigationSelector
+              isSelected={selectedView === "rankingByMusicNoBar"}
+              onClick={() => handleView("rankingByMusicNoBar")}
+            >
+              Por Música
+            </NavigationSelector>
+          </NavigationContainer>
 
           <NavigationSelector
             isSelected={selectedView === "songListManagement"}
             onClick={() => handleView("songListManagement")}
           >
-            Músicas
+            Lista de Músicas
           </NavigationSelector>
 
           <NavigationSelector
             isSelected={selectedView === "playerList"}
             onClick={() => handleView("playerList")}
           >
-            Jogadores
+            Lista de Jogadores
           </NavigationSelector>
 
           <NavigationSelector
@@ -122,10 +174,16 @@ const AdminEventType_Dynamic: FunctionComponent<
         {selectedView === "generalRanking" && <AdminGeneralRanking />}
         {selectedView === "singleRanking" && <AdminSingleRanking />}
         {selectedView === "doubleRanking" && <AdminDoubleRanking />}
+        {selectedView === "rankingByMusic" && <AdminRankingByMusic />}
+
+        {selectedView === "generalRankingNoBar" && <AdminGeneralRankingNoBar />}
+        {selectedView === "singleRankingNoBar" && <AdminSingleRankingNoBar />}
+        {selectedView === "doubleRankingNoBar" && <AdminDoubleRankingNoBar />}
+        {selectedView === "rankingByMusicNoBar" && <AdminRankingByMusicNoBar />}
+
         {selectedView === "songListManagement" && <ListManagement />}
         {selectedView === "playerList" && <AdminPlayerList />}
         {selectedView === "scoreValidation" && <AdminValidateScores />}
-        {selectedView === "rankingByMusic" && <AdminRankingByMusic />}
       </DynamicEventWrapper>
     </GlobalContainer>
   );

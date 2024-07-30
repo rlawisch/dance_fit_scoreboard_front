@@ -30,7 +30,7 @@ import { getGradeImageFileName } from "../../../../utils/getGradeImageFileName";
 import Modal from "../../../../components/Modal";
 import ScoreCard from "../../../../components/ScoreCard";
 
-interface AdminRankingByMusicProps {}
+interface RankingByMusicNoBarProps {}
 
 interface LeaderboardMusic {
   music_id: string;
@@ -40,7 +40,7 @@ interface LeaderboardMusic {
   scores: IScore[];
 }
 
-const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
+const RankingByMusicNoBar: FunctionComponent<RankingByMusicNoBarProps> = () => {
   const theme = useContext(ThemeContext);
 
   const { event_id } = useParams();
@@ -78,9 +78,8 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
       const musicScoresMap = new Map<string, LeaderboardMusic>();
 
       eventScores.forEach((score: IScore) => {
-
-        // Filter out no bar players
-        if (!score.player.bar) {
+        // Filter out bar players
+        if (score.player.bar) {
           return;
         }
 
@@ -106,8 +105,7 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
 
       // Sort each music's scores by value from highest to lowest
       musicLeaderboardArray.forEach((music) => {
-        music.scores
-          .sort((a, b) => b.value - a.value)
+        music.scores.sort((a, b) => b.value - a.value);
       });
 
       // Sort by mode then by level
@@ -321,4 +319,4 @@ const AdminRankingByMusic: FunctionComponent<AdminRankingByMusicProps> = () => {
   );
 };
 
-export default AdminRankingByMusic;
+export default RankingByMusicNoBar;
