@@ -12,13 +12,26 @@ interface DashboardHomeProps {}
 const DashboardHome: FunctionComponent<DashboardHomeProps> = () => {
   return (
     <GlobalContainer>
+      <PatchTitle>Notas de Atualização - 26/08/24</PatchTitle>
+
+      <HorizontalRuler />
+
+      <ContentList>
+        <ContentListItem>
+          Fórmula do cálculo de Scores revisada, algumas ocasiões resultavam em
+          diferença de 1 ponto.
+        </ContentListItem>
+      </ContentList>
+
       <PatchTitle>Notas de Atualização - 16/07/24</PatchTitle>
 
       <HorizontalRuler />
 
       <ContentList>
         <ContentListItem>
-          Reduzida a quantidade de campos a serem preenchidos ao fazer o Envio de Score. Uma prévia do Score pode ser usada para verificar o Score antes do Envio.
+          Reduzida a quantidade de campos a serem preenchidos ao fazer o Envio
+          de Score. Uma prévia do Score pode ser usada para verificar o Score
+          antes do Envio.
         </ContentListItem>
       </ContentList>
 
