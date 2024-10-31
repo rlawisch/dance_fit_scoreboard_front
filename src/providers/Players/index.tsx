@@ -14,6 +14,8 @@ export interface IPlayerContext {
   players: IPlayer[] | undefined;
   playerRefreshTrigger: boolean;
   isUploading: boolean;
+  isAdmin: () => boolean;
+  isLoggedIn: () => boolean;
   getPlayers: () => void;
   getPlayerData: () => void;
   playerLogin: (formData: ILogin) => void;
@@ -63,13 +65,29 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
       toast("Sentimos sua falta!");
 
-      if (jwtPayload.role === "admin") {
-        navigate("/admin/home");
-      } else {
-        navigate("/dashboard/events/3");
-      }
+      navigate("/udashboard/home");
     } catch (err: any) {
       toast.error("Usuário ou senha incorretos");
+    }
+  };
+
+  const isAdmin = () => {
+    return decodedPlayerInfo?.role === "admin";
+  };
+
+  const isLoggedIn = () => {
+    const token = localStorage.getItem("@DFS/PlayerToken");
+
+    if (!token) return false;
+
+    try {
+      const decodedToken = jwtDecode(token) as { exp: number };
+      const currentTime = Date.now() / 1000;
+      
+      return decodedToken.exp > currentTime;
+    } catch (error) {
+
+      return false;
     }
   };
 
@@ -90,7 +108,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       await api.post("/players", formData);
       setPlayerRefresgTrigger(!playerRefreshTrigger);
       toast("Jogador cadastrado com sucesso! Você já pode fazer o Login!");
-      navigate('/login')
+      navigate("/login");
     } catch (err: any) {
       if ((err.response.data.message = "Nickname already in use")) {
         toast.error("Nickname não disponível, por favor escolha outro");
@@ -177,7 +195,6 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       } else {
         toast.error("Algo deu errado");
       }
-      
     } catch (err: any) {
       toast.error("Algo deu errado");
       console.log(err);
@@ -194,6 +211,8 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
         playerData,
         playerRefreshTrigger,
         isUploading,
+        isAdmin,
+        isLoggedIn,
         getPlayers,
         getPlayerData,
         playerLogin,
