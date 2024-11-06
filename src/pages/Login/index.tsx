@@ -1,12 +1,17 @@
 import { useForm } from "react-hook-form";
 import Input from "../../components/Input";
-import { GlobalContainer } from "../../styles/global";
+import {
+  CustomHr,
+  CustomHrContainer,
+  FormWrapper,
+  GlobalContainer,
+  Title,
+} from "../../styles/global";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { AiOutlineUser } from "react-icons/ai";
 import { PiPassword } from "react-icons/pi";
 import Button from "../../components/Button";
-import { FormContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { usePlayer } from "../../providers/Players";
 import { ILogin } from "../../types/form-types";
@@ -35,39 +40,52 @@ const Login = () => {
 
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate(`/public/events`)}>
-        Entrar como Visitante
-      </Button>
-      <FormContainer>
-        <h1>Login</h1>
+      <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
+        <Button
+          type="button"
+          onClick={() => navigate(`/udashboard/home`)}
+          style={{ margin: `16px` }}
+        >
+          Entrar como Visitante
+        </Button>
+        <Title>Login</Title>
 
-        <form id="login_form" onSubmit={handleSubmit(onFormSubmit)}>
-          <Input
-            label="Nickname"
-            icon={AiOutlineUser}
-            name="nickname"
-            register={register}
-            error={errors.nickname?.message}
-          />
+        <Input
+          label="Nickname"
+          icon={AiOutlineUser}
+          name="nickname"
+          register={register}
+          error={errors.nickname?.message}
+        />
 
-          <Input
-            label="Senha"
-            icon={PiPassword}
-            name="password"
-            type="password"
-            register={register}
-            error={errors.password?.message}
-          />
-        </form>
+        <Input
+          label="Senha"
+          icon={PiPassword}
+          name="password"
+          type="password"
+          register={register}
+          error={errors.password?.message}
+        />
 
-        <Button vanilla={true} type="submit" form="login_form">
+        <Button vanilla={true} type="submit">
           Login
         </Button>
 
-        <Button vanilla={false} onClick={() => navigate(`/signup`)}>
+        <CustomHrContainer>
+          <CustomHr />
+          <p>ou</p>
+          <CustomHr />
+        </CustomHrContainer>
+
+        <Button
+          type="button"
+          vanilla={false}
+          onClick={() => navigate(`/signup`)}
+          style={{ margin: `0 0 24px 0` }}
+        >
           Cadastro
         </Button>
-      </FormContainer>
+      </FormWrapper>
     </GlobalContainer>
   );
 };

@@ -9,7 +9,7 @@ const RedirectIfLoggedIn = ({ children }: IRedirectProps) => {
   const { accToken } = usePlayer();
 
   if (accToken) {
-    return <Navigate to="/dashboard/home" />;
+    return <Navigate to="/udashboard/home" />;
   } else {
     return children;
   }

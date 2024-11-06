@@ -41,11 +41,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getEventData = async (event_id: number) => {
     try {
-      const res = await api.get(`/events/${event_id}`, {
-        headers: {
-          Authorization: `Bearer ${accToken}`,
-        },
-      });
+      const res = await api.get(`/events/${event_id}`);
       setEventData(res.data);
     } catch (err: any) {
       console.log(err);
@@ -54,11 +50,7 @@ export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getEventTypes = async () => {
     try {
-      const res = await api.get(`/event-types`, {
-        headers: {
-          Authorization: `Bearer ${accToken}`
-        },
-      })
+      const res = await api.get(`/event-types`)
       setEventTypes(res.data)
     } catch (err: any) {
       console.log(err)

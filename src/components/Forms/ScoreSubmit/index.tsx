@@ -6,17 +6,22 @@ import React, {
 } from "react";
 import { IEvent, IMusic, IScorePreview } from "../../../types/entity-types";
 import {
+  IScoreCreate,
+  IScoreSubmitByPlayerForm,
+} from "../../../types/form-types";
+import {
   ContentWrapper,
   DeleteWarning,
   FormWrapper,
   ScoreDGPReview,
   ScoreDGPreviewWrapper,
+  CropperFullWrapper,
+  CropperWrapper,
+  SliderWrapper,
 } from "../../../styles/global";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IScoreCreate, IScoreSubmitByPlayerForm } from "../../../types/form-types";
-import Input from "../../Input";
 import {
   BsCapslock,
   BsEmojiDizzy,
@@ -25,16 +30,12 @@ import {
   BsEmojiSmile,
   BsEmojiSunglasses,
 } from "react-icons/bs";
+import Input from "../../Input";
 import Select from "../../Select";
 import Button from "../../Button";
 import { useScore } from "../../../providers/Scores";
 import Cropper, { Area, Point } from "react-easy-crop";
 import { readFile } from "../../../utils/readFile";
-import {
-  CropperFullWrapper,
-  CropperWrapper,
-  SliderWrapper,
-} from "../../../pages/Dashboard_Profile/styles";
 import { Slider, Typography } from "@material-ui/core";
 import { getCroppedImg } from "../../../utils/canvasUtils";
 import { ThemeContext } from "styled-components";
@@ -136,7 +137,9 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
     }
   };
 
-  const onCreateScoreFormSubmit = async (formData: IScoreSubmitByPlayerForm) => {
+  const onCreateScoreFormSubmit = async (
+    formData: IScoreSubmitByPlayerForm
+  ) => {
     try {
       if (imageSrc) {
         const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
@@ -409,7 +412,7 @@ const ScoreCreateForm: FunctionComponent<ScoreCreateFormProps> = ({
 
           <h2>Prévia do Score:</h2>
 
-          <ScorePreviewCard score={scorePreview}/>
+          <ScorePreviewCard score={scorePreview} />
 
           <DeleteWarning>
             NÃO ESQUECER DE TIRAR O ZOOM E ENQUADRAR A FOTO ANTES DE ENVIAR!!

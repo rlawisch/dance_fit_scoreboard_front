@@ -1,5 +1,7 @@
 import { FunctionComponent } from "react";
 import {
+  CustomHr,
+  CustomHrContainer,
   FormWrapper,
   GlobalContainer,
   Title,
@@ -45,13 +47,15 @@ const Signup: FunctionComponent<SignupProps> = () => {
 
   return (
     <GlobalContainer>
-      <Button onClick={() => navigate(`/public/events`)}>
-        Entrar como Visitante
-      </Button>
-
-      <Title>Cadastro</Title>
-
       <FormWrapper onSubmit={handleSubmitCreatePlayer(onFormSubmit)}>
+        <Button
+          type="button"
+          onClick={() => navigate(`/udashboard/home`)}
+          style={{ margin: `16px` }}
+        >
+          Entrar como Visitante
+        </Button>
+        <Title>Cadastro</Title>
         <Input
           label="Nickname"
           icon={AiOutlineUser}
@@ -80,7 +84,18 @@ const Signup: FunctionComponent<SignupProps> = () => {
 
         <Button type="submit">Cadastro</Button>
 
-        <Button vanilla={false} onClick={() => navigate(`/login`)}>
+        <CustomHrContainer>
+          <CustomHr />
+          <p>ou</p>
+          <CustomHr />
+        </CustomHrContainer>
+
+        <Button
+          type="button"
+          vanilla={false}
+          onClick={() => navigate(`/login`)}
+          style={{ margin: `0 0 24px 0` }}
+        >
           Login
         </Button>
       </FormWrapper>

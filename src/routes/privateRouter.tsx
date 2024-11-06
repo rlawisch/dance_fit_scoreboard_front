@@ -1,17 +1,18 @@
-import { usePlayer } from "../providers/Players";
-import { Navigate } from "react-router-dom";
+import { Navigate } from "react-router-dom"
+import { usePlayer } from "../providers/Players"
 
-interface IPrivateRoute {
-  children: JSX.Element;
+interface IPrivateRouterProps {
+    children: JSX.Element;
 }
 
-const PrivateRoute = ({ children }: IPrivateRoute) => {
-  const { accToken } = usePlayer();
+const PrivateRouter = ({ children }: IPrivateRouterProps) => {
+    const { isLoggedIn } = usePlayer()
 
-  if (!!accToken) {
-    return children;
-  }
-  return <Navigate to="/login" />;
-};
+    if (isLoggedIn()) {
+        return children;  
+    } else {
+        return <Navigate to="/login"/>
+    }
+}
 
-export default PrivateRoute;
+export default PrivateRouter;
