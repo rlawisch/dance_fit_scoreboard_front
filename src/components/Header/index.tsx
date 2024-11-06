@@ -22,7 +22,7 @@ const Header: FunctionComponent<HeaderProps> = ({ toggleTheme }) => {
     <HeaderContainer>
       <HeaderWrapper>
         <HeaderLogo
-          src="static/logos/Logo Flat Transparente Preto.png"
+          src="/static/logos/Logo Flat Transparente Preto.png"
           alt="Logo DFG Preto"
           onClick={() => navigate("/")}
         />

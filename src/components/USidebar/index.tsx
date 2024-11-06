@@ -102,9 +102,7 @@ const USidebar: FunctionComponent<USidebarProps> = () => {
           {sideBarStatus ? "Eventos" : ""}
         </SidebarLi>
 
-        {isLoggedIn() && (
-          <>
-            <SidebarLi
+        <SidebarLi
               isopen={sideBarStatus}
               onClick={() => navigate("/udashboard/scores")}
             >
@@ -112,6 +110,8 @@ const USidebar: FunctionComponent<USidebarProps> = () => {
               {sideBarStatus ? "Scores" : ""}
             </SidebarLi>
 
+        {isLoggedIn() && (
+          <>
             <SidebarLi
               isopen={sideBarStatus}
               onClick={() => navigate("/udashboard/profile")}

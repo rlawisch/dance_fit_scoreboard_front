@@ -49,6 +49,7 @@ const Signup: FunctionComponent<SignupProps> = () => {
     <GlobalContainer>
       <FormWrapper onSubmit={handleSubmitCreatePlayer(onFormSubmit)}>
         <Button
+          type="button"
           onClick={() => navigate(`/udashboard/home`)}
           style={{ margin: `16px` }}
         >

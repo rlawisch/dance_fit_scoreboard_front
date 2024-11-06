@@ -42,6 +42,7 @@ const Login = () => {
     <GlobalContainer>
       <FormWrapper onSubmit={handleSubmit(onFormSubmit)}>
         <Button
+          type="button"
           onClick={() => navigate(`/udashboard/home`)}
           style={{ margin: `16px` }}
         >
