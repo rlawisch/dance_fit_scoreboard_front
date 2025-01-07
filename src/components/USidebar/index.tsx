@@ -152,7 +152,7 @@ const USidebar: FunctionComponent<USidebarProps> = () => {
 
         {isLoggedIn() && (
           <>
-            <SidebarLogoutBtn onClick={() => playerLogout()}>
+            <SidebarLogoutBtn onClick={() => playerLogout("Até a próxima!")}>
               <TbLogout2 />
             </SidebarLogoutBtn>
           </>
