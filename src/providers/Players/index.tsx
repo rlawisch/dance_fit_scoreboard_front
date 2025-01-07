@@ -21,7 +21,7 @@ export interface IPlayerContext {
   playerLogin: (formData: ILogin) => void;
   playerSignUp: (formData: ISignup) => void;
   publicPlayerSignUp: (formData: ISignup) => void;
-  playerLogout: () => void;
+  playerLogout: (message: string) => void;
   uploadProfilePicture: (formData: FormData) => void;
 }
 
@@ -84,7 +84,16 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       const decodedToken = jwtDecode(token) as { exp: number };
       const currentTime = Date.now() / 1000;
       
+      if (decodedToken.exp > currentTime) {
+        return true
+      }
+
+      else {
+        playerLogout("Token inválido, fazer Login novamente!")
+      }
+     
       return decodedToken.exp > currentTime;
+
     } catch (error) {
 
       return false;
@@ -116,7 +125,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const playerLogout = async () => {
+  const playerLogout = async (message: string) => {
     try {
       setAccToken("");
       setPlayerData({} as IPlayer);
@@ -130,7 +139,7 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
       navigate("/login");
       localStorage.removeItem("@DFS/PlayerToken");
       localStorage.removeItem("@DFS/Player");
-      toast("Até a próxima!");
+      toast(message);
     } catch (err: any) {
       console.log(err);
     }
